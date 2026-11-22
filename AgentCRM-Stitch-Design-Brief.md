@@ -56,3 +56,12 @@ Return named desktop and mobile frames, reusable components for a deal card, par
 ## Additional frames for the prototype
 
 Include partner referral submission and tracking, admin duplicate review, client fee eligibility and split setup, monthly schedule settings, manual receipt allocation, partial payment, refund review, partner statement, and payout-preference approval. Show these as connected steps or drawers where appropriate. Keep personal and financial sample data fictional.
+
+
+## Fee agreements and rate history
+
+Design an agreement editor with fixed fees, flat percentages and sliding scales. Allow a monthly retainer alongside a flat or tiered performance fee. Default sliding scales to marginal tiers, with a whole-month option per agreement. Preview both methods using $60,000 in sales and a 5% rate through $50,000 followed by 7% above it. The marginal fee is $3,200 and the whole-month fee is $4,200. Show the retainer separately.
+
+Give each partner a default rate for the client with an optional override per eligible fee type. Allocate partial receipts proportionally across the outstanding fees they cover. Allow the admin to override that allocation before saving. Preview a $2,500 receipt against a $3,000 retainer and $2,000 performance fee. Allocate $1,500 and $1,000 respectively. At partner rates of 10% and 15%, the commission is $150 plus $150, totaling $300.
+
+Give each rate change an effective date. On a recorded receipt, display the terms used when its commission was recorded. A later rate change preserves that calculation. Show any correction as a separate dated adjustment linked to the original payment on the partner statement.
