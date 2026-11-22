@@ -1,0 +1,65 @@
+[
+  {
+    "id": "admin",
+    "name": "Avery Bell",
+    "roles": [
+      "admin"
+    ],
+    "email": "admin@agentcrm.example",
+    "salt": "ffccbb20f2ce38d49d7c20ec1672fa64",
+    "hash": "84cb944da1c33d5a907e687ce9b8a684d80deee5d47e354c4dafdfc169e43ffea8e98c2c2627c8538f5dd8261dd71e9d283850905f89d147e7065b3fce3d2406"
+  },
+  {
+    "id": "partner",
+    "name": "Morgan Reed",
+    "roles": [
+      "partner"
+    ],
+    "email": "partner@agentcrm.example",
+    "salt": "57857616362325a5e3a597c9356ed3c7",
+    "hash": "4dac6fd74028e197ba2d834349bf027151d43d799ed4fc675a0ffc0ec3a76fe8720d19274dda03981b2815ae9b154ba23b87ff44f5374fa90b08524a7f0f2cdc"
+  },
+  {
+    "id": "partner2",
+    "name": "Jules Lane",
+    "roles": [
+      "partner"
+    ],
+    "email": "partner2@agentcrm.example",
+    "salt": "a859dfb1296442fdef8e82d9efdf298d",
+    "hash": "9336c127f09f508ce46f662ef168f666f8da56e7668547940f790edc55ba0fa7aae1777a3eafd735670824842df841592b23085827e49a79da00a472fd9aa300"
+  },
+  {
+    "id": "owner",
+    "name": "Sam Cole",
+    "roles": [
+      "owner"
+    ],
+    "email": "owner@agentcrm.example",
+    "salt": "5de69084afb7c6b13d80a35bf1b68e1e",
+    "hash": "f310b229f5c9a370b7634f6f32ef67d47e68b177c4e315266f9349ec8bb1aee0502b4eecf367a63990da0a38e55650c04918d48aab31322d2a6850ce09615b7b"
+  },
+  {
+    "id": "super",
+    "name": "Drew Park",
+    "roles": [
+      "owner",
+      "super"
+    ],
+    "email": "super@agentcrm.example",
+    "salt": "3a1d124bcbc6da0ad31e628f594ec720",
+    "hash": "cc8d96caea2d496b57cae0896ec5a4b23e708b853b09473ebec7ca354c31aa438393c6042e27e28aea4e1241eaf94c7b85f85be2c164e2d81786639c74090631"
+  },
+  {
+    "id": "principal",
+    "name": "Taylor Moss",
+    "roles": [
+      "owner",
+      "super",
+      "admin"
+    ],
+    "email": "principal@agentcrm.example",
+    "salt": "b2dc93e77d0c2fe92e405bb7c583fcf8",
+    "hash": "5ef9510f956420b19c7cef69de2254a3ca27d4a2d98fef6961d08dc2b0fea319d3d0ddf38f4679b58438fd1f2a7e44305cf8aad223e9e9a8dc586ced66c83b67"
+  }
+]
