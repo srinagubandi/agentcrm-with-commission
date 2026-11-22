@@ -65,3 +65,14 @@ Design an agreement editor with fixed fees, flat percentages and sliding scales.
 Give each partner a default rate for the client with an optional override per eligible fee type. Allocate partial receipts proportionally across the outstanding fees they cover. Allow the admin to override that allocation before saving. Preview a $2,500 receipt against a $3,000 retainer and $2,000 performance fee. Allocate $1,500 and $1,000 respectively. At partner rates of 10% and 15%, the commission is $150 plus $150, totaling $300.
 
 Give each rate change an effective date. On a recorded receipt, display the terms used when its commission was recorded. A later rate change preserves that calculation. Show any correction as a separate dated adjustment linked to the original payment on the partner statement.
+
+
+## Client owners and super user access
+
+On each client agreement, let an agency admin select the participating owners and enter each owner's share. Both the people and the percentages can vary by client. Identify each person once in the directory and reuse that record across clients. Show referral commissions and owner earnings as separate lines for people who qualify for both.
+
+In user management, show an explicit Super User designation on the person's account, separate from their client assignments and Agency Admin role. Display the designation in the user directory and account detail. A designated super user can read agency-wide financial reports across all clients. Agreement changes, payout-detail approvals and payment recording use the Agency Admin permission. Referral partners see their own results. Show an owner participating in Client A only and a designated super user reviewing reports for both Client A and Client B.
+
+Design a monthly owner-share report for each client. Start with collected agency revenue, deduct referral commissions and expenses allocated to that client, then recover that client's outstanding loss. Carry any remaining loss forward on the same client. Apply client-specific owner percentages to the positive balance, with any unallocated percentage retained as the agency reserve. Each expense must be assigned to a client. A shared bill may be split into client allocations that sum to its total.
+
+For the prototype, use $10,000 collected, $2,000 in referral commissions, $3,000 in client expenses and a $500 prior loss. The resulting $4,500 supports owner shares of 50% ($2,250) and 30% ($1,350), leaving $900 in reserve. Link the agency-wide summary to this client calculation, its expense allocations and its owner split.
