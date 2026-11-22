@@ -19,19 +19,19 @@ Use the fictional client Alder Studio and the period October 2026. The client ge
 | Sam Cole | 2.5% | $125 |
 | Agency retains before other expenses | 82.5% | $4,125 |
 
-Show $875 due across three partners. When Morgan's $500 payout is recorded, show $500 paid and $375 outstanding. Keep the $875 earned visible. These figures illustrate independent client-specific rates, cash collected, USD, and manual payment recording. They are design assumptions pending owner review.
+Show $875 due across three partners. When Morgan's $500 payout is recorded, show $500 paid and $375 outstanding. Keep the $875 earned visible. These fictional USD amounts illustrate the individual-rate method. Also design the shared-pool method described below.
 
 ## Screens to design
 
 | Screen | What the user sees and does |
 | --- | --- |
 | Overview | Default to the current month. Prioritize overdue follow-ups, then earnings awaiting review and approved commissions awaiting payment. Clicking a count opens the corresponding filtered list. Label pipeline estimates separately from collected fees. |
-| Sales pipeline | Desktop board and mobile list. Use New referral, Qualified, Proposal, Won and Lost as provisional stages. Cards show prospect, referrer, owner, next action and due date. Offer a keyboard-accessible stage menu alongside drag and drop. The new referral form needs only a company, contact and referring partner to start. |
+| Sales pipeline | Desktop board and mobile list. Use New Referral → Contacted → Discovery → Proposal → Negotiation, closing as Won or Lost. Cards show prospect, referrer, owner, next action and due date. Offer a keyboard-accessible stage menu alongside drag and drop. The new referral form needs only a company, contact and referring partner to start. |
 | Client detail | Header with owner and contact. Tabs for Activity, Partner terms and Monthly earnings. Show the next follow-up and chronological notes. Winning a deal should open the linked client without re-entering data. |
 | Partner terms | Editable rows for partner, rate, eligible fee types and effective dates. Show the basis in words beside each rate and preview dollars for the selected month. Design examples with two and five partners, plus a direct client with none. Treat five as a layout test, pending a decision on limits. Flag duplicate or overlapping terms and shares above 100%. |
 | Monthly earnings | Filter by client and month. Enter each fee separately with type, amount collected, date and optional reference. For a performance fee, show the sales basis and agency rate beside the calculated fee. For other deals allow a known fee to be entered directly. Put partner-by-partner arithmetic and the agency remainder next to the inputs. |
 | Commission review and payouts | Show Draft, Approved and Paid as distinct states. Group amounts by partner with client-level detail. Open a review before approval. Record payment date, amount and reference after money moves externally. Design a correction to a prior month as a visible adjustment linked to the original entry. |
-| Partner record and optional portal | Internal record shows contacts, referred deals, active clients and commission history. As a separate optional concept, show a partner signed in to their own referrals and monthly statement. Omit other partners' rates, agency margins and internal notes from this view. |
+| Partner record and portal | Internal record shows contacts, referred deals, active clients and commission history. For the required partner login, show a partner signed in to their own referrals and monthly statement. Omit other partners' rates, agency margins and internal notes from this view. |
 
 ## Visual and interaction direction
 
@@ -43,6 +43,16 @@ At desktop width, display the monthly inputs and split preview side by side. On 
 
 Return named desktop and mobile frames, reusable components for a deal card, partner-rate row, earnings line, status badge and payout row, plus typography, spacing and color values. Link two prototype paths end to end: referral to won client, and collected fee to partner statement. Include the two-partner and five-partner variants and one validation-error frame. Annotate which values are entered, calculated, or visible only to staff. The sample October amounts must reconcile on every frame.
 
-## Owner decisions before implementation
+## Confirmed launch workflows
 
-Confirm the commission basis and eligible fees, whether partners have independent rates or divide a pool, how rates expire or change, how refunds affect approved periods, who can see or approve financial information, and whether monthly earnings and payouts are entered manually or integrated. Use the example above for mockups while these decisions are open.
+- Agency admin and partner have separate signed-in views. Partners submit referrals, track their own status, and see their commission calculations, adjustments, paid amounts and balances. Keep other partners’ identities and rates private. Route potential duplicate referrals to an admin who chooses whom to credit and sets the shares.
+- The admin selects eligible fee types and split method per client. Support independent rates and a shared pool. Give each partner-client agreement its own start date and optional end date. In a pool example, $5,000 collected × 15% creates a $750 pool. A partner with a 40% allocation earns $300. Show this partner only their own calculation.
+- An admin can enter a known agency fee directly or derive it from qualifying client sales and the agency rate. Give fees and payments separate forms. A fee alone creates no payable partner commission.
+- Manual entry is the launch workflow for client receipts and external partner payouts. Record payer, payee, date, amount, method, status and reference. Match each client receipt to the fees it covers. Show a partial collection example: $2,500 collected against $5,000 of eligible fees earns $250 for a 10% partner. Collecting the remaining balance adds another $250.
+- Schedule payouts for the prior month on one agency-wide monthly day selected by the admin. Show next due date and unpaid balance. Recording an external payout updates the partner statement. Use “Record payout” as the action label.
+- For each refund, preview the original partner allocation. Let the admin choose whether the agency absorbs the refund or deducts the associated commission from a future payout. Link the adjustment to the original receipt.
+- Store each partner’s preferred payout method and payout identifier. Partners can submit changes. Display both the effective preference and pending request to the agency admin. Continue using the approved preference until the admin approves the replacement.
+
+## Additional frames for the prototype
+
+Include partner referral submission and tracking, admin duplicate review, client fee eligibility and split setup, monthly schedule settings, manual receipt allocation, partial payment, refund review, partner statement, and payout-preference approval. Show these as connected steps or drawers where appropriate. Keep personal and financial sample data fictional.
