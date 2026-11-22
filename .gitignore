@@ -1,0 +1,6 @@
+local-data/
+crm-test-*/
+*.sqlite*
+.env*
+demo-logins.*
+node_modules/
