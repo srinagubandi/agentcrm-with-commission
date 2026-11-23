@@ -52,6 +52,12 @@ export function reportableReceipts(s) {
  return s.receipts.filter(receipt=>!draftIds.has(receipt.id)&&!draftIds.has(receipt.original)&&!draftIds.has(receipt.adjusts));
 }
 
+export function visibleClients(s,user) {
+ const global=user.roles.includes('admin')||user.roles.includes('super');
+ return global?s.clients:s.clients.filter(client=>
+   client.history.some(terms=>terms.partners.some(partner=>partner.id===user.id)));
+}
+
 function closeMonth(s,user,f) {
  const client=get(s.clients,f.client);
  const month=String(f.month||'');
@@ -109,7 +115,13 @@ export function run(s,user,action,f){
  if(action==='refer'){
  const name=required(f.name),pid=partner&&!admin?user.id:f.partner;check(get(s.people,pid).roles.includes('partner'),'Select a referral partner');
  s.deals.push({id:uid(),name,contact:required(f.contact),pid,stage:stages[0],follow:f.follow?date(f.follow):'',note:'',duplicate:s.deals.some(d=>d.name.toLowerCase()===name.toLowerCase())});return}
- if(action==='preference'){const p=get(s.people,user.id);p.pending=required(f.preference);return}
+ if(action==='preference'){
+   check(partner||owner,'Only payout recipients can submit a payment preference');
+   const preference=required(f.preference);
+   check(!/\d(?:[ -]*\d){4}/.test(preference),'Enter a masked identifier with at most the last four digits');
+   get(s.people,user.id).pending=preference;
+   return;
+ }
  if(action==='approvePreference'){const p=get(s.people,f.person);check(p.pending,'No change pending');p.preference=p.pending;p.pending='';return}
  if(action==='settings'){const n=Number(f.day);check(Number.isInteger(n)&&n>=1&&n<=31,'Choose a day from 1 to 31');s.day=n;return}
  if(action==='stage'){
@@ -162,8 +174,6 @@ export function run(s,user,action,f){
      const columns=row.split(',').map(value=>value.trim());
      check(columns.length===4,'Enter recipient ID, earnings type, amount and reference for each payout');
      const [person,kind,amount,ref]=columns;
-     check(!draft.payouts.some(payment=>payment.person===person&&payment.kind===kind&&payment.ref===ref),
-       'This recipient and earnings type already have a payout with that reference');
      run(draft,user,'payout',{person,kind,amount,ref,date:f.date,method:f.method});
    }
    s.payouts=draft.payouts;
@@ -178,7 +188,10 @@ export function run(s,user,action,f){
    .map(share=>({date:entry.date,amount:share.amount})));
  const payments=s.payouts.filter(payment=>payment.person===p.id&&payment.kind===kind);
  const due=payoutCapacity(earnings,payments,d);
- check(amount>0&&amount<=due,'Payout exceeds available balance');s.payouts.push({id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref:required(f.ref)});return}
+ check(amount>0&&amount<=due,'Payout exceeds available balance');
+ const ref=required(f.ref);
+ check(!payments.some(payment=>payment.ref===ref),'This recipient and earnings type already have a payout with that reference');
+ s.payouts.push({id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref});return}
  if(action==='client'){const name=required(f.name);check(!s.clients.some(c=>c.name.toLowerCase()===name.toLowerCase()),'Client already exists');s.clients.push({id:uid(),name,contact:String(f.contact||'').trim().slice(0,500),history:[],notes:[]});return}
  const c=get(s.clients,f.client);
  if(action==='note'){const note=required(f.note);c.notes??=[];c.notes.push({by:user.id,date:today(),text:note});return}

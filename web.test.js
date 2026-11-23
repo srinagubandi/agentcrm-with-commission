@@ -7,7 +7,8 @@ import {join} from 'node:path';
 import {randomBytes,scryptSync} from 'node:crypto';
 import {once} from 'node:events';
 import net from 'node:net';
-test('six authenticated roles, workflow writes, privacy, replay protection and restart',async()=>{
+import {skepticChecks} from './skeptic-checks.js';
+test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
  const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
@@ -49,7 +50,7 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  for(const route of ['/reports.csv','/reports.json','/reports/print']){
   assert.equal((await visit('partner',route+'?report=calculations')).status,403);
  }
- assert.doesNotMatch(await(await visit('partner','/commissions')).text(),/\$2,000\.00 x 15%/);
+ assert.doesNotMatch(await(await visit('partner','/commissions')).text(),/\$[\d,.]+ x [\d.]+%/);
  assert.equal((await save('owner',{...await fields('owner','/owners'),action:'preference',preference:'ACH ending 1234',return:'/owners'})).status,303);
  assert.equal((await save('admin',{...await fields('admin','/people'),action:'approvePreference',person:'owner'})).status,303);
  const earnings=await(await visit('admin','/earnings')).text();
@@ -83,5 +84,10 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  assert.match(await(await visit('super','/owners')).text(),/Closed client periods/);
  assert.doesNotMatch(await(await visit('owner','/owners')).text(),/Closed client periods/);
  assert.match(await(await visit('partner','/commissions')).text(),/WEB-BATCH/);
+ assert.doesNotMatch(await(await visit('admin','/commissions')).text(),/WEB-OWNER/);
+ assert.match(await(await visit('owner','/owners')).text(),/WEB-OWNER/);
+ assert.equal((await visit('partner','/clients?client=unavailable-example')).status,404);
+ assert.equal((await visit('admin','/clients?client=alder')).status,200);
+ await skepticChecks(t,{visit,fields,save});
  }finally{await stop();await rm(dir,{recursive:true,force:true})}
 });

@@ -8,7 +8,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {mkdirSync,readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {createHash,randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
-import {seed,run} from './model.js';
+import {seed,run,visibleClients} from './model.js';
 import {page,login,esc} from './views.js';
 const accounts=JSON.parse(readFileSync(new URL('./demo-users.json',import.meta.url)));
 const {version:release}=JSON.parse(readFileSync(new URL('./package.json',import.meta.url)));
@@ -75,6 +75,8 @@ http.createServer(async(req,res)=>{
  }
  if(req.method!=='GET'||!routes.includes(path))return reply(res,404,'Page unavailable');
  if((['/people','/settings','/earnings'].includes(path)&&!global)||(['/owners'].includes(path)&&!global&&!u.roles.includes('owner'))||(['/sales','/clients','/commissions'].includes(path)&&!global&&!u.roles.includes('partner')))return reply(res,403,'Permission denied');
- return reply(res,200,page(state,u,path,{csrf:session.csrf,version:record.version,saved:url.searchParams.has('saved'),client:url.searchParams.get('client'),query:url.searchParams,audit:admin&&path==='/settings'?db.prepare('SELECT person,event,at FROM audit ORDER BY id DESC LIMIT 100').all():[]}));
+ const client=url.searchParams.get('client');
+ if(path==='/clients'&&client!==null&&!visibleClients(state,u).some(record=>record.id===client))return reply(res,404,'Client unavailable');
+ return reply(res,200,page(state,u,path,{csrf:session.csrf,version:record.version,saved:url.searchParams.has('saved'),client,query:url.searchParams,audit:admin&&path==='/settings'?db.prepare('SELECT person,event,at FROM audit ORDER BY id DESC LIMIT 100').all():[]}));
  }catch(e){reply(res,400,'<!doctype html><html lang="en"><title>Entry needs attention</title><link rel="stylesheet" href="/style.css"><main><h1>Entry needs attention</h1><p>'+esc(e.message)+'</p><p>Use your browser’s Back button to revise this entry.</p><a href="/">Overview</a></main></html>')}
 }).listen(Number(process.env.PORT||3000),'0.0.0.0');
