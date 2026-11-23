@@ -15,7 +15,7 @@ function ledger() {
 }
 
 function post(s, action, fields) {
-  run(s,admin,action,{client:'a',date:'2026-01-12',ref:'fixture',method:'ACH',...fields});
+  run(s,admin,action,{client:'a',date:'2026-01-12',ref:'fixture-'+s.receipts.length,method:'ACH',...fields});
 }
 function terms(s, fields={}) {
   post(s,'terms',{date:'2026-01-01',partners:'p1,10,15\np2,5,5',owners:'o1,75',...fields});

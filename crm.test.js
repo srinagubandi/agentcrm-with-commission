@@ -3,8 +3,41 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {availablePayout,invoiceBalance,seed,run,owners,performance,allocate} from './model.js';
 import {closeSummary,closeExport} from './close-summary.js';
+import {paymentTrace} from './payment-trace.js';
 const people=()=>JSON.parse(readFileSync(new URL('./demo-users.json',import.meta.url))).map(({id,name,roles})=>({id,name,roles}));
 const fixture=()=>seed(people());
+
+test('skeptic: reversing an eligible payout preserves the original and restores only its amount',()=>{
+ const s=fixture(),admin=s.people[0],original=structuredClone(s.payouts[0]);
+ const prior=availablePayout(s,'partner','partner','2026-11-21');
+ const fields={payout:original.id,date:'2026-11-21',reason:'Duplicate manual record'};
+ assert.throws(()=>run(s,s.people[1],'reversePayout',fields),/denied/);
+ assert.throws(()=>run(s,admin,'reversePayout',{...fields,date:'2026-11-14'}),/between/);
+ assert.throws(()=>run(s,admin,'reversePayout',{...fields,reason:''}),/Enter a value/);
+ run(s,admin,'closeMonth',{client:'alder',month:'2026-10'});
+ const closed=structuredClone(s.closes[0]);
+ run(s,admin,'reversePayout',fields);
+ assert.deepEqual(s.payouts[0],original);
+ assert.equal(s.payouts.at(-1).reverses,original.id);
+ assert.deepEqual(s.closes[0],closed);
+ assert.equal(availablePayout(s,'partner','partner','2026-11-21'),prior+original.amount);
+ assert.throws(()=>run(s,admin,'reversePayout',fields),/already has/);
+ assert.throws(()=>run(s,admin,'reversePayout',{...fields,payout:s.payouts.at(-1).id}),/original payout/);
+ const trace=paymentTrace(s,s.fees[0]);
+ assert.deepEqual(trace.payouts.map(row=>[row.ref,row.attributed]),[['SAMPLE-001',20000],['Reversal of SAMPLE-001',-20000]]);
+});
+
+test('skeptic: duplicate refund references are case-insensitive and scoped to the client and entry type',()=>{
+ const s=fixture(),admin=s.people[0],first=s.receipts[0];
+ const refund={client:first.cid,fee:first.fee,receipt:first.id,date:'2026-11-21',amount:'1',ref:first.ref,deduct:'no'};
+ run(s,admin,'refund',refund);
+ const size=s.receipts.length;
+ assert.throws(()=>run(s,admin,'refund',{...refund,ref:' '+first.ref.toLowerCase()+' '}),/already recorded/);
+ assert.equal(s.receipts.length,size);
+ const other=s.receipts[1];
+ run(s,admin,'refund',{...refund,client:other.cid,fee:other.fee,receipt:other.id});
+ assert.equal(s.receipts.length,size+1);
+});
 
 test('skeptic: partial collection, approval, partial payout, close and later refund reconcile',()=>{
  const s=fixture(),admin=s.people[0];
@@ -48,8 +81,8 @@ test('skeptic: settled refunds preserve the receivable and reopened pennies can 
 test('marginal and whole-period tiers',()=>{const t=[{to:5000000,rate:500},{to:null,rate:700}];assert.equal(performance(6000000,t,'marginal'),320000);assert.equal(performance(6000000,t,'whole'),420000)});
 test('fractional cent allocations reconcile',()=>assert.deepEqual(allocate(101,[1,1]),[51,50]));
 test('individual rates, pool, reserves and expenses reconcile',()=>{const s=fixture();assert.deepEqual(s.receipts[0].shares.map(x=>x.amount),[60000,25000]);assert.equal(s.receipts[1].shares.reduce((a,x)=>a+x.amount,0),37500);const a=owners(s)[0];assert.equal(a.available,375000);assert.equal(a.reserve,75000);assert.equal(a.shares.reduce((n,x)=>n+x.amount,a.reserve),a.available)});
-test('partial payments, overrides and historical values',()=>{const s=fixture(),admin=s.people[0],fee=s.fees[1];run(s,admin,'receipt',{client:'harbor',fee:fee.id,date:'2026-10-16',amount:1000,override:500,ref:'partial',method:'ACH'});assert.deepEqual(s.receipts.at(-1).parts,[50000,50000]);const snapshot=JSON.stringify(s.receipts);run(s,admin,'terms',{client:'harbor',date:'2026-11-01',partners:'partner,20',owners:'owner,60'});assert.equal(JSON.stringify(s.receipts),snapshot);assert.throws(()=>run(s,admin,'receipt',{client:'harbor',fee:fee.id,date:'2026-11-02',amount:2000}),/exceeds/)});
-test('refund follows original allocations and caps cumulative refunds',()=>{const s=fixture(),r=s.receipts[0],f={client:r.cid,fee:r.fee,receipt:r.id,date:'2026-11-01',amount:1000,ref:'refund',deduct:'yes'};run(s,s.people[0],'refund',f);assert.equal(s.receipts.at(-1).shares[0].amount,-12000);assert.throws(()=>run(s,s.people[0],'refund',{...f,amount:5000}),/exceeds/)});
+test('partial payments, overrides and historical values',()=>{const s=fixture(),admin=s.people[0],fee=s.fees[1];run(s,admin,'receipt',{client:'harbor',fee:fee.id,date:'2026-10-16',amount:1000,override:500,ref:'partial',method:'ACH'});assert.deepEqual(s.receipts.at(-1).parts,[50000,50000]);const snapshot=JSON.stringify(s.receipts);run(s,admin,'terms',{client:'harbor',date:'2026-11-01',partners:'partner,20',owners:'owner,60'});assert.equal(JSON.stringify(s.receipts),snapshot);assert.throws(()=>run(s,admin,'receipt',{client:'harbor',fee:fee.id,date:'2026-11-02',amount:2000,ref:'overpayment'}),/exceeds/)});
+test('refund follows original allocations and caps cumulative refunds',()=>{const s=fixture(),r=s.receipts[0],f={client:r.cid,fee:r.fee,receipt:r.id,date:'2026-11-01',amount:1000,ref:'refund',deduct:'yes'};run(s,s.people[0],'refund',f);assert.equal(s.receipts.at(-1).shares[0].amount,-12000);assert.throws(()=>run(s,s.people[0],'refund',{...f,amount:5000,ref:'second refund'}),/exceeds/)});
 test('loss stays with client and is recovered next period',()=>{const s=fixture(),u=s.people[0];run(s,u,'expense',{date:'2026-09-01',name:'Setup',amount:500,lines:'alder,500'});let a=owners(s).filter(x=>x.cid==='alder');assert.equal(a[0].loss,50000);assert.equal(a[1].opening,50000);assert.equal(a[1].available,325000);assert.equal(owners(s).at(-1).opening,0)});
 test('expense allocation, overpayment and unauthorized mutation rejected',()=>{const s=fixture();assert.throws(()=>run(s,s.people[0],'expense',{date:'2026-11-01',name:'Bill',amount:100,lines:'alder,60'}),/Allocations/);assert.throws(()=>run(s,s.people[0],'payout',{person:'partner',amount:99999,date:'2026-11-01'}),/exceeds/);assert.throws(()=>run(s,s.people[1],'settings',{day:1}),/denied/)});
 

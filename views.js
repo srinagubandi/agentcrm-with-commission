@@ -2,6 +2,7 @@ import {myViews} from './saved-views.js';
 import {visibleReports,reportPanel} from './report-engine.js';
 import {availablePayout,invoiceBalance,owners,reportableReceipts,stages,today,visibleClients} from './model.js';
 import {closeSummary} from './close-summary.js';
+import {paymentTrace} from './payment-trace.js';
 export const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);
 const sum=(list,key)=>list.reduce((a,x)=>a+x[key],0);
@@ -17,7 +18,7 @@ export function page(s,u,path,ctx){
  const names=Object.fromEntries(s.people.map(p=>[p.id,p.name])),clientName=id=>s.clients.find(c=>c.id===id)?.name||id;
  const menu=[['/','Overview'],['/reports','Reports'],...(global||partner?[['/sales','Sales pipeline'],['/clients','Clients']]:[]),...(global?[['/earnings','Monthly earnings']]:[]),...(global||partner?[['/commissions','Commissions']]:[]),...(global||owner?[['/owners','Owner shares']]:[]),...(global?[['/people','People'],['/settings','Settings']]:[])];
  const title=menu.find(m=>m[0]===path)?.[1]||'Overview';
- const form=(a,label,body)=>'<details><summary>'+label+'</summary><form method="post" action="/save"><input type="hidden" name="csrf" value="'+ctx.csrf+'"><input type="hidden" name="version" value="'+ctx.version+'"><input type="hidden" name="action" value="'+a+'"><input type="hidden" name="return" value="'+path+'">'+body+(['fee','receipt','refund','expense','payout','terms','adjustment','closeMonth','batchPayout','approveReceipt'].includes(a)?'<button name="preview" value="yes">Review entry</button>':'<button>'+label+'</button>')+'</form></details>';
+ const form=(a,label,body)=>'<details><summary>'+label+'</summary><form method="post" action="/save"><input type="hidden" name="csrf" value="'+ctx.csrf+'"><input type="hidden" name="version" value="'+ctx.version+'"><input type="hidden" name="action" value="'+a+'"><input type="hidden" name="return" value="'+path+'">'+body+(['fee','receipt','refund','expense','payout','terms','adjustment','closeMonth','batchPayout','approveReceipt','reversePayout'].includes(a)?'<button name="preview" value="yes">Review entry</button>':'<button>'+label+'</button>')+'</form></details>';
   const preferenceForm=()=>form('preference','Request payout preference change',input('preference','Payment method and masked identifier (last four only)')+
    '<p>Approved: '+esc(u.preference||'None')+' · Pending: '+esc(u.pending||'None')+'</p>');
  const dateInput=()=>input('date','Date','date',today());const personSelect=(key,role,label)=>options(key,label,s.people.filter(p=>!role||p.roles.includes(role)).map(p=>[p.id,p.name]));
@@ -36,7 +37,17 @@ export function page(s,u,path,ctx){
  const metrics=pairs=>'<div class="metrics">'+pairs.map(([l,v])=>'<article><small>'+l+'</small><strong>'+v+'</strong></article>').join('')+'</div>';
  const expenseKey=clients.map(c=>esc(c.name)+' = '+esc(c.id)).join(' · ');
  const dealTable=table(['Prospect','Referral partner','Stage','Next follow-up'],deals.map(d=>[esc(d.name)+(d.duplicate&&global?' <b>Check overlap</b>':''),esc(names[d.pid]),esc(d.stage),esc(d.follow||'—')]));
- const payoutTable=records=>table(['Recipient','Type','Date','Amount','Method','Reference'],records.map(p=>[esc(names[p.person]),esc(p.kind),esc(p.date),money(p.amount),esc(p.method),esc(p.ref)]));
+ const payoutTable=records=>table(['Recipient','Type','Date','Amount','Method','Reference',...(global?['Reversal reason']:[])],
+   records.map(p=>[esc(names[p.person]),esc(p.kind),esc(p.date),money(p.amount),esc(p.method),esc(p.ref),...(global?[esc(p.reason||'')]:[])]));
+ const reverseForm=kind=>{
+   const reversed=new Set(s.payouts.map(p=>p.reverses).filter(Boolean));
+   const eligible=s.payouts.filter(p=>p.kind===kind&&p.amount>0&&!reversed.has(p.id));
+   if(!eligible.length)return '';
+   return form('reversePayout','Reverse a recorded payout',
+     options('payout','Original payout',eligible.map(p=>[p.id,p.date+' · '+names[p.person]+' · '+p.ref+' · '+money(p.amount)]))+
+     dateInput()+input('reason','Reason for the ledger reversal')+
+     '<p>Use this to correct a mistaken entry or record funds already recovered. This entry changes the ledger only.</p>');
+ };
  let body=path==='/reports'?reportPanel(s,u,ctx.query||new URLSearchParams()):'';
  if(path==='/reports'){
    const q=new URLSearchParams(ctx.query||'');
@@ -68,7 +79,23 @@ export function page(s,u,path,ctx){
  const feeSelect=()=>options('fee','Fee entry',selectedFees.map(f=>[f.id,clientName(f.cid)+' · '+f.reference]));
  const receiptSelect=()=>options('receipt','Original receipt',originalReceipts.map(r=>[r.id,r.ref+' · '+clientName(r.cid)]));
  const selectClient='<form method="get" action="/earnings"><label>Client for payment entries<select name="client">'+clients.map(client=>'<option value="'+esc(client.id)+'"'+(client.id===selected?.id?' selected':'')+'>'+esc(client.name)+'</option>').join('')+'</select></label><button>Choose client</button></form>';
- body=panel('Client fees',table(['Client','Reference','Date','Fixed fee','Performance fee','Outstanding'],s.fees.map(f=>[esc(clientName(f.cid)),esc(f.reference),f.date,money(f.fixed),money(f.perf),money(invoiceBalance(s,f).reduce((a,b)=>a+b,0))])))+panel('Collections and refunds',table(['Client','Date','Reference','Amount'],receipts.map(r=>[esc(clientName(r.cid)),r.date,esc(r.ref),money(r.amount)])));
+ body=panel('Client fees',table(['Client','Reference','Date','Fixed fee','Performance fee','Outstanding'],s.fees.map(f=>[esc(clientName(f.cid)),'<a href="/earnings?client='+encodeURIComponent(f.cid)+'&amp;invoice='+encodeURIComponent(f.id)+'">'+esc(f.reference)+'</a>',f.date,money(f.fixed),money(f.perf),money(invoiceBalance(s,f).reduce((a,b)=>a+b,0))])))+panel('Collections and refunds',table(['Client','Date','Reference','Amount'],receipts.map(r=>[esc(clientName(r.cid)),r.date,esc(r.ref),money(r.amount)])));
+ const selectedInvoice=s.fees.find(fee=>fee.id===ctx.query?.get('invoice'));
+ if(selectedInvoice){
+   const trace=paymentTrace(s,selectedInvoice);
+   const references=new Map(trace.receipts.map(row=>[row.id,row.ref]));
+   body+=panel('Payment history · '+esc(selectedInvoice.reference),
+     '<p>'+esc(clientName(selectedInvoice.cid))+' · Outstanding '+money(trace.open)+'</p>'+
+     table(['Date','Entry','Reference','Original reference','Cash','Commission entries','Approval'],
+       trace.receipts.map(row=>[row.date,row.original?'Refund':row.adjusts?'Commission correction':'Collection',
+         esc(row.ref),esc(references.get(row.original||row.adjusts)||''),money(row.amount),
+         row.shares.map(share=>esc(names[share.id]||share.id)+' '+money(share.amount)).join('<br>'),
+         row.approvedBy?'Approved by '+esc(names[row.approvedBy]||row.approvedBy)+' on '+esc(row.approvedAt):
+           trace.approved.has(row)?(row.amount>0?'Recorded':'Posted'):'Draft']))+
+     '<h3>Estimated partner payout allocation</h3><p>Uses the oldest available approved commission first. A payout may cover several invoices. Owner payouts are reconciled by month in <a href="/owners">Owner shares</a>.</p>'+
+     table(['Date','Partner','Payout reference','Estimated amount applied'],
+       trace.payouts.map(p=>[p.date,esc(names[p.person]||p.person),esc(p.ref),money(p.attributed)])));
+ }
  if(admin){body+=form('fee','Record fee',pickClient()+dateInput()+input('ref','Invoice or fee reference')+input('fixed','Fixed fee ($), blank uses agreement retainer','number','',false)+options('calc','Performance fee method',[['direct','Enter fee'],['sales','Calculate from sales']])+input('sales','Qualifying sales ($)','number',0)+input('performance','Known performance fee ($)','number',0));
  body+=panel('Payment entry client',selectClient);
  if(selectedFees.length)body+=form('receipt','Record client payment',scopedClient+feeSelect()+dateInput()+input('amount','Amount collected ($)','number')+input('override','Fixed fee allocation override ($), optional','number','',false)+input('method','Payment method')+input('ref','Payment reference'));
@@ -93,6 +120,7 @@ export function page(s,u,path,ctx){
    +panel('Partner payout history',payoutTable(paid));
  if(partner)body+=preferenceForm();
  if(admin)body+=form('payout','Record external payout',personSelect('person',null,'Recipient')+options('kind','Earnings type',[['partner','Referral commission'],['owner','Owner share']])+dateInput()+input('amount','Amount ($)','number')+input('method','Method')+input('ref','Reference'));
+ if(admin)body+=reverseForm('partner');
  }
  if(path==='/owners'){
  const m=owners(s).filter(x=>global||x.shares.some(p=>p.id===u.id));body=panel('Monthly owner distributions',table(global?['Client','Month','Collections','Referral commissions','Expenses','Opening loss','Available','Owner shares','Reserve','Closing loss']:['Client','Month','My share'],m.map(x=>global?[esc(clientName(x.cid)),x.month,money(x.income),money(x.commission),money(x.expenses),money(x.opening),money(x.available),x.shares.map(p=>esc(names[p.id])+' '+money(p.amount)).join('<br>'),money(x.reserve),money(x.loss)]:[esc(clientName(x.cid)),x.month,money(x.shares.find(p=>p.id===u.id).amount)])));
@@ -107,6 +135,7 @@ export function page(s,u,path,ctx){
      return [esc(person.name),money(earned),money(paid),money(earned-paid),money(availablePayout(s,person.id,'owner',current))];
    })));
  body+=panel('Owner payout history',payoutTable(ownerPayouts));
+ if(admin)body+=reverseForm('owner');
  if(global)body+=panel('Expense allocations',table(['Bill','Date','Total','Client allocations'],s.expenses.map(e=>[esc(e.name),e.date,money(e.amount),e.lines.map(l=>esc(clientName(l.cid))+' '+money(l.amount)).join('<br>')])));
  if(admin)body+=form('expense','Record expense',input('name','Vendor or expense')+dateInput()+input('amount','Bill total ($)','number')+options('allocation','Allocation method',[['custom','Exact dollar amounts'],['equal','Equal split'],['sales','Qualifying sales for bill month']])+multi('lines','One allocation per line · client ID, dollars','alder,200\nharbor,100')+'<p>For equal and sales-weighted splits, enter only a client ID on each line.</p><p>'+expenseKey+'</p>');}
    if(path==='/commissions'&&admin){

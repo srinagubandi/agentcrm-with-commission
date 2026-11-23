@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.3 — payment trace, duplicate protection, and payout reversals
+
+| Workflow | Change | Skeptic evidence |
+| --- | --- | --- |
+| Invoice payment history | Agency readers can open an invoice and follow its collections, refunds, commission corrections, and approvals. Estimated partner payout amounts use the oldest available approved commission first. Owner payouts remain in the monthly waterfall. | Both the original payout and its reversal appear in the invoice trace. Partners and owners cannot open agency invoice history. |
+| Duplicate collections and refunds | References are compared case-insensitively within each client and transaction type, before confirmation and again when saving. The existing version check serializes competing saves. | Two admins submitting from the same reviewed version produced one save and one conflict. Case and whitespace variants failed preview. A separate client can use the same reference. |
+| Payout reversal | Admins can post one dated, reasoned, full ledger reversal against an existing payout. The original remains visible, and the reversal restores availability from its posting date. Reversal dates must follow the latest closed client period. | The original payout and settlement snapshot stayed unchanged. A second reversal, a reversal before the original, and an unauthorized reversal were rejected. A partner saw their own reversal reference without its internal reason. |
+| Recovery rehearsal | Added an SQLite recovery-copy command that takes a consistent snapshot, checks integrity, and clears copied sessions. | Restored a synthetic database into a new directory, denied old sessions, signed in as all six roles, compared three finance exports byte for byte, and confirmed the period-close report survived. |
+
+- Reran 10,873 Node.js tests, including 450 HTTP skeptic cases. Also reran 450 browser role checks, 11 finance browser checks, and six desktop/mobile checks. The numbered evidence is in `skeptic-loops-0.5.3.jsonl`.
+- The database schema is unchanged. Historical payout-to-invoice estimates are recalculated from the ledger and may change when earlier commission entries are approved or corrected. A reversal changes the ledger only.
+
 ## 0.5.2 — payout reconciliation and period-close review
 
 | Workflow | Update | Skeptic check |
