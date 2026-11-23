@@ -154,7 +154,7 @@ export function run(s,user,action,f){
  if(!admin)check((partner&&action==='refer')||((partner||owner)&&action==='preference'),'Permission denied');
  if(action==='refer'){
  const name=required(f.name),pid=partner&&!admin?user.id:f.partner;check(get(s.people,pid).roles.includes('partner'),'Select a referral partner');
- s.deals.push({id:uid(),name,contact:required(f.contact),pid,stage:stages[0],follow:f.follow?date(f.follow):'',note:'',duplicate:s.deals.some(d=>d.name.toLowerCase()===name.toLowerCase())});return}
+ s.deals.push({id:uid(),name,contact:required(f.contact),...(f.estimate?.trim()?{estimate:cents(f.estimate)}:{}),pid,stage:stages[0],follow:f.follow?date(f.follow):'',note:'',duplicate:s.deals.some(d=>d.name.toLowerCase()===name.toLowerCase())});return}
  if(action==='preference'){
    check(partner||owner,'Only payout recipients can submit a payment preference');
    const preference=required(f.preference);

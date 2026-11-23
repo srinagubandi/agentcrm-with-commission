@@ -10,7 +10,7 @@ import net from 'node:net';
 import {skepticChecks} from './skeptic-checks.js';
 import {recoveryCopy} from './recovery-copy.js';
 test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
- const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','avatar.js','avatar-client.js','model.js','payout-balance.js','payout-allocations.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
+ const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','avatar.js','avatar-client.js','workspace-ui.js','model.js','payout-balance.js','payout-allocations.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
  for(const p of people){keys[p.id]=randomBytes(20).toString('hex');p.hash=scryptSync(keys[p.id],p.salt,64).toString('hex')}

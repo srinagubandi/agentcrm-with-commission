@@ -142,3 +142,12 @@ Stitch review: 100 browser checks across ten screen contexts. Monthly earnings n
 * Added session controls to standalone authenticated HTML pages including previews, print views and browser error responses. The sign-out action expires the server session.
 * Browser verification covered selecting a synthetic image, saving it, retrieving the 192px avatar on earnings, checking canvas and retained-card colors and signing out. Integration checks cover cross-account photo isolation, invalid uploads, CSRF, removal and profile access for all six demo accounts.
 * The design exports include illustrative ledger stamps, workflow actions and account-specific sample data. Pixel-level equivalence across all screens remains unverified.
+
+## 0.5.7 — workspace screen and responsive review
+
+* Added a role-scoped page search, keyboard shortcut and fixed mobile workspace navigation. Reports, clients, commissions, owner statements, people and settings group applicable ledger and inspector panels and offer section selection.
+* Added stage counts and filters, board/list controls, attributed opportunity cards, optional estimated value and an open-pipeline value with coverage. Records created without estimates remain distinguishable from zero-valued deals.
+* Added accessible action dialogs for referral entry, agreements, user creation and shared expenses. Each dialog uses its existing financial or CRM form and returns focus when closed.
+* Added a month-specific financial waterfall for agency viewers, a scoped owner summary, role badges, tier ceilings and effective performance rates. Applied Fiscal Trust field, ledger and status styles to shared screens.
+* Found and corrected narrow-screen overflow in the earnings ledger. Reran 138 browser layout checks across six accounts and every allowed primary destination at 1440, 390 and 320px. Exercised sales stage and view controls, the referral and expense dialogs and page search. Full automated suite passed, 10,875 tests.
+* SCREEN-REVIEW.md records the plan and STITCH-MISSING-SCREENS.md distinguishes missing source frames from remaining implementation and screenshot comparison work.

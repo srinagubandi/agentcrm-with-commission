@@ -47,6 +47,7 @@ http.createServer(async(req,res)=>{
  }
  if(path==='/style.css')return reply(res,200,css,'text/css');
  if(path==='/inter.font'||path==='/symbols.font')return reply(res,200,readFileSync(new URL('.'+path,import.meta.url)),'application/octet-stream');
+ if(path==='/workspace-ui.js')return reply(res,200,readFileSync(new URL('./workspace-ui.js',import.meta.url)),'text/javascript');
  if(path==='/avatar-client.js')return reply(res,200,avatarScript,'text/javascript');
  const token=(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('crm='))?.slice(4)||'';
  const session=db.prepare('SELECT * FROM sessions WHERE token=? AND expires>?').get(digest(token),Date.now());
