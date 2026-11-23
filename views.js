@@ -59,7 +59,15 @@ export function page(s,u,path,ctx){
  if(path==='/'){
  const myOwner=owners(s).flatMap(m=>m.shares).filter(p=>global||p.id===u.id);
  body=global?metrics([['Collected fees',money(sum(receipts,'amount'))],['Referral commissions',money(sum(entries,'amount'))],['Owner shares',money(sum(myOwner,'amount'))]]):metrics([...(partner?[['My commissions',money(sum(entries,'amount'))],['Referral payouts',money(sum(payouts.filter(p=>p.kind==='partner'),'amount'))]]:[]),...(owner?[['My owner shares',money(sum(myOwner,'amount'))]]:[])]);
- if(partner||global)body+=panel('Sales follow-up',dealTable);body+=panel('Recent payouts',payoutTable(payouts));
+ const due = deals.filter(d=>d.follow && d.follow<=today() && !['Won','Lost'].includes(d.stage))
+   .sort((a,b)=>a.follow.localeCompare(b.follow));
+ const attention = due.length ? '<ul class="attention">'+due.map(d=>'<li><strong>'+esc(d.name)+'</strong><span>'+esc(d.stage)+'</span><time>'+esc(d.follow)+'</time></li>').join('')+'</ul>' : '<p class="empty">No open referrals are due for follow-up.</p>';
+ if(global||partner){
+   const queue = panel('Attention Queue',attention+'<a href="/sales">Open sales pipeline</a>');
+   const ledger = global ? panel('Reconciliation ledger',table(['Client','Payment reference','Date','Collected'],receipts.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(r=>[esc(clientName(r.cid)),esc(r.ref),esc(r.date),money(r.amount)]))+'<a href="/earnings">View monthly earnings</a>') : panel('My disbursement ledger',payoutTable(payouts));
+   body+='<div class="overview-columns">'+queue+ledger+'</div>'+panel('Sales follow-up',dealTable);
+ }
+ if(global||!partner) body+=panel('Recent payouts',payoutTable(payouts));
  }
  if(path==='/sales'){
  body=panel('Pipeline',stages.map(stage=>{const list=deals.filter(d=>d.stage===stage);return '<article class="lane"><h3>'+stage+' <small>'+list.length+'</small></h3>'+list.map(d=>'<div class="card"><strong>'+esc(d.name)+'</strong><p>'+esc(d.contact)+'</p><small>'+esc(d.follow||'No follow-up date')+'</small></div>').join('')+'</article>'}).join('')).replace('<section>','<section class="board">');
@@ -80,6 +88,21 @@ export function page(s,u,path,ctx){
  const receiptSelect=()=>options('receipt','Original receipt',originalReceipts.map(r=>[r.id,r.ref+' · '+clientName(r.cid)]));
  const selectClient='<form method="get" action="/earnings"><label>Client for payment entries<select name="client">'+clients.map(client=>'<option value="'+esc(client.id)+'"'+(client.id===selected?.id?' selected':'')+'>'+esc(client.name)+'</option>').join('')+'</select></label><button>Choose client</button></form>';
  body=panel('Client fees',table(['Client','Reference','Date','Fixed fee','Performance fee','Outstanding'],s.fees.map(f=>[esc(clientName(f.cid)),'<a href="/earnings?client='+encodeURIComponent(f.cid)+'&amp;invoice='+encodeURIComponent(f.id)+'">'+esc(f.reference)+'</a>',f.date,money(f.fixed),money(f.perf),money(invoiceBalance(s,f).reduce((a,b)=>a+b,0))])))+panel('Collections and refunds',table(['Client','Date','Reference','Amount'],receipts.map(r=>[esc(clientName(r.cid)),r.date,esc(r.ref),money(r.amount)])));
+ const clientReceipts=receipts.filter(r=>r.cid===selected?.id);
+ const latest=clientReceipts.map(r=>r.date).sort().at(-1)||today();
+ const requestedMonth=ctx.query?.get('period');
+ const period=/^\d{4}-(0[1-9]|1[0-2])$/.test(requestedMonth||'')?requestedMonth:latest.slice(0,7);
+ const rows=clientReceipts.filter(r=>r.date.startsWith(period));
+ const partnerTotals=new Map();
+ for(const r of rows)for(const share of r.shares)partnerTotals.set(share.id,(partnerTotals.get(share.id)||0)+share.amount);
+ const cash=sum(rows,'amount'),partnerTotal=[...partnerTotals.values()].reduce((a,b)=>a+b,0);
+ const monthPicker='<form class="scope-picker" action="/earnings"><label>Client<select name="client">'+clients.map(c=>'<option value="'+esc(c.id)+'" '+(c.id===selected?.id?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+input('period','Period','month',period)+'<button>Apply</button></form>';
+ const feeCards=['Performance fee','Fixed monthly retainer'].map((label,index)=>{
+   const value=rows.reduce((total,r)=>total+(r.parts?.[index===0?1:0]||0),0);
+   return '<article class="fee-card"><small>Agency collected fee</small><h3>'+label+'</h3><strong>'+money(value)+'</strong></article>';
+ }).join('');
+ const breakdown=[...partnerTotals].map(([id,amount])=>'<li><span class="monogram" aria-hidden="true">'+esc((names[id]||id).split(/\s+/).map(w=>w[0]).slice(0,2).join(''))+'</span><span>'+esc(names[id]||id)+'</span><strong>'+money(amount)+'</strong></li>').join('');
+ body='<section class="settlement"><div><small>Settlement period</small><h2>'+esc(selected?.name||'No client selected')+'</h2><p>Referral commissions are based on eligible agency fees collected for this client.</p></div>'+monthPicker+'</section><div class="fee-grid"><div><h2>Agency Fee Composition</h2>'+feeCards+'<div class="fee-summary">Net collections, including refunds <strong>'+money(cash)+'</strong></div></div><div><h2>Partner Commission Breakdown</h2><section class="distribution"><small>Partner &amp; agreed cut</small><ul>'+breakdown+'</ul>'+(!breakdown?'<p>No commission entries this period.</p>':'')+'<div class="fee-summary">Partner share <strong>'+money(partnerTotal)+'</strong></div><div class="fee-summary">Agency retained before expenses <strong>'+money(cash-partnerTotal)+'</strong></div></section></div></div>'+body;
  const selectedInvoice=s.fees.find(fee=>fee.id===ctx.query?.get('invoice'));
  if(selectedInvoice){
    const trace=paymentTrace(s,selectedInvoice);
@@ -183,5 +206,5 @@ export function page(s,u,path,ctx){
  if(path==='/settings'&&admin)body+=panel('Recent changes',table(['When (UTC)','Person','Action'],(ctx.audit||[]).map(a=>[esc(a.at),esc(names[a.person]),esc(a.event)])));
  if(path==='/clients'&&admin)body+=form('client','Add client',input('name','Company')+input('contact','Primary contact','text','',false));
  if(path==='/clients'&&global){const c=clients.find(x=>x.id===ctx.client)||clients[0];if(c){if(c.referrals)body+=panel('Referral attribution',table(['Opportunity','Referral partners'],Object.entries(c.referrals).map(([id,ids])=>[esc(s.deals.find(d=>d.id===id)?.name||id),ids.map(p=>esc(names[p]||p)).join(', ')])));body+=panel('Client activity',table(['Date','Entered by','Note'],(c.notes||[]).map(n=>[n.date,esc(names[n.by]),esc(n.text)])));if(admin)body+=form('note','Add client note',pickClient()+input('note','Note'))}}
- return doc(title,'<a class="skip" href="#content">Skip to content</a><aside><div class="brand">AgentCRM</div><small>Agency workspace</small><nav>'+menu.map(([url,name])=>'<a '+(url===path?'aria-current="page"':'')+' href="'+url+'">'+name+'</a>').join('')+'</nav></aside><main id="content"><header><span>Synthetic demo</span><span>'+esc(u.name)+' · '+esc(u.roles.join(' / '))+'</span><form method="post" action="/logout"><input type="hidden" name="csrf" value="'+ctx.csrf+'"><button>Sign out</button></form></header><h1>'+title+'</h1>'+(ctx.saved?'<p role="status">Changes saved.</p>':'')+body+'</main>');
+ return doc(title,'<a class="skip" href="#content">Skip to content</a><aside><div class="brand"><b aria-hidden="true">A</b>AgentCRM</div><div class="workspace-context"><small>Workspace</small><strong>'+esc(global?'Agency workspace':partner?'Partner portal':'Owner portal')+'</strong></div><nav aria-label="Workspace">'+menu.map(([url,name])=>'<a '+(url===path?'aria-current="page"':'')+' href="'+url+'">'+name+'</a>').join('')+'</nav></aside><main id="content" data-screen="'+esc(path.slice(1)||'overview')+'"><header><span>Synthetic demo</span><span>'+esc(u.name)+' · '+esc(u.roles.join(' / '))+'</span><form method="post" action="/logout"><input type="hidden" name="csrf" value="'+ctx.csrf+'"><button>Sign out</button></form></header><h1>'+esc(title)+'</h1>'+(ctx.saved?'<p role="status">Changes saved.</p>':'')+body+'</main>');
 }

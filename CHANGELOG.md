@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.5 - Stitch workspace screens
+
+Adapted the Fiscal Trust navigation rail, metric cards, pipeline lanes, overview attention queue and reconciliation ledger from the Stitch export. Dashboards use role-scoped records and switch to a single column on narrow screens. The partner portal uses the signed-in person's disbursements. Existing accounting actions and historical records are preserved.
+
+
 ## 0.5.4 — recorded payout allocations and review queue
 
 | Workflow | Change | Skeptic evidence |
@@ -125,3 +130,6 @@ The release adds two production fixes and 9,999 distinct synthetic regression ca
 - All six accounts signed in and signed out. The admin opened settings, recorded a fictional fee and payment, and verified the commission effect. The first partner submitted a fictional referral and opened the commission statement; the second partner could not see that referral. The owner report showed only the owner's clients. The Super User saw agency reports without admin editing controls; the principal saw the reports and admin controls.
 - The same application revision was redeployed successfully (initial deployment `2374d230-99ab-43a1-b52f-b018418fc77c`; redeployment `cf6b1515-c4e0-48e3-ad80-85b4f963521c`). The fictional referral remained present for the first partner and absent from the second partner after redeployment, verifying persistence and isolation.
 - The hosted instance contains synthetic demonstration data only. Do not store the private login CSV in the public repository.
+
+
+Stitch review: 100 browser checks across ten screen contexts. Monthly earnings now includes a client and period selector, collected fee composition and a recipient breakdown. See STITCH-100-PLAN.md, STITCH-100-RESULTS.jsonl and STITCH-HANDOFF.md. The checks verify selected layout, content and workflow properties. Full visual parity is outstanding.
