@@ -1,3 +1,4 @@
+import {avatarPng} from './avatar.js';
 import {available,exportData} from './analysis-tools.js';
 import {reportPanel,readReport,reportCsv} from './report-engine.js';
 import {previewPage,hasPreview,batchRetryPage} from './preview.js';
@@ -18,6 +19,8 @@ const css=readFileSync(new URL('./style.css',import.meta.url));
 const directory=process.env.DATA_DIR||'./local-data';mkdirSync(directory,{recursive:true});
 const db=new DatabaseSync(resolve(directory,'agentcrm.sqlite'));
 db.exec('PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS records(id INTEGER PRIMARY KEY, version INTEGER, data TEXT); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, person TEXT, csrf TEXT, expires INTEGER); CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY, person TEXT, event TEXT, at TEXT)');
+db.exec('CREATE TABLE IF NOT EXISTS avatars(person TEXT PRIMARY KEY, image BLOB NOT NULL)');
+const avatarScript=readFileSync(new URL('./avatar-client.js',import.meta.url));
 const digest=v=>createHash('sha256').update(v).digest('hex');
 const nonce=()=>randomBytes(32).toString('hex');
 if(!db.prepare('SELECT id FROM records WHERE id=1').get())db.prepare('INSERT INTO records VALUES(1,1,?)').run(JSON.stringify(seed(accounts.map(({id,name,email,roles})=>({id,name,email,roles})))));
@@ -25,10 +28,17 @@ prepareAccounts(db);
 const failures=new Map(), secure=process.env.NODE_ENV==='production';
 const cookie=v=>'crm='+v+'; HttpOnly; SameSite=Lax; Path=/'+(secure?'; Secure':'');
 const bounce=(res,location)=>{res.writeHead(303,{Location:location});res.end()};
-const reply=(res,status,body,type='text/html; charset=utf-8')=>{res.writeHead(status,{'Content-Type':type});res.end(body)};
-const routes=['/reports','/','/sales','/clients','/earnings','/commissions','/owners','/people','/settings'];
+const reply=(res,status,body,type='text/html; charset=utf-8')=>{
+ if(res.accountCsrf && type.startsWith('text/html') && typeof body==='string' && !body.includes('action="/logout"') && (body.startsWith('<!') || res.browserPage)){
+   const tools='<div class="session-bar"><a href="/profile">My profile</a><form method="post" action="/logout"><input type="hidden" name="csrf" value="'+esc(res.accountCsrf)+'"><button>Sign out</button></form></div>';
+   if(!body.startsWith('<!'))body='<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="/style.css" rel="stylesheet"><main><h1>'+esc(body)+'</h1><a href="/">Overview</a></main></html>';
+   body=body.replace(/<main\b/,tools+'<main');
+ }
+ res.writeHead(status,{'Content-Type':type});res.end(body)};
+const routes=['/profile','/reports','/','/sales','/clients','/earnings','/commissions','/owners','/people','/settings'];
 http.createServer(async(req,res)=>{
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Content-Security-Policy',"default-src 'self'; style-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+ res.browserPage=(req.headers.accept||'').includes('text/html');
  const url=new URL(req.url,'http://localhost'),path=url.pathname;
  try{
  if(path==='/health'){
@@ -36,8 +46,26 @@ http.createServer(async(req,res)=>{
    return reply(res,200,JSON.stringify({status:'ok',database:!!db.prepare('SELECT id FROM records WHERE id=1').get()}),'application/json');
  }
  if(path==='/style.css')return reply(res,200,css,'text/css');
+ if(path==='/inter.font'||path==='/symbols.font')return reply(res,200,readFileSync(new URL('.'+path,import.meta.url)),'application/octet-stream');
+ if(path==='/avatar-client.js')return reply(res,200,avatarScript,'text/javascript');
  const token=(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('crm='))?.slice(4)||'';
  const session=db.prepare('SELECT * FROM sessions WHERE token=? AND expires>?').get(digest(token),Date.now());
+ if(session)res.accountCsrf=session.csrf;
+ if(path==='/profile/photo'){
+   if(!session)return reply(res,401,'Sign in required','text/plain');
+   if(req.method==='GET'){
+     const row=db.prepare('SELECT image FROM avatars WHERE person=?').get(session.person);
+     return row?reply(res,200,Buffer.from(row.image),'image/png'):reply(res,404,'Photo unavailable','text/plain');
+   }
+   if(req.method!=='POST')return reply(res,405,'Method unavailable','text/plain');
+   if(req.headers['x-csrf-token']!==session.csrf)return reply(res,403,'Form token mismatch','text/plain');
+   if(req.headers['content-type']!=='image/png')return reply(res,415,'PNG required','text/plain');
+   const chunks=[];let size=0;
+   for await(const chunk of req){size+=chunk.length;if(size>320*1024)return reply(res,413,'Photo too large','text/plain');chunks.push(chunk)}
+   let image;try{image=avatarPng(Buffer.concat(chunks))}catch{return reply(res,400,'Invalid image','text/plain')}
+   db.prepare('INSERT INTO avatars(person,image) VALUES(?,?) ON CONFLICT(person) DO UPDATE SET image=excluded.image').run(session.person,image);
+   return reply(res,204,'','text/plain');
+ }
  let f={};if(req.method==='POST'){const chunks=[];let len=0;for await(const b of req){len+=b.length;if(len>32768)return reply(res,413,'Request too large');chunks.push(b)}
  if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host)return reply(res,403,'Origin mismatch');f=Object.fromEntries(new URLSearchParams(Buffer.concat(chunks).toString()))}
  if(path==='/login'){if(req.method==='GET')return reply(res,200,login());if(req.method!=='POST')return reply(res,405,'Method not allowed');
@@ -50,6 +78,7 @@ http.createServer(async(req,res)=>{
  const admin=u.roles.includes('admin'),global=admin||u.roles.includes('super');
  if(req.method==='POST'){if(f.csrf!==session.csrf)return reply(res,403,'Form token mismatch');
  if(path==='/logout'){db.prepare('DELETE FROM sessions WHERE token=?').run(session.token);res.setHeader('Set-Cookie',cookie('')+'; Max-Age=0');return bounce(res,'/login')}
+ if(path==='/profile/remove'){db.prepare('DELETE FROM avatars WHERE person=?').run(session.person);return bounce(res,'/profile?saved=1')}
  if(path!=='/save')return reply(res,404,'Unknown action');
  if(Number(f.version)!==record.version)return reply(res,409,'Another entry was saved. Reload the previous page before submitting.');
  if(f.action==='saveView')saveView(state,u,f);
@@ -97,6 +126,6 @@ http.createServer(async(req,res)=>{
  const client=url.searchParams.get('client');
  if(path==='/clients'&&client!==null&&!visibleClients(state,u).some(record=>record.id===client))return reply(res,404,'Client unavailable');
  if(path==='/earnings'&&url.searchParams.has('invoice')&&!state.fees.some(fee=>fee.id===url.searchParams.get('invoice')))return reply(res,404,'Invoice unavailable');
- return reply(res,200,page(state,u,path,{csrf:session.csrf,version:record.version,saved:url.searchParams.has('saved'),client,query:url.searchParams,audit:admin&&path==='/settings'?db.prepare('SELECT person,event,at FROM audit ORDER BY id DESC LIMIT 100').all():[]}));
+ return reply(res,200,page(state,u,path,{csrf:session.csrf,photo:!!db.prepare('SELECT 1 FROM avatars WHERE person=?').get(u.id),version:record.version,saved:url.searchParams.has('saved'),client,query:url.searchParams,audit:admin&&path==='/settings'?db.prepare('SELECT person,event,at FROM audit ORDER BY id DESC LIMIT 100').all():[]}));
  }catch(e){reply(res,400,'<!doctype html><html lang="en"><title>Entry needs attention</title><link rel="stylesheet" href="/style.css"><main><h1>Entry needs attention</h1><p>'+esc(e.message)+'</p><p>Use your browser’s Back button to revise this entry.</p><a href="/">Overview</a></main></html>')}
 }).listen(Number(process.env.PORT||3000),'0.0.0.0');

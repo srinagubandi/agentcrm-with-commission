@@ -10,7 +10,7 @@ import net from 'node:net';
 import {skepticChecks} from './skeptic-checks.js';
 import {recoveryCopy} from './recovery-copy.js';
 test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
- const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','payout-allocations.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
+ const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','avatar.js','avatar-client.js','model.js','payout-balance.js','payout-allocations.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
  for(const p of people){keys[p.id]=randomBytes(20).toString('hex');p.hash=scryptSync(keys[p.id],p.salt,64).toString('hex')}
@@ -24,6 +24,18 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  async function fields(who,path){const html=await(await visit(who,path)).text();return {csrf:html.match(/name="csrf" value="([^"]+)/)[1],version:html.match(/name="version" value="([^"]+)/)?.[1]}}
  const save=(who,f)=>fetch(url+'/save',{method:'POST',headers:{cookie:cookies[who]},body:new URLSearchParams(f),redirect:'manual'});
  for(const [who,path,code] of [['partner','/people',403],['partner2','/earnings',403],['owner','/people',403],['owner','/owners',200],['super','/owners',200],['admin','/settings',200],['principal','/people',200]])assert.equal((await visit(who,path)).status,code);
+ const photo=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC','base64');
+ const profile=await fields('partner','/profile');
+ const upload=(csrf,body)=>fetch(url+'/profile/photo',{method:'POST',headers:{cookie:cookies.partner,'x-csrf-token':csrf,'Content-Type':'image/png'},body});
+ assert.equal((await upload('wrong',photo)).status,403);
+ assert.equal((await upload(profile.csrf,Buffer.from('broken'))).status,400);
+ assert.equal((await upload(profile.csrf,photo)).status,204);
+ assert.equal((await visit('partner','/profile/photo')).headers.get('content-type'),'image/png');
+ assert.equal((await visit('owner','/profile/photo')).status,404);
+ assert.match(await(await visit('partner','/profile')).text(),/Remove photo/);
+ const removed=await fetch(url+'/profile/remove',{method:'POST',headers:{cookie:cookies.partner},body:new URLSearchParams({csrf:profile.csrf}),redirect:'manual'});
+ assert.equal(removed.status,303);assert.equal((await visit('partner','/profile/photo')).status,404);
+ for(const account of people)assert.match(await(await visit(account.id,'/profile')).text(),/action="\/logout"/);
  const reports=await visit('admin','/reports');assert.equal(reports.status,200);assert.match(await reports.text(),/Client fee register/);
  const ownExport=await visit('partner','/reports.csv?report=earnings');assert.equal(ownExport.status,200);assert.ok(!(await ownExport.text()).includes('Jules Lane'));
  assert.equal((await visit('partner','/reports.csv?report=reserves')).status,403);
