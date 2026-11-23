@@ -1,0 +1,100 @@
+{"loop":1,"screen":"Monthly earnings","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":2,"screen":"Monthly earnings","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":3,"screen":"Monthly earnings","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":4,"screen":"Monthly earnings","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"First check found a transparent fallback behind the gradient. Added white and measured rgb(255, 255, 255)."}
+{"loop":5,"screen":"Monthly earnings","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":6,"screen":"Monthly earnings","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":7,"screen":"Monthly earnings","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":8,"screen":"Monthly earnings","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":9,"screen":"Monthly earnings","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":10,"screen":"Monthly earnings","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":11,"screen":"Commission review","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":12,"screen":"Commission review","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":13,"screen":"Commission review","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":14,"screen":"Commission review","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":15,"screen":"Commission review","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":16,"screen":"Commission review","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":17,"screen":"Commission review","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":18,"screen":"Commission review","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":19,"screen":"Commission review","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":20,"screen":"Commission review","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":21,"screen":"Owner distributions","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":22,"screen":"Owner distributions","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":23,"screen":"Owner distributions","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":24,"screen":"Owner distributions","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":25,"screen":"Owner distributions","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":26,"screen":"Owner distributions","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":27,"screen":"Owner distributions","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":28,"screen":"Owner distributions","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":29,"screen":"Owner distributions","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":30,"screen":"Owner distributions","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":31,"screen":"Client detail","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":32,"screen":"Client detail","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":33,"screen":"Client detail","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":34,"screen":"Client detail","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":35,"screen":"Client detail","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":36,"screen":"Client detail","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":37,"screen":"Client detail","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":38,"screen":"Client detail","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":39,"screen":"Client detail","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":40,"screen":"Client detail","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":41,"screen":"Pipeline","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":42,"screen":"Pipeline","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":43,"screen":"Pipeline","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":44,"screen":"Pipeline","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":45,"screen":"Pipeline","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":46,"screen":"Pipeline","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":47,"screen":"Pipeline","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":48,"screen":"Pipeline","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":49,"screen":"Pipeline","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":50,"screen":"Pipeline","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":51,"screen":"Agency overview","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":52,"screen":"Agency overview","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":53,"screen":"Agency overview","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":54,"screen":"Agency overview","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":55,"screen":"Agency overview","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":56,"screen":"Agency overview","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":57,"screen":"Agency overview","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":58,"screen":"Agency overview","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":59,"screen":"Agency overview","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":60,"screen":"Agency overview","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":61,"screen":"User management","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":62,"screen":"User management","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":63,"screen":"User management","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":64,"screen":"User management","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":65,"screen":"User management","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":66,"screen":"User management","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":67,"screen":"User management","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":68,"screen":"User management","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":69,"screen":"User management","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":70,"screen":"User management","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":71,"screen":"Partner portal","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":72,"screen":"Partner portal","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":73,"screen":"Partner portal","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":74,"screen":"Partner portal","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":75,"screen":"Partner portal","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":76,"screen":"Partner portal","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":77,"screen":"Partner portal","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":78,"screen":"Partner portal","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":79,"screen":"Partner portal","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":80,"screen":"Partner portal","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":81,"screen":"Owner portal","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":82,"screen":"Owner portal","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":83,"screen":"Owner portal","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":84,"screen":"Owner portal","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":85,"screen":"Owner portal","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":86,"screen":"Owner portal","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Initial fixed-width comparison encountered fractional scaling. Measured document and available layout viewport at 391px each."}
+{"loop":87,"screen":"Owner portal","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":88,"screen":"Owner portal","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":89,"screen":"Owner portal","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Initial visible-text comparison missed the uppercase header. Retested the accessible My share column and verified Harbor House was absent."}
+{"loop":90,"screen":"Owner portal","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":91,"screen":"Fee agreements","width":1440,"check":"Desktop composition","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":92,"screen":"Fee agreements","width":1440,"check":"Navigation","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":93,"screen":"Fee agreements","width":1440,"check":"Surface and type","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":94,"screen":"Fee agreements","width":1280,"check":"Ledger or card surface","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":95,"screen":"Fee agreements","width":820,"check":"Tablet","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":96,"screen":"Fee agreements","width":390,"check":"Phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":97,"screen":"Fee agreements","width":320,"check":"Small phone","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":98,"screen":"Fee agreements","width":1024,"check":"Keyboard access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
+{"loop":99,"screen":"Fee agreements","width":1280,"check":"Data and access","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Initial text comparison missed uppercase styling. Retested the accessible Monthly retainer label."}
+{"loop":100,"screen":"Fee agreements","width":390,"check":"Forms and actions","status":"passed","environment":"local signed-in Chromium, synthetic accounts","finding":"Passed on first browser check"}
