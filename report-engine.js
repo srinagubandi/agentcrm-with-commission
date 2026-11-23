@@ -75,13 +75,13 @@ export function reportPanel(state,user,query,print=false) {
   const {definition,rows}=result;
   const opts=(pairs,active)=>pairs.map(([v,l])=>'<option value="'+html(v)+'"'+(v===active?' selected':'')+'>'+html(l)+'</option>').join('');
   const caps=definition.capabilities;
-  let form='<form method="get" action="/reports"><label>Report<select name="report">'+opts(choices.map(d=>[d.id,d.title]),id)+'</select></label>';
+  let form='<form class="report-filters" method="get" action="/reports"><label>Report<select name="report">'+opts(choices.map(d=>[d.id,d.title]),id)+'</select></label>';
   if(caps.includes('search')) form+='<label>Search visible records<input name="q" value="'+html(query.get('q'))+'"></label>';
   if(caps.includes('month')) form+='<label>'+html(definition.columns[0])+' month<input type="month" name="month" value="'+html(query.get('month'))+'"></label>';
   if(caps.includes('sort')) form+='<label>Sort by<select name="sort">'+opts([['','Default order'],...definition.columns.map(c=>[c,c])],query.get('sort'))+'</select></label><label>Order<select name="direction">'+opts([['asc','Ascending'],['desc','Descending']],query.get('direction'))+'</select></label>';
   form+=analysisControls(definition,query,result.analysis)+'<button>Apply</button></form>';
   const download=new URLSearchParams(query); download.set('report',id);
-  let output='<section><h2>'+html(definition.title)+'</h2>'+(print?'':form)+'<p>'+rows.length+' matching records</p>';
+  let output='<section class="report-studio"><h2>'+html(definition.title)+'</h2>'+(print?'':form)+'<p>'+rows.length+' matching records</p>';
   if(!print&&caps.includes('csv')) output+='<p><a href="/reports.csv?'+html(download.toString())+'">Download filtered CSV</a></p>';
   let comparison=null;
   if(available(definition,'compare')&&/^\d{4}-(0[1-9]|1[0-2])$/.test(query.get('baseline')||'')){

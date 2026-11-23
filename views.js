@@ -12,12 +12,15 @@ const options=(key,label,list)=>'<label>'+label+'<select name="'+key+'">'+list.m
 const multi=(key,label,example)=>'<label>'+label+'<textarea name="'+key+'" placeholder="'+esc(example)+'"></textarea></label>';
 const panel=(title,body)=>'<section><h2>'+title+'</h2>'+body+'</section>';
 const doc=(title,body)=>'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' · AgentCRM</title><link rel="stylesheet" href="/style.css"></head><body>'+body+'</body></html>';
-export const login=(error='')=>doc('Sign in','<main class="login"><div class="brand">AgentCRM</div><h1>Sign in</h1><p>Agency and partner workspace · Synthetic demo</p>'+(error?'<p role="alert">'+esc(error)+'</p>':'')+'<form method="post" action="/login">'+input('email','Email address','email')+input('password','Password','password')+'<button>Sign in</button></form></main>');
+export function login(error='',expired=false){
+ const notice=expired?'<section class="vault-notice"><strong>Session suspended</strong><p>Your session has expired. Sign in again to open your workspace.</p></section>':'';
+ return doc('Sign in','<main class="login vault"><div class="vault-head"><span class="vault-mark nav-icon" aria-hidden="true">account_balance</span><h1>AgentCRM</h1><p>Agency and partner workspace</p></div>'+notice+(error?'<p class="vault-error" role="alert">'+esc(error)+'</p>':'')+'<form method="post" action="/login"><label>Authorized work email<input name="email" type="email" autocomplete="username" required></label><label>Password<input id="vault-password" name="password" type="password" autocomplete="current-password" required></label><label class="visibility"><input type="checkbox" id="show-password">Show password</label><button>Sign in</button></form><script defer src="/workspace-ui.js"></script></main>');
+}
 export function page(s,u,path,ctx){
  const admin=u.roles.includes('admin'),global=admin||u.roles.includes('super'),partner=u.roles.includes('partner'),owner=u.roles.includes('owner');
  const names=Object.fromEntries(s.people.map(p=>[p.id,p.name])),clientName=id=>s.clients.find(c=>c.id===id)?.name||id;
  const menu=[['/','Overview'],['/reports','Reports'],...(global||partner?[['/sales','Sales pipeline'],['/clients','Clients']]:[]),...(global?[['/earnings','Monthly earnings']]:[]),...(global||partner?[['/commissions','Commissions']]:[]),...(global||owner?[['/owners','Owner shares']]:[]),...(global?[['/people','People'],['/settings','Settings']]:[])];
- const title=menu.find(m=>m[0]===path)?.[1]||(path==='/profile'?'My profile':'Overview');
+ const title=({'/settings':'Agency Settings & Payout Schedule Configuration','/reports':'Reports Workspace & Financial Ledger Export','/earnings':'Earnings Reconciliation'})[path]||menu.find(m=>m[0]===path)?.[1]||(path==='/profile'?'My profile':'Overview');
  const form=(a,label,body)=>'<details><summary>'+label+'</summary><form method="post" action="/save"><input type="hidden" name="csrf" value="'+ctx.csrf+'"><input type="hidden" name="version" value="'+ctx.version+'"><input type="hidden" name="action" value="'+a+'"><input type="hidden" name="return" value="'+path+'">'+body+(['fee','receipt','refund','expense','payout','terms','adjustment','closeMonth','batchPayout','approveReceipt','reversePayout'].includes(a)?'<button name="preview" value="yes">Review entry</button>':'<button>'+label+'</button>')+'</form></details>';
   const preferenceForm=()=>form('preference','Request payout preference change',input('preference','Payment method and masked identifier (last four only)')+
    '<p>Approved: '+esc(u.preference||'None')+' · Pending: '+esc(u.pending||'None')+'</p>');
@@ -55,12 +58,14 @@ export function page(s,u,path,ctx){
    const q=new URLSearchParams(ctx.query||'');
    if(!q.has('report'))q.set('report',visibleReports(u)[0]?.id||'');
    const available=myViews(s,u);
+   const reportStats=global?metrics([['Gross client sales',money(sum(s.fees,'sales'))],['Agency billed fees',money(s.fees.reduce((total,f)=>total+f.fixed+f.perf,0))],['Partner commissions',money(sum(entries,'amount'))],['Net agency collections',money(sum(receipts,'amount')-sum(entries,'amount'))]]):metrics([['Visible clients',clients.length],['Available reports',visibleReports(u).length],['Saved views',available.length]]);
+   body='<section class="scope-note"><strong>'+esc(global?'Agency-wide reporting':partner?'Partner reporting':'Owner reporting')+'</strong><p>'+esc(global?'Reports include your agency’s client and partner ledgers.':'Reports show records available to your account.')+'</p><small>Workspace totals across all periods</small></section>'+reportStats+body;
    if(available.length)body+=panel('My saved views','<ul>'+available.map(v=>'<li><a href="/reports?'+esc(v.query)+'">'+esc(v.name)+'</a></li>').join('')+'</ul>')+form('removeView','Remove saved view',options('view','View',available.map(v=>[v.id,v.name])));
    body+=form('saveView','Save current report view',input('title','View name')+'<input type="hidden" name="selection" value="'+esc(q.toString())+'">');
  }
  if(path==='/'){
  const myOwner=owners(s).flatMap(m=>m.shares).filter(p=>global||p.id===u.id);
- body=global?metrics([['Collected fees',money(sum(receipts,'amount'))],['Referral commissions',money(sum(entries,'amount'))],['Owner shares',money(sum(myOwner,'amount'))]]):metrics([...(partner?[['My commissions',money(sum(entries,'amount'))],['Referral payouts',money(sum(payouts.filter(p=>p.kind==='partner'),'amount'))]]:[]),...(owner?[['My owner shares',money(sum(myOwner,'amount'))]]:[])]);
+ body=global?metrics([['Gross client sales',money(sum(s.fees,'sales'))],['Invoiced fees',money(s.fees.reduce((total,f)=>total+f.fixed+f.perf,0))],['Collected fees',money(sum(receipts,'amount'))],['Referral commissions',money(sum(entries,'amount'))],['Owner shares',money(sum(myOwner,'amount'))]]):metrics([...(partner?[['My commissions',money(sum(entries,'amount'))],['Referral payouts',money(sum(payouts.filter(p=>p.kind==='partner'),'amount'))]]:[]),...(owner?[['My owner shares',money(sum(myOwner,'amount'))]]:[])]);
  const due = deals.filter(d=>d.follow && d.follow<=today() && !['Won','Lost'].includes(d.stage))
    .sort((a,b)=>a.follow.localeCompare(b.follow));
  const attention = due.length ? '<ul class="attention">'+due.map(d=>'<li><strong>'+esc(d.name)+'</strong><span>'+esc(d.stage)+'</span><time>'+esc(d.follow)+'</time></li>').join('')+'</ul>' : '<p class="empty">No open referrals are due for follow-up.</p>';
@@ -69,6 +74,7 @@ export function page(s,u,path,ctx){
    const ledger = global ? panel('Reconciliation ledger',table(['Client','Payment reference','Date','Collected'],receipts.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(r=>[esc(clientName(r.cid)),esc(r.ref),esc(r.date),money(r.amount)]))+'<a href="/earnings">View monthly earnings</a>') : panel('My disbursement ledger',payoutTable(payouts));
    body+='<div class="overview-columns">'+queue+ledger+'</div>'+panel('Sales follow-up',dealTable);
  }
+ if(partner&&!global)body='<section class="portal-heading"><small>Partner portal</small><h2>Welcome back, '+esc(u.name)+'</h2><a href="/commissions">My commission statement</a></section>'+body;
  if(global||!partner) body+=panel('Recent payouts',payoutTable(payouts));
  }
  if(path==='/sales'){
@@ -92,7 +98,9 @@ export function page(s,u,path,ctx){
  }
  if(path==='/clients'){
  body=panel('Client directory',clientsTable);
- const c=clients.find(x=>x.id===ctx.client)||clients[0];if(c){const t=c.history.filter(h=>h.from<=today()).at(-1);body+=panel(esc(c.name),t?table(global?['Partner','Fixed fee share','Performance fee share','Start','End']:['Partner','Start','End'],t.partners.filter(p=>global||p.id===u.id).map(p=>[esc(names[p.id]),...(global?[p.rate/100+'%',p.performance/100+'%']:[]),esc(p.start||t.from),esc(p.end||'Ongoing')])):'<p>Set up this client’s first agreement.</p>');if(t&&global)body+=panel('Current fee agreement',metrics([['Monthly retainer',money(t.retainer)],['Split method',t.pool===null?'Individual':t.pool/100+'% pool'],['Tier method',esc(t.mode)]])+table(['Qualifying sales ceiling','Performance rate'],t.tiers.map(tier=>[tier.to===null?'Open-ended':money(tier.to),tier.rate/100+'%'])));}
+ const c=clients.find(x=>x.id===ctx.client)||clients[0];if(c){const t=c.history.filter(h=>h.from<=today()).at(-1);body+=panel(esc(c.name),t?table(global?['Partner','Fixed fee share','Performance fee share','Start','End']:['Partner','Start','End'],t.partners.filter(p=>global||p.id===u.id).map(p=>[esc(names[p.id]),...(global?[p.rate/100+'%',p.performance/100+'%']:[]),esc(p.start||t.from),esc(p.end||'Ongoing')])):'<p>Set up this client’s first agreement.</p>');const clientHead='<section class="entity-head"><div class="entity-mark nav-icon" aria-hidden="true">domain</div><div><small>Client workspace</small><h2>'+esc(c.name)+'</h2></div>'+(global?'<a href="/earnings?client='+encodeURIComponent(c.id)+'">Monthly earnings</a>':'')+'</section>';
+ body=clientHead+body;
+ if(t&&global)body+=panel('Current fee agreement',metrics([['Monthly retainer',money(t.retainer)],['Split method',t.pool===null?'Individual':t.pool/100+'% pool'],['Tier method',esc(t.mode)]])+table(['Qualifying sales ceiling','Performance rate'],t.tiers.map(tier=>[tier.to===null?'Open-ended':money(tier.to),tier.rate/100+'%'])));}
  if(admin)body+=form('terms','Add agreement version',pickClient()+input('date','Effective date','date',today())+input('retainer','Monthly retainer ($)','number',0)+options('mode','Performance fee tiers',[['marginal','Marginal tiers'],['whole','Whole month']])+multi('tiers','Tier rows · upper sales limit, rate (%)','50000,5\n*,7')+options('eligible','Commissionable fees',[['both','All fees'],['fixed','Fixed fees only'],['performance','Performance fees only']])+options('split','Partner split method',[['individual','Individual rates'],['pool','Shared pool']])+input('pool','Pool percentage','number',0)+multi('partners','Partner rows · ID, fixed %, performance %, start date, end date','partner,10,15')+multi('owners','Owner rows · ID, percentage','owner,50\nsuper,30')+'<p>Participant IDs: '+s.people.map(p=>esc(p.name)+' ('+esc(p.id)+')').join(' · ')+'</p>');
  }
  if(path==='/earnings'){
@@ -113,8 +121,8 @@ export function page(s,u,path,ctx){
  for(const r of rows)for(const share of r.shares)partnerTotals.set(share.id,(partnerTotals.get(share.id)||0)+share.amount);
  const cash=sum(rows,'amount'),partnerTotal=[...partnerTotals.values()].reduce((a,b)=>a+b,0);
  const monthPicker='<form class="scope-picker" action="/earnings"><label>Client<select name="client">'+clients.map(c=>'<option value="'+esc(c.id)+'" '+(c.id===selected?.id?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+input('period','Period','month',period)+'<button>Apply</button></form>';
- const feeCards=['Performance fee','Fixed monthly retainer'].map((label,index)=>{
-   const value=rows.reduce((total,r)=>total+(r.parts?.[index===0?1:0]||0),0);
+ const feeCards=['Fixed monthly retainer','Performance fee'].map((label,index)=>{
+   const value=rows.reduce((total,r)=>total+(r.parts?.[index]||0),0);
    return '<article class="fee-card"><small>Agency collected fee</small><h3>'+label+'</h3><strong>'+money(value)+'</strong></article>';
  }).join('');
  const breakdown=[...partnerTotals].map(([id,amount])=>'<li><span class="monogram" aria-hidden="true">'+esc((names[id]||id).split(/\s+/).map(w=>w[0]).slice(0,2).join(''))+'</span><span>'+esc(names[id]||id)+'</span><strong>'+money(amount)+'</strong></li>').join('');
@@ -124,7 +132,7 @@ export function page(s,u,path,ctx){
  const proof=panel('Reconciliation Proof',table(['Period component','Amount'],[['Collections before refunds',money(sum(rows.filter(r=>r.amount>0),'amount'))],['Refunds',money(sum(rows.filter(r=>r.amount<0),'amount'))],['Partner commissions',money(partnerTotal)],['Net cleared agency cash',money(cash-partnerTotal)]]));
  const scope='<section class="settlement"><div><small>Settlement cycle</small><h2>'+esc(selected?.name||'No client selected')+'</h2></div>'+monthPicker+'</section>';
  const rate=cash>0?((cash-partnerTotal)/cash*100).toFixed(1)+'%':'—';
- const retention='<div class="retention"><span>Agency retention rate</span><strong>'+rate+'</strong></div>';
+ const retention='<div class="retention"><span>Agency retention rate</span><strong>'+rate+'</strong>'+(cash>0?'<progress aria-label="Agency retention share" max="100" value="'+Math.min(100,Math.max(0,(cash-partnerTotal)/cash*100))+'"></progress>':'')+'</div>';
  const left='<div><section><h2><span class="desktop-label">Fee Composition &amp; Stream</span><span class="mobile-label">Fee Inflows</span></h2>'+feeCards+'</section>'+history+receiptEntry+'</div>';
  const right='<div><section class="distribution"><h2><span class="desktop-label">Partner Distribution Inspector</span><span class="mobile-label">Partner Commission Split</span></h2><small>Earned this period</small><strong class="pool-total">'+money(partnerTotal)+'</strong><ul>'+breakdown+'</ul>'+(!breakdown?'<p>No commission entries this period.</p>':'')+'</section>'+proof+'</div>';
  body=scope+retention+kpis+'<div class="fee-grid">'+left+right+'</div>'+body;
@@ -194,7 +202,7 @@ export function page(s,u,path,ctx){
  body+=panel('Owner payout history',payoutTable(ownerPayouts));
  if(admin)body+=reverseForm('owner');
  if(global)body+=panel('Expense allocations',table(['Bill','Date','Total','Client allocations'],s.expenses.map(e=>[esc(e.name),e.date,money(e.amount),e.lines.map(l=>esc(clientName(l.cid))+' '+money(l.amount)).join('<br>')])));
- if(admin)body+=form('expense','Record expense',input('name','Vendor or expense')+dateInput()+input('amount','Bill total ($)','number')+options('allocation','Allocation method',[['custom','Exact dollar amounts'],['equal','Equal split'],['sales','Qualifying sales for bill month']])+multi('lines','One allocation per line · client ID, dollars','alder,200\nharbor,100')+'<p>For equal and sales-weighted splits, enter only a client ID on each line.</p><p>'+expenseKey+'</p>');}
+ if(admin)body+=form('expense','Record expense',input('name','Vendor or expense')+dateInput()+input('amount','Bill total ($)','number')+options('allocation','Allocation method',[['custom','Exact dollar amounts'],['equal','Equal split'],['sales','Qualifying sales for bill month']])+multi('lines','One allocation per line · client ID, dollars','alder,200\nharbor,100')+'<template class="allocation-clients"><select>'+clients.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></template>'+'<p>For equal and sales-weighted splits, enter only a client ID on each line.</p><p>'+expenseKey+'</p>');}
    if(path==='/commissions'&&admin){
    const drafts=s.receipts.filter(r=>r.approval==='draft');
    if(drafts.length)body+=form('approveReceipt','Approve receipt commissions',
@@ -239,7 +247,11 @@ export function page(s,u,path,ctx){
    pickClient()+input('month','Close through month','month')+'<p>Earlier ledger entries and agreement dates become read-only for this client.</p>');
  if(path==='/people'){body=panel('User directory',table(['Person','Login','Roles','Approved payment preference','Requested change'],s.people.map(p=>['<span class="person-cell"><span class="monogram" aria-hidden="true">'+esc(p.name.split(/\s+/).map(w=>w[0]).slice(0,2).join(''))+'</span>'+esc(p.name)+'</span>',esc(p.email),p.roles.map(x=>'<span class="status-badge">'+esc(x==='super'?'Super User':x)+'</span>').join(' '),admin?esc(p.preference||'—'):'Restricted',admin?esc(p.pending||'—'):'Restricted'])));if(admin)body+=form('super','Update Super User designation',personSelect('person',null,'Person')+options('enabled','Agency-wide financial reporting',[['yes','Grant Super User'],['no','Remove Super User']]))+form('approvePreference','Approve payout preference',options('person','Recipient',s.people.filter(p=>p.pending).map(p=>[p.id,p.name])));}
  if(path==='/people'&&admin)body+=form('person','Add user',input('displayName','Full name')+input('email','Login email','email')+input('password','Initial password (14 or more characters)','password')+['partner','owner','admin','super'].map(role=>'<label><input type="checkbox" name="role_'+role+'" value="yes">'+esc(role==='super'?'Super User':role)+'</label>').join(''));
- if(path==='/settings'){body=panel('Monthly payout schedule','<p>Prior-month referral commissions are due on day <strong>'+s.day+'</strong> of the following month. Short months use their last calendar day.</p>');if(admin)body+=form('settings','Set payout day',input('day','Day of month (1–31)','number',s.day));}
+ if(path==='/settings'){
+   const schedule=panel('Monthly payout schedule','<p>Prior-month referral commissions are due on day <strong>'+esc(s.day)+'</strong> of the following month. Short months use their last calendar day.</p>');
+   const dayForm=admin?form('settings','Set payout day','<label>Monthly payout disbursement day<input type="number" name="day" min="1" max="31" step="1" value="'+esc(s.day)+'" required></label>').replace('<details>','<details open>'):'';
+   body='<div class="schedule-grid"><section><h2>Payout Schedule Engine</h2>'+schedule+dayForm+'</section><section class="signatory"><h2>Signatory Profile &amp; Identity</h2>'+avatar+'<h3>'+esc(u.name)+'</h3><p>'+esc(u.roles.join(' / '))+'</p><a href="/profile">Manage profile photo</a></section></div>'+panel('Role &amp; Authorization Policy',admin?'Agency administrators can update the payout schedule.':'Your account can view the payout schedule.');
+ }
  if(path==='/settings'&&admin)body+=panel('Recent changes',table(['When (UTC)','Person','Action'],(ctx.audit||[]).map(a=>[esc(a.at),esc(names[a.person]),esc(a.event)])));
  if(path==='/clients'&&admin)body+=form('client','Add client',input('name','Company')+input('contact','Primary contact','text','',false));
  if(path==='/clients'&&global){const c=clients.find(x=>x.id===ctx.client)||clients[0];if(c){if(c.referrals)body+=panel('Referral attribution',table(['Opportunity','Referral partners'],Object.entries(c.referrals).map(([id,ids])=>[esc(s.deals.find(d=>d.id===id)?.name||id),ids.map(p=>esc(names[p]||p)).join(', ')])));body+=panel('Client activity',table(['Date','Entered by','Note'],(c.notes||[]).map(n=>[n.date,esc(names[n.by]),esc(n.text)])));if(admin)body+=form('note','Add client note',pickClient()+input('note','Note'))}}

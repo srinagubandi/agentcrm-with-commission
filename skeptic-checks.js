@@ -65,7 +65,8 @@ export async function skepticChecks(test,{visit,fields,save}) {
           assert.equal(body,'Permission denied');
           return;
         }
-        assert.ok(body.includes(`<h1>${title}</h1>`));
+        const heading=({"/reports":"Reports Workspace &amp; Financial Ledger Export","/settings":"Agency Settings &amp; Payout Schedule Configuration","/earnings":"Earnings Reconciliation"})[route]||title;
+        assert.ok(body.includes(`<h1>${heading}</h1>`));
         assert.ok(body.includes('Skip to content'));
         if(route==='/commissions'&&!privileged.has(role)){
           assert.doesNotMatch(body,/\$[\d,.]+ x [\d.]+%/);

@@ -69,12 +69,12 @@ http.createServer(async(req,res)=>{
  }
  let f={};if(req.method==='POST'){const chunks=[];let len=0;for await(const b of req){len+=b.length;if(len>32768)return reply(res,413,'Request too large');chunks.push(b)}
  if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host)return reply(res,403,'Origin mismatch');f=Object.fromEntries(new URLSearchParams(Buffer.concat(chunks).toString()))}
- if(path==='/login'){if(req.method==='GET')return reply(res,200,login());if(req.method!=='POST')return reply(res,405,'Method not allowed');
+ if(path==='/login'){if(req.method==='GET')return reply(res,200,login('',url.searchParams.get('reason')==='expired'));if(req.method!=='POST')return reply(res,405,'Method not allowed');
  const email=String(f.email||'').toLowerCase().trim(),key=digest(email);let bucket=failures.get(key);if(bucket&&bucket.until>Date.now()&&bucket.count>=12)return reply(res,429,login('Try again later.'));
  const a=accounts.find(x=>x.email===email)||db.prepare('SELECT person AS id,salt,hash FROM credentials WHERE email=?').get(email),candidate=scryptSync(f.password||'',(a||accounts[0]).salt,64);
  if(!a||!timingSafeEqual(candidate,Buffer.from(a.hash,'hex'))){if(!bucket||bucket.until<Date.now())bucket={until:Date.now()+600000,count:0};bucket.count++;if(a)failures.set(key,bucket);return reply(res,401,login('Email or password did not match.'))}
  failures.delete(key);const id=nonce();db.prepare('DELETE FROM sessions WHERE expires<=?').run(Date.now());db.prepare('INSERT INTO sessions VALUES(?,?,?,?)').run(digest(id),a.id,nonce(),Date.now()+8*3600000);res.setHeader('Set-Cookie',cookie(id));return bounce(res,'/')}
- if(!session)return bounce(res,'/login');
+ if(!session)return bounce(res,token&&db.prepare('SELECT 1 FROM sessions WHERE token=? AND expires<=?').get(digest(token),Date.now())?'/login?reason=expired':'/login');
  const record=db.prepare('SELECT * FROM records WHERE id=1').get(),state=JSON.parse(record.data),u=state.people.find(p=>p.id===session.person);
  const admin=u.roles.includes('admin'),global=admin||u.roles.includes('super');
  if(req.method==='POST'){if(f.csrf!==session.csrf)return reply(res,403,'Form token mismatch');

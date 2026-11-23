@@ -151,3 +151,10 @@ Stitch review: 100 browser checks across ten screen contexts. Monthly earnings n
 * Added a month-specific financial waterfall for agency viewers, a scoped owner summary, role badges, tier ceilings and effective performance rates. Applied Fiscal Trust field, ledger and status styles to shared screens.
 * Found and corrected narrow-screen overflow in the earnings ledger. Reran 138 browser layout checks across six accounts and every allowed primary destination at 1440, 390 and 320px. Exercised sales stage and view controls, the referral and expense dialogs and page search. Full automated suite passed, 10,875 tests.
 * SCREEN-REVIEW.md records the plan and STITCH-MISSING-SCREENS.md distinguishes missing source frames from remaining implementation and screenshot comparison work.
+
+## 0.5.8 — Stitch export reconciliation
+
+- Adapted the reports workspace, payout schedule and session-expiry sign-in flow to the third Stitch export. Financial summaries use ledger data available to each role. The payout day keeps its existing 1–31 contract.
+- Updated the client identity header, partner welcome, overview totals, earnings fee cards, retention bar, directory, commission and owner cards, sales lanes and vendor split dialog.
+- Added row editors for performance tiers and client allocations. Forms submit to the existing ledger validation and review handlers. JavaScript-free forms preserve raw entry.
+- Reviewed twenty distinct exported PNGs at their raster dimensions. See STITCH-COMPARISON.md for per-frame differences and outstanding design inputs.

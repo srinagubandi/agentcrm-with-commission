@@ -228,3 +228,30 @@ dialog>h2{display:inline-block;margin-right:16px}
 dialog>button{float:right;background:var(--control-track);color:var(--ft-on-surface)}
 dialog form{clear:both}
 @media(max-width:760px){dialog{padding:16px}}
+
+body:has(.vault){min-height:100dvh;display:grid;place-items:center;padding:16px}
+main.login.vault{width:min(512px,100%);max-width:512px;margin:0;padding:32px;background:#fff;border-radius:12px;box-shadow:0 16px 32px -4px #18181b14}
+.vault-head{text-align:center;margin:0 0 24px}.vault-mark{display:inline-grid;place-items:center;width:40px;height:40px;background:#004840;color:white;border-radius:12px}
+.vault-head h1{margin:8px 0 0}.vault-head p,.scope-note p{margin:4px 0;color:#3f4946}
+.vault form{display:grid;gap:16px}.vault form input:not([type=checkbox]){width:100%;background:#f6f2f7;min-height:44px}
+.vault .visibility{display:flex;align-items:center;gap:8px}.vault .visibility input{width:auto}
+.vault-error,.vault-notice{padding:16px;border-radius:12px;background:#ffdad6;color:#93000a}.vault-notice{background:#fff0df;color:#663500}.vault-notice p{margin:4px 0}
+.schedule-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(200px,2fr);gap:16px}.schedule-grid>section{margin:0}.schedule-grid section section{border:0;box-shadow:none;padding:0}.schedule-grid .signatory .avatar{width:84px;height:84px;margin:12px 0;border-radius:12px;font-size:26px}
+.scope-note{border-left:4px solid #0f6157}.report-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px;align-items:end;background:#f6f2f7;padding:16px}.report-filters fieldset{grid-column:1/-1;min-width:0}
+.retention progress{width:100%;grid-column:1/-1;accent-color:#004840;height:9px}.retention:has(progress){display:grid;grid-template-columns:1fr auto}
+@media(max-width:720px){.schedule-grid{grid-template-columns:1fr}.report-filters{grid-template-columns:1fr}main.login.vault{padding:24px}}
+
+.entity-head{display:flex;gap:12px;align-items:center}.entity-head h2,.portal-heading h2{margin:2px 0}.entity-head>a{margin-left:auto}.entity-mark{background:#a8f0e3;color:#004840;border-radius:10px;padding:12px}
+[data-screen=clients] .workspace-columns .inspector section:first-child{border-top:3px solid #004840}
+[data-screen=commissions]>.metrics article:last-child,[data-screen=owners]>.metrics article:nth-child(3){background:#004840}
+[data-screen=commissions]>.metrics article:last-child :is(strong,small),[data-screen=owners]>.metrics article:nth-child(3) :is(strong,small){color:white}
+[data-screen=people] .status-badge{white-space:nowrap}.portal-heading{border-left:4px solid #0f6157}
+@media(min-width:761px){.retention:has(progress){display:none}
+[data-screen=earnings] .fee-grid>div:first-child>section:first-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+[data-screen=earnings] .fee-grid>div:first-child>section:first-child h2{grid-column:1/-1}
+[data-screen=earnings] .fee-card{display:flex;align-items:start;flex-direction:column;gap:8px;margin:0}
+[data-screen=owners] dialog{width:min(920px,90vw)}[data-screen=owners] dialog form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+[data-screen=owners] dialog :is(label:has(textarea),p){grid-column:1/-1}}
+@media(max-width:760px){.board .lane:has(.card){border-left:3px solid #0f6157}.entity-head{flex-wrap:wrap}.entity-head>a{margin-left:0}}
+.line-editor{grid-column:1/-1;border:1px solid #bec9c5;border-radius:8px;padding:16px}.line-editor legend{padding-inline:6px;font-weight:600}.line-entry{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) auto;gap:12px;align-items:end;background:#f6f2f7;border-radius:8px;padding:12px;margin:8px 0}.line-entry button{color:#93000a;background:#ffdad6}.line-entry [hidden],form label[hidden]{display:none}
+@media(max-width:600px){.line-entry{grid-template-columns:minmax(0,1fr)}}

@@ -18,7 +18,7 @@ if(search){
 const main=document.querySelector('main[data-screen]');
 if(main){
   const sections=[...main.children].filter(el=>el.matches('section,details')&&el.querySelector(':scope > h2,:scope > summary'));
-  if(sections.length>=3 && !['sales','overview','earnings'].includes(main.dataset.screen)){
+  if(sections.length>=3 && !['sales','overview','earnings','reports','settings'].includes(main.dataset.screen)){
     const picker=document.createElement('select');
     const label=document.createElement('label');
     label.className='section-picker';
@@ -44,8 +44,8 @@ if(main){
     commissions:{inspector:['Available to pay today','Payout review queue'],actions:['approveReceipt','payout','batchPayout','preference','reversePayout']},
     owners:{inspector:['Owner payout reconciliation','Closed client periods'],actions:['expense','closeMonth','preference','reversePayout']},
     people:{inspector:[],actions:['person','super','approvePreference']},
-    reports:{inspector:['My saved views'],actions:['saveView','removeView']},
-    settings:{inspector:['Monthly payout schedule'],actions:['settings']}
+
+
   };
   const rule=layouts[main.dataset.screen];
   if(rule){
@@ -75,4 +75,58 @@ if(main){
     close.addEventListener('click',()=>dialog.close());
     dialog.addEventListener('close',()=>{disclosure.append(form);launch.focus()});
   }
+}
+
+const passwordToggle=document.querySelector('#show-password');
+if(passwordToggle){
+  passwordToggle.addEventListener('change',()=>{
+    document.querySelector('#vault-password').type=passwordToggle.checked?'text':'password';
+  });
+}
+
+function addRowEditor(form,kind){
+  const tiers=kind==='tiers';
+  const source=form.elements[tiers?'tiers':'lines'];
+  const choices=form.querySelector('.allocation-clients');
+  if(!source||(!tiers&&!choices))return;
+  const group=document.createElement('fieldset'),legend=document.createElement('legend');
+  const rows=document.createElement('div'),add=document.createElement('button');
+  legend.textContent=tiers?'Performance fee tiers':'Client allocations';
+  add.type='button';add.textContent=tiers?'Add tier':'Add client allocation';
+  group.className='line-editor';group.append(legend,rows,add);
+  source.closest('label').before(group);
+  function sync(){
+    source.value=[...rows.children].map(row=>{
+      const [key,value]=row.querySelectorAll('input,select');
+      const custom=tiers||form.elements.allocation.value==='custom';
+      value.disabled=!custom;
+      value.closest('label').hidden=!custom;
+      return (tiers?(key.value||'*'):key.value)+(custom?','+value.value:'');
+    }).join('\n');
+  }
+  function addRow(){
+    const row=document.createElement('div');
+    row.className='line-entry';
+    const key=tiers?document.createElement('input'):choices.content.querySelector('select').cloneNode(true);
+    if(tiers){key.type='number';key.min='0.01';key.step='0.01';key.placeholder='Open-ended'}
+    const value=document.createElement('input');
+    value.type='number';value.min='0';value.step='0.01';value.required=true;
+    if(tiers){value.max='100';value.value='0'}
+    const fields=[[key,tiers?'Upper sales limit ($)':'Client'],[value,tiers?'Commission rate (%)':'Allocated amount ($)']];
+    for(const [control,text] of fields){const label=document.createElement('label');label.append(text,control);row.append(label)}
+    const remove=document.createElement('button');remove.type='button';remove.textContent='Remove';
+    remove.addEventListener('click',()=>{row.remove();sync();add.focus()});
+    row.append(remove);rows.append(row);sync();return key;
+  }
+  if(source.value.trim()){group.remove();return}
+  source.closest('label').hidden=true;
+  if(!tiers){for(const p of form.querySelectorAll('p'))if(p.textContent.startsWith('For equal')||p.textContent.includes(' = '))p.hidden=true}
+  addRow();
+  add.addEventListener('click',()=>addRow().focus());
+  group.addEventListener('input',sync);group.addEventListener('change',sync);
+  form.elements.allocation?.addEventListener('change',sync);
+  form.addEventListener('submit',sync);
+}
+for(const field of document.querySelectorAll('input[name="action"]')){
+  if(field.value==='terms'||field.value==='expense')addRowEditor(field.form,field.value==='terms'?'tiers':'expense');
 }
