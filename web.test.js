@@ -9,7 +9,7 @@ import {once} from 'node:events';
 import net from 'node:net';
 import {skepticChecks} from './skeptic-checks.js';
 test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
- const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
+ const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
  for(const p of people){keys[p.id]=randomBytes(20).toString('hex');p.hash=scryptSync(keys[p.id],p.salt,64).toString('hex')}
@@ -70,6 +70,13 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  const batchPreview=await save('admin',batch);
  assert.equal(batchPreview.status,200);
  assert.match(await batchPreview.text(),/\$3\.00/);
+ const invalidBatch=await save('admin',{...batch,rows:batch.rows+'\npartner,partner,999999,FAIL-BATCH'});
+ assert.equal(invalidBatch.status,400);
+ const correctionForm=await invalidBatch.text();
+ assert.match(correctionForm,/Payout row 3/);
+ assert.match(correctionForm,/WEB-BATCH/);
+ assert.match(correctionForm,/FAIL-BATCH/);
+ assert.doesNotMatch(await(await visit('admin','/commissions')).text(),/WEB-BATCH/);
  delete batch.preview;
  assert.equal((await save('admin',batch)).status,303);
  const closeFields={...await fields('admin','/owners'),action:'closeMonth',client:'alder',month:'2026-10',return:'/owners',preview:'yes'};
@@ -78,6 +85,13 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  assert.match(await closePreview.text(),/Close through/);
  delete closeFields.preview;
  assert.equal((await save('admin',closeFields)).status,303);
+ const closePath='/owners/close.csv?client=alder&month=2026-10';
+ assert.equal((await visit('owner',closePath)).status,403);
+ assert.match(await(await visit('super',closePath)).text(),/Settlement/);
+ assert.equal((await visit('admin','/owners/close.csv?client=harbor&month=2026-10')).status,404);
+ const scoped=await(await visit('admin','/earnings?client=harbor')).text();
+ assert.match(scoped,/<option value="[^"]+">Harbor House[^<]*OCT-harbor/);
+ assert.doesNotMatch(scoped,/<option value="[^"]+">Alder Studio[^<]*OCT-alder/);
  assert.equal((await save('admin',{...await fields('admin','/owners'),action:'expense',name:'Late expense',date:'2026-10-20',amount:'1',lines:'alder,1'})).status,400);
  await stop();await start();assert.match(await(await visit('admin','/settings')).text(),/<strong>17<\/strong>/);assert.match(await(await visit('partner','/commissions')).text(),/Approved: Demo provider reference/);
  assert.match(await(await visit('owner','/owners')).text(),/Approved: ACH ending 1234/);

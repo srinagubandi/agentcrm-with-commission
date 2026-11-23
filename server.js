@@ -1,6 +1,7 @@
 import {available,exportData} from './analysis-tools.js';
 import {reportPanel,readReport,reportCsv} from './report-engine.js';
-import {previewPage,hasPreview} from './preview.js';
+import {previewPage,hasPreview,batchRetryPage} from './preview.js';
+import {closeSummary,closeExport} from './close-summary.js';
 import {prepareAccounts,addPerson} from './administration.js';
 import {saveView,removeView} from './saved-views.js';
 import http from 'node:http';
@@ -58,11 +59,23 @@ http.createServer(async(req,res)=>{
    const partner=u.roles.includes('partner'),owner=u.roles.includes('owner');
    if(!admin&&!((partner&&f.action==='refer')||((partner||owner)&&f.action==='preference')))return reply(res,403,'Permission denied');
    if(f.action==='receipt')f.review='draft';
-   run(state,u,f.action,f);
+   if(f.action==='batchPayout'){
+     try{run(state,u,f.action,f)}
+     catch(error){return reply(res,400,batchRetryPage(f,error.message))}
+   }else run(state,u,f.action,f);
  }
  if(f.preview==='yes'&&hasPreview(f.action))return reply(res,200,previewPage(state,f));
  db.exec('BEGIN IMMEDIATE');try{if(f.action==='person')addPerson(state,db,f,accounts);const updated=db.prepare('UPDATE records SET version=version+1,data=? WHERE id=1 AND version=?').run(JSON.stringify(state),record.version);if(!updated.changes)throw Error('Data changed. Reload and retry.');db.prepare('INSERT INTO audit(person,event,at) VALUES(?,?,?)').run(u.id,f.action,new Date().toISOString());db.exec('COMMIT')}catch(e){db.exec('ROLLBACK');throw e}
- return bounce(res,(routes.includes(f.return)?f.return:'/')+'?saved=1')}
+ const destination=routes.includes(f.return)?f.return:'/';
+ const filter=destination==='/earnings'&&state.clients.some(client=>client.id===f.client)?'&client='+encodeURIComponent(f.client):'';
+ return bounce(res,destination+'?saved=1'+filter)}
+ if(req.method==='GET'&&path==='/owners/close.csv'){
+   if(!global)return reply(res,403,'Permission denied');
+   const summary=closeSummary(state,url.searchParams.get('client'),url.searchParams.get('month'));
+   if(!summary)return reply(res,404,'Closed period unavailable');
+   res.setHeader('Content-Disposition','attachment; filename="agentcrm-close-'+summary.close.month+'.csv"');
+   return reply(res,200,reportCsv(closeExport(summary)),'text/csv; charset=utf-8');
+ }
  if(req.method==='GET'&&path==='/reports.csv'){const result=readReport(state,u,url.searchParams.get('report'),url.searchParams);if(!result||!result.definition.capabilities.includes('csv'))return reply(res,403,'Report unavailable');res.setHeader('Content-Disposition','attachment; filename="'+result.definition.id+'.csv"');const selected=url.searchParams.get('layout')==='visible'&&available(result.definition,'csvColumns');return reply(res,200,reportCsv(exportData(result,selected)),'text/csv; charset=utf-8')}
  if(req.method==='GET'&&['/reports.json','/reports/print'].includes(path)){
    const result=readReport(state,u,url.searchParams.get('report'),url.searchParams);

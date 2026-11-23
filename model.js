@@ -52,6 +52,34 @@ export function reportableReceipts(s) {
  return s.receipts.filter(receipt=>!draftIds.has(receipt.id)&&!draftIds.has(receipt.original)&&!draftIds.has(receipt.adjusts));
 }
 
+export function invoiceBalance(s, fee, asOf) {
+ const parts=[fee.fixed,fee.perf];
+ const entries=s.receipts.filter(entry=>entry.fee===fee.id);
+ const apply=entry=>{
+   if(entry.amount>0)entry.parts.forEach((amount,index)=>parts[index]-=amount);
+   if(entry.reopened)entry.reopened.forEach((amount,index)=>parts[index]+=amount);
+ };
+ if(!asOf){entries.forEach(apply);return parts}
+ entries.filter(entry=>entry.date<=asOf).forEach(apply);
+ const available=[...parts];
+ const future=entries.filter(entry=>entry.date>asOf).sort((a,b)=>a.date.localeCompare(b.date));
+ for(const day of new Set(future.map(entry=>entry.date))){
+   future.filter(entry=>entry.date===day).forEach(apply);
+   available.forEach((amount,index)=>available[index]=Math.min(amount,parts[index]));
+ }
+ return available;
+}
+
+export function availablePayout(s,person,kind,asOf) {
+ const approved=kind==='partner'?new Set(reportableReceipts(s)):null;
+ const source=approved?s.receipts:owners(s).map(month=>({date:followingMonth(month.month),shares:month.shares}));
+ const earnings=source.flatMap(entry=>entry.shares
+   .filter(share=>share.id===person&&(!approved||approved.has(entry)||share.amount<0))
+   .map(share=>({date:entry.date,amount:share.amount})));
+ const payments=s.payouts.filter(payment=>payment.person===person&&payment.kind===kind);
+ return payoutCapacity(earnings,payments,asOf);
+}
+
 export function visibleClients(s,user) {
  const global=user.roles.includes('admin')||user.roles.includes('super');
  return global?s.clients:s.clients.filter(client=>
@@ -170,11 +198,15 @@ export function run(s,user,action,f){
    const rows=String(f.rows||'').trim().split(/\r?\n/).filter(line=>line.trim());
    check(rows.length>=1&&rows.length<=100,'Enter from 1 to 100 payout rows');
    const draft={...s,payouts:[...s.payouts]};
-   for(const row of rows){
-     const columns=row.split(',').map(value=>value.trim());
-     check(columns.length===4,'Enter recipient ID, earnings type, amount and reference for each payout');
-     const [person,kind,amount,ref]=columns;
-     run(draft,user,'payout',{person,kind,amount,ref,date:f.date,method:f.method});
+   for(const [index,row] of rows.entries()){
+     try{
+       const columns=row.split(',').map(value=>value.trim());
+       check(columns.length===4,'Enter recipient ID, earnings type, amount and reference for each payout');
+       const [person,kind,amount,ref]=columns;
+       run(draft,user,'payout',{person,kind,amount,ref,date:f.date,method:f.method});
+     }catch(error){
+       throw new Error('Payout row '+(index+1)+': '+error.message,{cause:error});
+     }
    }
    s.payouts=draft.payouts;
    return;
@@ -182,16 +214,12 @@ export function run(s,user,action,f){
  if(action==='payout'){const p=get(s.people,f.person),d=date(f.date),amount=cents(f.amount),kind=f.kind==='owner'?'owner':'partner';
  check(['partner','owner'].includes(f.kind??'partner'),'Choose a valid earnings type');
  check(p.roles.includes(kind),'Recipient is not eligible for this earnings type');
- const visible=kind==='partner'?new Set(reportableReceipts(s)):null;
- const source=visible?s.receipts:owners(s).map(m=>({date:followingMonth(m.month),shares:m.shares}));
- const earnings=source.flatMap(entry=>entry.shares.filter(share=>share.id===p.id&&(!visible||visible.has(entry)||share.amount<0))
-   .map(share=>({date:entry.date,amount:share.amount})));
  const payments=s.payouts.filter(payment=>payment.person===p.id&&payment.kind===kind);
- const due=payoutCapacity(earnings,payments,d);
+ const due=availablePayout(s,p.id,kind,d);
  check(amount>0&&amount<=due,'Payout exceeds available balance');
  const ref=required(f.ref);
  check(!payments.some(payment=>payment.ref===ref),'This recipient and earnings type already have a payout with that reference');
- s.payouts.push({id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref});return}
+ s.payouts.push({id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref,availableBefore:due});return}
  if(action==='client'){const name=required(f.name);check(!s.clients.some(c=>c.name.toLowerCase()===name.toLowerCase()),'Client already exists');s.clients.push({id:uid(),name,contact:String(f.contact||'').trim().slice(0,500),history:[],notes:[]});return}
  const c=get(s.clients,f.client);
  if(action==='note'){const note=required(f.note);c.notes??=[];c.notes.push({by:user.id,date:today(),text:note});return}
@@ -203,8 +231,8 @@ export function run(s,user,action,f){
  const d=date(f.date),t=c.history.filter(h=>h.from<=d).at(-1);assertOpen(s,c.id,d);check(t,'Add effective agreement terms for this date');
  if(action==='fee'){const sales=cents(f.sales||0);const fixed=f.fixed===''||f.fixed==null?t.retainer:cents(f.fixed),perf=f.calc==='sales'?performance(sales,t.tiers,t.mode):cents(f.performance||0);check(fixed+perf>0,'Enter a fee');s.fees.push({id:uid(),cid:c.id,date:d,fixed,perf,sales,reference:required(f.ref)});return}
  const fee=get(s.fees,f.fee);check(fee.cid===c.id&&d>=fee.date,'Check client and fee date');
- if(action==='receipt'){const amount=cents(f.amount),previous=s.receipts.filter(x=>x.fee===fee.id&&x.amount>0);
- const remaining=[fee.fixed,fee.perf].map((n,i)=>n-previous.reduce((a,r)=>a+r.parts[i],0));check(amount>0&&amount<=remaining[0]+remaining[1],'Payment exceeds outstanding fee');
+ if(action==='receipt'){const amount=cents(f.amount),remaining=invoiceBalance(s,fee,d);
+ check(amount>0&&amount<=remaining[0]+remaining[1],'Payment exceeds outstanding fee');
  const parts=f.override!==''&&f.override!=null?[cents(f.override),amount-cents(f.override)]:allocate(amount,remaining);
  check(parts.every((n,i)=>n>=0&&n<=remaining[i]),'Invalid receipt allocation');
  const ps=t.partners.filter(p=>(!p.start||p.start<=d)&&(!p.end||p.end>=d));const shares=ps.map(p=>({id:p.id,amount:0,detail:[]}));
@@ -226,7 +254,12 @@ export function run(s,user,action,f){
  if(action==='refund'){const orig=get(s.receipts,f.receipt);check(orig.fee===fee.id&&orig.amount>0&&d>=orig.date,'Invalid original receipt');const prior=s.receipts.filter(x=>x.original===orig.id);
  const amount=cents(f.amount),before=-prior.reduce((a,x)=>a+x.amount,0);check(amount>0&&before+amount<=orig.amount,'Refund exceeds payment');
  check(['yes','no'].includes(f.deduct),'Choose a refund treatment');const prorate=(value,part)=>Number((BigInt(value)*BigInt(part)*2n+BigInt(orig.amount))/(2n*BigInt(orig.amount)));const shares=f.deduct==='yes'?orig.shares.map(p=>({id:p.id,amount:-(prorate(p.amount,before+amount)-prorate(p.amount,before)),detail:[]})):[];
- s.receipts.push({id:uid(),cid:c.id,fee:fee.id,original:orig.id,date:d,ref:required(f.ref),amount:-amount,parts:[],shares});return}
+ const treatment=f.invoice||'settled';
+ check(['settled','reopen'].includes(treatment),'Choose how the refund affects the invoice');
+ const reopenedTotal=prior.reduce((sum,row)=>sum+(row.reopened?-row.amount:0),0);
+ const restoredFixed=prorate(orig.parts[0],reopenedTotal+amount)-prorate(orig.parts[0],reopenedTotal);
+ const reopened=treatment==='reopen'?[restoredFixed,amount-restoredFixed]:undefined;
+ s.receipts.push({id:uid(),cid:c.id,fee:fee.id,original:orig.id,date:d,ref:required(f.ref),amount:-amount,parts:[],shares,...(reopened?{reopened}:{})});return}
  throw new Error('Unknown action');
 }
 export function seed(people){

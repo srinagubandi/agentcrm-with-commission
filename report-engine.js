@@ -48,6 +48,7 @@ export function readReport(state, user, id, query = new URLSearchParams()) {
 
 const usd = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'});
 function display(report, value, index, csv) {
+  if(value===''||value==null)return '';
   const label = report.columns[index];
   if (label.endsWith(' ($)')) return csv ? (value/100).toFixed(2) : usd.format(value/100);
   if (label.endsWith(' (%)')) return csv ? (value/100).toFixed(2) : (value/100)+'%';

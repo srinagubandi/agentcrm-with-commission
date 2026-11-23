@@ -2,5 +2,6 @@
 
 
 .skip{position:absolute;left:-9999px}.skip:focus{left:8px;top:8px;z-index:5;background:white;padding:10px}
+.breakable{overflow-wrap:anywhere}
 
 .analysis label{margin:8px 0}.analysis fieldset{margin:12px 0;border:1px solid #bdcbc6}.analysis fieldset label,.analysis label:has([type=checkbox]){display:flex;align-items:center;gap:8px}.analysis input[type=checkbox]{width:auto}.print-report{margin:auto}.print-report nav,.print-report a{display:none}@media print{body,section{background:white}.print-report .scroll{overflow:visible}.print-report section{border:0;padding:0}.print-report thead{display:table-header-group}.print-report tr{break-inside:avoid}.print-report{padding:0;max-width:none}}
