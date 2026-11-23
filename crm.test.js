@@ -38,3 +38,92 @@ test('absorbed refunds leave referral earnings intact',()=>{
  assert.deepEqual(s.receipts.at(-1).shares,[]);
  assert.equal(s.receipts.at(-1).amount,-30000);
 });
+test('manual correction preserves original receipt and adjusts only intended earnings',()=>{
+ const s=fixture(),r=s.receipts[0],original=structuredClone(r);
+ run(s,s.people[0],'adjustment',{date:'2026-11-10',client:r.cid,fee:r.fee,receipt:r.id,person:'partner',direction:'debit',amount:'7.25',reason:'Correct original rate',ref:'COR-001'});
+ assert.deepEqual(r,original);
+ assert.equal(s.receipts.at(-1).shares[0].amount,-725);
+ assert.equal(s.receipts.at(-1).amount,0);
+});
+test('late payout entries reserve only funds needed by previously recorded future payments',async()=>{
+ const { payoutCapacity,followingMonth }=await import('./payout-balance.js');
+ const earnings=[{date:'2025-12-01',amount:10000},{date:'2026-01-01',amount:15000}];
+ assert.equal(payoutCapacity(earnings,[{date:'2026-01-02',amount:12000}],'2025-12-02'),10000);
+ assert.equal(payoutCapacity(earnings,[{date:'2026-01-02',amount:20000}],'2025-12-02'),5000);
+ assert.equal(payoutCapacity(earnings,[],'2025-11-30'),0);
+ assert.equal(followingMonth('2025-12'),'2026-01-01');
+});
+test('month-end scheduling supports all 31 days and keeps payments in the intended month',async()=>{
+ const {scheduledPayoutDate}=await import('./payout-balance.js');
+ const s=fixture();
+ run(s,s.people[0],'settings',{day:31});assert.equal(s.day,31);
+ assert.throws(()=>run(s,s.people[0],'settings',{day:32}));
+ assert.equal(scheduledPayoutDate('2027-01',31),'2027-02-28');
+ assert.equal(scheduledPayoutDate('2028-01',31),'2028-02-29');
+ assert.equal(scheduledPayoutDate('2027-12',31),'2028-01-31');
+});
+
+test('closing a client period preserves its settlement and rejects edits through the close date',()=>{
+ const s=fixture(),admin=s.people[0];
+ const close={client:'alder',month:'2026-10'};
+ for(const user of s.people.filter(p=>!p.roles.includes('admin')))assert.throws(()=>run(s,user,'closeMonth',close),/denied/);
+ run(s,admin,'closeMonth',close);
+ const snapshot=structuredClone(s.closes[0]);
+ assert.match(snapshot.digest,/^[a-f0-9]{64}$/);
+ assert.deepEqual(snapshot.settled,owners(s).find(row=>row.month==='2026-10'&&row.cid==='alder'));
+ assert.throws(()=>run(s,admin,'closeMonth',close),/closed/);
+ assert.throws(()=>run(s,admin,'terms',{client:'alder',date:'2026-10-31'}),/closed/);
+ assert.throws(()=>run(s,admin,'expense',{date:'2026-10-11',name:'Shared',amount:15,lines:'harbor,5\nalder,10'}),/closed/);
+ run(s,admin,'expense',{date:'2026-10-11',name:'Harbor only',amount:5,lines:'harbor,5'});
+ run(s,admin,'expense',{date:'2026-11-01',name:'Open month',amount:5,lines:'alder,5'});
+ assert.deepEqual(s.closes[0],snapshot);
+});
+
+test('equal and sales-weighted bills allocate every penny and reject missing sales',()=>{
+ const s=fixture(),admin=s.people[0];
+ const bill={date:'2026-10-19',name:'Shared subscription',amount:'0.03',lines:'alder\nharbor'};
+ run(s,admin,'expense',{...bill,allocation:'equal'});
+ assert.deepEqual(s.expenses.at(-1).lines.map(line=>line.amount),[2,1]);
+ run(s,admin,'fee',{client:'alder',date:'2026-10-18',fixed:'1',sales:'40000',ref:'Additional qualifying sales'});
+ run(s,admin,'expense',{...bill,allocation:'sales',amount:'120.00'});
+ assert.deepEqual(s.expenses.at(-1).lines.map(line=>line.amount),[8000,4000]);
+ assert.throws(()=>run(s,admin,'expense',{...bill,date:'2026-09-18',allocation:'sales'}),/requires qualifying sales/);
+ assert.throws(()=>run(s,admin,'expense',{...bill,lines:'alder\nalder',allocation:'equal'}),/Duplicate/);
+});
+
+test('draft receipt commissions require approval before partner payouts',()=>{
+ const s=fixture(),admin=s.people[0];
+ run(s,admin,'fee',{client:'alder',date:'2026-10-25',fixed:'1000',ref:'Draft test'});
+ run(s,admin,'receipt',{client:'alder',fee:s.fees.at(-1).id,date:'2026-10-25',amount:'1000',method:'ACH',ref:'Draft test',review:'draft'});
+ const receipt=s.receipts.at(-1), fields={person:'partner',date:'2026-11-20',amount:700,method:'ACH',ref:'Approved payout'};
+ assert.equal(receipt.approval,'draft');
+ assert.throws(()=>run(s,admin,'payout',fields),/exceeds/);
+ assert.throws(()=>run(s,admin,'closeMonth',{client:'alder',month:'2026-10'}),/Approve draft/);
+ assert.throws(()=>run(s,s.people[1],'approveReceipt',{receipt:receipt.id}),/denied/);
+ run(s,admin,'approveReceipt',{receipt:receipt.id});
+ run(s,admin,'payout',fields);
+ assert.throws(()=>run(s,admin,'approveReceipt',{receipt:receipt.id}),/no draft/);
+});
+
+test('batch payouts roll back all lines on failure and prevent duplicate references',()=>{
+ const s=fixture(),admin=s.people[0],before=structuredClone(s.payouts);
+ const batch={date:'2026-11-20',method:'ACH',rows:'partner,partner,15,R1\nowner,owner,25,R2'};
+ assert.throws(()=>run(s,admin,'batchPayout',{...batch,rows:batch.rows+'\npartner,partner,999999,R3'}),/exceeds/);
+ assert.deepEqual(s.payouts,before);
+ run(s,admin,'batchPayout',batch);
+ assert.deepEqual(s.payouts.slice(-2).map(p=>[p.person,p.kind,p.amount,p.ref]),[['partner','partner',1500,'R1'],['owner','owner',2500,'R2']]);
+ assert.throws(()=>run(s,admin,'batchPayout',batch),/already have/);
+ assert.equal(s.payouts.length,before.length+2);
+});
+
+test('won handoff preserves partner attribution and rejects duplicate client creation atomically',()=>{
+ const s=fixture(),admin=s.people[0];
+ run(s,admin,'refer',{name:'Alder Studio',contact:'referral@example.invalid',partner:'partner'});
+ const opportunity=s.deals.at(-1),before=structuredClone(s);
+ const won={deal:opportunity.id,stage:'Won',additionalPartners:'partner2'};
+ assert.throws(()=>run(s,admin,'stage',won),/existing client/);
+ assert.deepEqual(s,before);
+ run(s,admin,'stage',{...won,client:'alder'});
+ assert.deepEqual(s.clients[0].referrals[opportunity.id],['partner','partner2']);
+ assert.throws(()=>run(s,admin,'stage',{...won,additionalPartners:'partner2,partner2'}),/distinct/);
+});

@@ -21,6 +21,43 @@
 - Final local suite: 12 passed, 0 failed. Independently signed in using each of the six delivered sample passwords and received HTTP 200 for each authenticated overview.
 - Release gate: GitHub upload approval was declined before file transfer. Remote revision, Railway deployment, volume and public login checks are pending. The local demo uses synthetic data.
 
+## 0.2.0 — 100 reporting slices
+
+- Added 20 role-scoped ledgers, each delivered in five incremental capabilities: scoped records, keyword search, month filter, typed sorting and filtered CSV export. Captured the per-slice source hash and four automated review/check results in slice-log.jsonl.
+- Connected the reports to authenticated routes and permission checks on both page and export. Added spreadsheet text neutralization, HTML escaping, cent-based amounts, empty states and visible report controls.
+- Added client creation, notes, contact carryover, account provisioning, admin audit history and pre-save financial previews. Corrections are linked to original receipts and appear separately on partner statements.
+- Resolved empty retainer input overriding agreement defaults, decimal precision ambiguity, unsafe intermediate multiplication on large refunds, future agreement display and referral assignment to a non-partner.
+- The release verification exercises the packaged source. Production deployment, browser-level visual comparison and independent human review are pending.
+
+## 0.3.0 — 300 additional slices
+
+- Activated 15 reporting capabilities on each of the 20 existing CRM reports. All operate after role scoping.
+- Added authenticated print and JSON routes, selected-column CSV downloads, accessible server-rendered report controls and user-specific saved report views.
+- Review decisions: clamp invalid page numbers, validate calendar dates, use inclusive month overlap, keep complete exports independent of page size, escape user inputs, and recheck report access when loading a saved view.
+- Verification: 300 new capability tests plus 113 existing domain, report and HTTP tests passed locally. The HTTP suite also exercises saved-view isolation and restricted print/JSON exports. Automated checks are recorded separately from live deployment or human UI review.
+
+## 0.4.0 — payout corrections and financial regression coverage
+
+Backdated partner and owner payouts now use funds available on the payment date and preserve funds needed for later recorded payouts. Admins can schedule a payout on any day from 1 through 31. When the following month is shorter, scheduled commission reports display its last calendar day.
+
+The release adds two production fixes and 9,999 distinct synthetic regression cases. Each of nine families has 1,111 unique financial input sets. The per-case ledger records inputs, observed and expected values, two automated code-contract checks and two automated skeptic checks. The cases exercise shared implementations. Their count measures regression coverage, not independently implemented features. The two production fixes have separate review records. Run npm test with Node.js 24 to replay the suite.
+
+## 0.5.0 — finance review and sales handoff
+
+- Added draft receipt commissions, admin approval with review, and approval-aware partner statements and payout limits. Existing receipts without a status remain approved.
+- Added previewable external payout batches. A failing line leaves the entire batch unsaved. Duplicate recipient, earnings type and reference combinations are rejected.
+- Added admin client-period close with SHA-256 evidence, settlement totals and a per-client write lock through the selected month. Draft commissions must be approved before close. Post later corrections in an open month.
+- Added equal and sales-weighted vendor bill allocation alongside exact dollar splits. Sales weights come from the qualifying sales on fee entries in the bill month.
+- Carries up to five referral partners from the won opportunity to client attribution. Agreement rates remain separately configurable. Duplicate client names require linking to the existing client.
+- Enabled owners to submit masked payout preference requests. Scoped partner statements and exports to commission amounts and withheld agency fee bases and rates.
+
+### Verification
+
+- Code review 1 checked calculations, persisted data shape and compatibility with existing SQLite data.
+- Code review 2 checked role enforcement, report exports, form entry points, preview and confirmation.
+- Skeptic review 1 exercised rounding, no-sales months, future payment commitments and partial batch failures.
+- Skeptic review 2 exercised duplicate payout references, draft isolation, cross-client edits, unauthorized approvals and persisted state after restart.
+
 ## Hosted verification — 2026-11-22 UTC
 - Application release: merged GitHub commit `62fd4e25df728beb46408fe0e61cb8ea42360a2e` from pull request #1. Existing README and design brief were retained; the private login CSV was not committed.
 - Railway: dedicated `AgentCRM Synthetic Demo` project, `production` environment, service `agentcrm-demo`, GitHub branch `main`, root directory at repository root, persistent volume mounted at `/data`.
