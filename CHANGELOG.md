@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.5.1 — role-based skeptic review
+
+| Finding | Change | Verification |
+| --- | --- | --- |
+| The partner commission screen displayed the agency fee basis and share rate. | Partner accounts see the resulting commission per fee type. Agency admins and Super Users retain the detailed calculation. | Both partner accounts passed browser and HTTP statement checks. CSV, JSON and print access to the agency calculation report remained restricted. |
+| A payout reference could be reused through the individual recording form even though the batch form rejected it. | The shared payout handler enforces unique references within each recipient and earnings type for both entry methods. | The administrator and principal both received the duplicate-reference validation error. The batch rollback test continued to pass. |
+| The payout preference form accepted identifiers longer than the last four digits, and the admin-only account could submit a recipient preference. | Requests require the partner or owner role and reject sequences of five or more digits separated by spaces or hyphens. Existing preferences retain their approval status. | Five recipient accounts could submit a masked value. All six accounts failed to save the unmasked test value. |
+| The Commissions page showed owner payouts beside partner payouts while the Owner shares page lacked payout history. | Each page shows its own payout type. Owners see their own payout history. | The HTTP fixture recorded both payout types, restarted the service, and verified each history independently. The owner's browser check also verified the private view. |
+| A client bookmark pointing to an unavailable record opened the first visible client. | A selected client must exist in the user's visible directory. Unavailable records show a 404 instead of silently switching context. | The HTTP suite checked an unavailable bookmark and a valid client detail URL. |
+
+### Review and release evidence
+
+- Browser review ran 450 checks on a seeded build of the application with an isolated database. Each of the six roles exercised page access, the report chooser, report visibility and export controls, saving a view, reload persistence and sign-out.
+- The independent HTTP regression matrix runs 450 cases for page and report access, CSV, JSON, print and six write scenarios per role. It found 12 failing cases against 0.5.0. All 450 passed after the fixes.
+- The full Node.js suite passed 10,869 tests, including the HTTP matrix, financial cases, approval and payout workflows, and SQLite restart checks. See `SKEPTIC-REVIEW-0.5.1.md` and `skeptic-loops-0.5.1.jsonl` for the review and numbered evidence.
+- The release uses the same SQLite schema. Earlier releases can still read the database. The 0.5.1 validation applies to future submissions.
+
 ## 0.1.0 — 2026-11-22 — synthetic demo candidate
 - Implemented agreement versions, fixed and performance fees, marginal and whole-period tiers, allocated receipts, referral commissions, refunds and manually recorded payouts.
 - Added client-specific owners, expense allocation, reserve and client-isolated monthly loss carryforward.

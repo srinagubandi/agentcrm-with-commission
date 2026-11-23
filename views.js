@@ -1,6 +1,6 @@
 import {myViews} from './saved-views.js';
 import {visibleReports,reportPanel} from './report-engine.js';
-import {owners,reportableReceipts,stages,today} from './model.js';
+import {owners,reportableReceipts,stages,today,visibleClients} from './model.js';
 export const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);
 const sum=(list,key)=>list.reduce((a,x)=>a+x[key],0);
@@ -20,7 +20,7 @@ export function page(s,u,path,ctx){
   const preferenceForm=()=>form('preference','Request payout preference change',input('preference','Payment method and masked identifier (last four only)')+
    '<p>Approved: '+esc(u.preference||'None')+' · Pending: '+esc(u.pending||'None')+'</p>');
  const dateInput=()=>input('date','Date','date',today());const personSelect=(key,role,label)=>options(key,label,s.people.filter(p=>!role||p.roles.includes(role)).map(p=>[p.id,p.name]));
- const clients=s.clients.filter(c=>global||c.history.some(h=>h.partners.some(p=>p.id===u.id)));
+ const clients=visibleClients(s,u);
  const pickClient=()=>options('client','Client',clients.map(c=>[c.id,c.name]));
  const clientsTable=table(['Client','Agreement effective'],clients.map(c=>['<a href="/clients?client='+encodeURIComponent(c.id)+'">'+esc(c.name)+'</a>',esc(c.history.at(-1)?.from||'Needs terms')]));
  const deals=s.deals.filter(d=>global||d.pid===u.id);
@@ -30,7 +30,7 @@ export function page(s,u,path,ctx){
  const metrics=pairs=>'<div class="metrics">'+pairs.map(([l,v])=>'<article><small>'+l+'</small><strong>'+v+'</strong></article>').join('')+'</div>';
  const expenseKey=clients.map(c=>esc(c.name)+' = '+esc(c.id)).join(' · ');
  const dealTable=table(['Prospect','Referral partner','Stage','Next follow-up'],deals.map(d=>[esc(d.name)+(d.duplicate&&global?' <b>Check overlap</b>':''),esc(names[d.pid]),esc(d.stage),esc(d.follow||'—')]));
- const payoutTable=table(['Recipient','Type','Date','Amount','Method','Reference'],payouts.map(p=>[esc(names[p.person]),esc(p.kind),esc(p.date),money(p.amount),esc(p.method),esc(p.ref)]));
+ const payoutTable=records=>table(['Recipient','Type','Date','Amount','Method','Reference'],records.map(p=>[esc(names[p.person]),esc(p.kind),esc(p.date),money(p.amount),esc(p.method),esc(p.ref)]));
  let body=path==='/reports'?reportPanel(s,u,ctx.query||new URLSearchParams()):'';
  if(path==='/reports'){
    const q=new URLSearchParams(ctx.query||'');
@@ -42,7 +42,7 @@ export function page(s,u,path,ctx){
  if(path==='/'){
  const myOwner=owners(s).flatMap(m=>m.shares).filter(p=>global||p.id===u.id);
  body=global?metrics([['Collected fees',money(sum(receipts,'amount'))],['Referral commissions',money(sum(entries,'amount'))],['Owner shares',money(sum(myOwner,'amount'))]]):metrics([...(partner?[['My commissions',money(sum(entries,'amount'))],['Referral payouts',money(sum(payouts.filter(p=>p.kind==='partner'),'amount'))]]:[]),...(owner?[['My owner shares',money(sum(myOwner,'amount'))]]:[])]);
- if(partner||global)body+=panel('Sales follow-up',dealTable);body+=panel('Recent payouts',payoutTable);
+ if(partner||global)body+=panel('Sales follow-up',dealTable);body+=panel('Recent payouts',payoutTable(payouts));
  }
  if(path==='/sales'){
  body=panel('Pipeline',stages.map(stage=>{const list=deals.filter(d=>d.stage===stage);return '<article class="lane"><h3>'+stage+' <small>'+list.length+'</small></h3>'+list.map(d=>'<div class="card"><strong>'+esc(d.name)+'</strong><p>'+esc(d.contact)+'</p><small>'+esc(d.follow||'No follow-up date')+'</small></div>').join('')+'</article>'}).join('')).replace('<section>','<section class="board">');
@@ -63,12 +63,13 @@ export function page(s,u,path,ctx){
  }
  if(path==='/earnings'&&admin)body+=form('adjustment','Correct partner commission',pickClient()+options('fee','Fee entry',s.fees.map(f=>[f.id,clientName(f.cid)+' · '+f.reference]))+options('receipt','Original receipt',receipts.filter(r=>r.amount>0).map(r=>[r.id,r.ref]))+personSelect('person','partner','Partner')+dateInput()+options('direction','Adjustment',[['credit','Increase commission'],['debit','Reduce commission']])+input('amount','Adjustment amount ($)','number')+input('reason','Explanation on partner statement')+input('ref','Correction reference'));
  if(path==='/commissions'){
- const paid=payouts.filter(p=>p.kind==='partner');body=metrics([['Earned',money(sum(entries,'amount'))],['Paid',money(sum(paid,'amount'))],['Outstanding',money(sum(entries,'amount')-sum(paid,'amount'))]])+panel('Commission statement',table(['Client','Partner','Received','Calculation','Earned','Approval'],entries.map(p=>[esc(clientName(p.cid)),esc(names[p.id]),p.date,p.detail.map(x=>x.type+' '+money(x.base)+' × '+x.rate/100+'%').join('<br>')||esc(p.reason||'Refund adjustment'),money(p.amount),p.status])))+panel('Payout history',payoutTable);
+ const paid=payouts.filter(p=>p.kind==='partner');body=metrics([['Earned',money(sum(entries,'amount'))],['Paid',money(sum(paid,'amount'))],['Outstanding',money(sum(entries,'amount')-sum(paid,'amount'))]])+panel('Commission statement',table(['Client','Partner','Received',global?'Calculation':'Commission detail','Earned','Approval'],entries.map(p=>[esc(clientName(p.cid)),esc(names[p.id]),p.date,p.detail.map(line=>global ? line.type+' '+money(line.base)+' x '+line.rate/100+'%' : line.type+' commission '+money(line.amount)).join('<br>')||esc(p.reason||'Refund adjustment'),money(p.amount),p.status])))+panel('Partner payout history',payoutTable(paid));
  if(partner)body+=preferenceForm();
  if(admin)body+=form('payout','Record external payout',personSelect('person',null,'Recipient')+options('kind','Earnings type',[['partner','Referral commission'],['owner','Owner share']])+dateInput()+input('amount','Amount ($)','number')+input('method','Method')+input('ref','Reference'));
  }
  if(path==='/owners'){
  const m=owners(s).filter(x=>global||x.shares.some(p=>p.id===u.id));body=panel('Monthly owner distributions',table(global?['Client','Month','Collections','Referral commissions','Expenses','Opening loss','Available','Owner shares','Reserve','Closing loss']:['Client','Month','My share'],m.map(x=>global?[esc(clientName(x.cid)),x.month,money(x.income),money(x.commission),money(x.expenses),money(x.opening),money(x.available),x.shares.map(p=>esc(names[p.id])+' '+money(p.amount)).join('<br>'),money(x.reserve),money(x.loss)]:[esc(clientName(x.cid)),x.month,money(x.shares.find(p=>p.id===u.id).amount)])));
+ body+=panel('Owner payout history',payoutTable(payouts.filter(p=>p.kind==='owner')));
  if(global)body+=panel('Expense allocations',table(['Bill','Date','Total','Client allocations'],s.expenses.map(e=>[esc(e.name),e.date,money(e.amount),e.lines.map(l=>esc(clientName(l.cid))+' '+money(l.amount)).join('<br>')])));
  if(admin)body+=form('expense','Record expense',input('name','Vendor or expense')+dateInput()+input('amount','Bill total ($)','number')+options('allocation','Allocation method',[['custom','Exact dollar amounts'],['equal','Equal split'],['sales','Qualifying sales for bill month']])+multi('lines','One allocation per line · client ID, dollars','alder,200\nharbor,100')+'<p>For equal and sales-weighted splits, enter only a client ID on each line.</p><p>'+expenseKey+'</p>');}
    if(path==='/commissions'&&admin){
