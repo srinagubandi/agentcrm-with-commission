@@ -1,9 +1,50 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {seed,run,owners,performance,allocate} from './model.js';
+import {availablePayout,invoiceBalance,seed,run,owners,performance,allocate} from './model.js';
+import {closeSummary,closeExport} from './close-summary.js';
 const people=()=>JSON.parse(readFileSync(new URL('./demo-users.json',import.meta.url))).map(({id,name,roles})=>({id,name,roles}));
 const fixture=()=>seed(people());
+
+test('skeptic: partial collection, approval, partial payout, close and later refund reconcile',()=>{
+ const s=fixture(),admin=s.people[0];
+ run(s,admin,'fee',{client:'alder',date:'2026-10-19',fixed:'100',performance:'100',ref:'PARTIAL-052'});
+ const fee=s.fees.at(-1);
+ const payment={client:'alder',fee:fee.id,date:'2026-10-20',amount:'100',method:'ACH',ref:'PARTIAL-CASH'};
+ const beforeDraft=availablePayout(s,'partner','partner','2026-11-20');
+ run(s,admin,'receipt',{...payment,review:'draft'});
+ const original=s.receipts.at(-1);
+ assert.deepEqual(original.parts,[5000,5000]);
+ assert.equal(availablePayout(s,'partner','partner','2026-11-20'),beforeDraft);
+ run(s,admin,'approveReceipt',{receipt:original.id});
+ assert.equal(availablePayout(s,'partner','partner','2026-11-20'),beforeDraft+1250);
+ run(s,admin,'payout',{person:'partner',kind:'partner',date:'2026-11-20',amount:'5',method:'ACH',ref:'PARTIAL-PAYOUT'});
+ assert.equal(s.payouts.at(-1).availableBefore,beforeDraft+1250);
+ run(s,admin,'closeMonth',{client:'alder',month:'2026-10'});
+ const closed=structuredClone(s.closes.at(-1));
+ const refund={client:'alder',fee:fee.id,receipt:original.id,date:'2026-11-21',amount:'20.01',ref:'OPEN-AMOUNT',deduct:'yes'};
+ run(s,admin,'refund',{...refund,invoice:'reopen'});
+ assert.deepEqual(invoiceBalance(s,fee),[6001,6000]);
+ assert.deepEqual(invoiceBalance(s,fee,'2026-11-20'),[5000,5000]);
+ assert.equal(availablePayout(s,'partner','partner','2026-11-21'),beforeDraft+1250-500-250);
+ assert.deepEqual(s.closes.at(-1),closed);
+ const summary=closeSummary(s,'alder','2026-10');
+ assert.deepEqual(summary.corrections,[{date:'2026-11-21',reference:'OPEN-AMOUNT',original:'PARTIAL-CASH',type:'Refund',cash:-2001,commission:-350}]);
+ assert.ok(closeExport(summary).rows.every(row=>row.length===closeExport(summary).definition.columns.length));
+});
+
+test('skeptic: settled refunds preserve the receivable and reopened pennies can be recollected only after the refund',()=>{
+ const s=fixture(),admin=s.people[0],fee=s.fees[0],original=s.receipts[0];
+ const refund={client:fee.cid,fee:fee.id,receipt:original.id,date:'2026-11-21',amount:'0.01',ref:'CENT',deduct:'no'};
+ run(s,admin,'refund',refund);
+ assert.deepEqual(invoiceBalance(s,fee),[0,0]);
+ run(s,admin,'refund',{...refund,ref:'CENT-OPEN',invoice:'reopen'});
+ assert.deepEqual(invoiceBalance(s,fee),[1,0]);
+ const payment={client:fee.cid,fee:fee.id,date:'2026-11-20',amount:'0.01',method:'ACH',ref:'RECOVERED'};
+ assert.throws(()=>run(s,admin,'receipt',payment),/outstanding/);
+ run(s,admin,'receipt',{...payment,date:'2026-11-22'});
+ assert.deepEqual(invoiceBalance(s,fee),[0,0]);
+});
 test('marginal and whole-period tiers',()=>{const t=[{to:5000000,rate:500},{to:null,rate:700}];assert.equal(performance(6000000,t,'marginal'),320000);assert.equal(performance(6000000,t,'whole'),420000)});
 test('fractional cent allocations reconcile',()=>assert.deepEqual(allocate(101,[1,1]),[51,50]));
 test('individual rates, pool, reserves and expenses reconcile',()=>{const s=fixture();assert.deepEqual(s.receipts[0].shares.map(x=>x.amount),[60000,25000]);assert.equal(s.receipts[1].shares.reduce((a,x)=>a+x.amount,0),37500);const a=owners(s)[0];assert.equal(a.available,375000);assert.equal(a.reserve,75000);assert.equal(a.shares.reduce((n,x)=>n+x.amount,a.reserve),a.available)});

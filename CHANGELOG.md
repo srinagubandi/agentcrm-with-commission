@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.2 — payout reconciliation and period-close review
+
+| Workflow | Update | Skeptic check |
+| --- | --- | --- |
+| Invoice refunds | Admin chooses to keep the invoice settled or reopen the refunded amount. The commission deduction is a separate choice. Existing refunds retain settled treatment. | Reopened amounts restore the original fixed and performance allocations to the cent. A payment dated before the refund cannot use the restored balance. Later booked invoice payments retain their allocations. |
+| Payout reconciliation | Partner statements distinguish drafts, approvals, payments, refunds, and corrections. Owner shares show distributions, payment totals, and availability. The individual and batch previews show date-specific availability before and after each payment. | A draft has no positive payout capacity. Approval unlocks the amount. Partial payment and a later refund reconcile against the same calculation used by the write path. |
+| Payment entry and batch review | An earnings-page client selector narrows fee and receipt choices. An invalid batch identifies the failing row and keeps the date, method, and rows for editing. | Browser confirmed narrowing to Harbor House. An oversized row left all entries unsaved, and the corrected preview retained its valid row and balances. |
+| Closed client periods | Agency admins and Super Users can review the close, its author, totals, digest, and later linked corrections. CSV export uses the same scoped summary. | A later refund left the stored settlement unchanged. The owner account was denied the agency export. The Super User could read it. |
+| Regression runs | Added a pull-request test workflow with Node.js 24 and read-only repository access. | Repeated the complete suite, the 450-case role matrix, all 450 browser checks, four finance browser workflows and six responsive viewport checks. |
+
+### Release evidence
+
+- The complete Node.js suite passed 10,871 tests. The 450-case HTTP matrix is included in that count.
+- The browser rerun passed 450 role cases on a disposable database. Four additional finance workflows and six finance-screen layout checks passed at desktop and mobile widths. See `skeptic-loops-0.5.2.jsonl` for the per-case log.
+- Database schema is unchanged. Do not downgrade past 0.5.2 after posting reopened refunds until those balances have been reconciled. Older code does not account for the reopened amounts.
+
 ## 0.5.1 — role-based skeptic review
 
 | Finding | Change | Verification |

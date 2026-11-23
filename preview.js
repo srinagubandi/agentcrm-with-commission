@@ -13,16 +13,19 @@ export function previewPage(state, data) {
     lines=[['Payment reference',r.ref],['Amount',usd(r.amount)]];
     if(r.approval)lines.push(['Commission status',r.approval==='draft'?'Draft — approve before payout':'Approved']);
     if(r.reason)lines.push(['Correction reason',r.reason]);
+    if(r.original)lines.push(['Invoice treatment',r.reopened?'Reopen refunded amount':'Keep invoice settled']);
     if(r.parts.length) lines.push(['Retainer allocation',usd(r.parts[0])],['Performance allocation',usd(r.parts[1])]);
     for(const p of r.shares)lines.push([names.get(p.id),usd(p.amount)]);
   } else if (data.action==='payout') {
     const p=state.payouts.at(-1);
-    lines=[['Recipient',names.get(p.person)],['Payment method',p.method],['Reference',p.ref],['Amount',usd(p.amount)]];
+    lines=[['Recipient',names.get(p.person)],['Payment method',p.method],['Reference',p.ref],
+      ['Available before payout',usd(p.availableBefore)],['Amount',usd(p.amount)],['Available after payout',usd(p.availableBefore-p.amount)]];
   } else if (data.action==='batchPayout') {
     const count=data.rows.split(/\r?\n/).filter(line=>line.trim()).length;
     const batch=state.payouts.slice(-count);
     lines=[['Payout count',count],['Total',usd(batch.reduce((total,p)=>total+p.amount,0))],
-      ...batch.map(p=>[names.get(p.person),p.kind+' · '+p.ref+' · '+usd(p.amount)])];
+      ...batch.map((p,index)=>['Row '+(index+1)+' · '+names.get(p.person),
+        p.kind+' · '+p.ref+' · '+usd(p.amount)+' · available '+usd(p.availableBefore)+' before / '+usd(p.availableBefore-p.amount)+' after'])];
   } else if (data.action==='closeMonth') {
     const close=state.closes.at(-1);
     lines=[['Client',state.clients.find(c=>c.id===close.cid).name],['Close through',close.month],
@@ -40,4 +43,11 @@ export function previewPage(state, data) {
   const safeReturn=['/clients','/earnings','/owners','/commissions'].includes(data.return)?data.return:'/';
   const inputs=Object.entries(data).filter(([k])=>k!=='preview').map(([k,v])=>'<input type="hidden" name="'+esc(k)+'" value="'+esc(v)+'">').join('');
   return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Review entry · AgentCRM</title><link rel="stylesheet" href="/style.css"><main><h1>Review entry</h1><section><dl>'+lines.map(([k,v])=>'<dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><form method="post" action="/save">'+inputs+'<button>Confirm and save</button></form><p><a href="'+safeReturn+'">Cancel</a></p></section></main></html>';
+}
+
+export function batchRetryPage(data,message) {
+  const hidden=['csrf','version','action','return'].map(key=>
+    '<input type="hidden" name="'+key+'" value="'+esc(data[key])+'">').join('');
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Correct payout batch</title><link rel="stylesheet" href="/style.css"></head><body><main><h1>Correct payout batch</h1><p role="alert">'+esc(message)+'</p><form method="post" action="/save">'+hidden+
+    '<label>Payout date<input name="date" type="date" required value="'+esc(data.date)+'"></label><label>Payment method<input name="method" required value="'+esc(data.method)+'"></label><label>One payout per line: recipient ID, type, dollars, reference<textarea name="rows" required rows="8">'+esc(data.rows)+'</textarea></label><button name="preview" value="yes">Review corrected batch</button></form><p><a href="/commissions">Cancel</a></p></main></body></html>';
 }

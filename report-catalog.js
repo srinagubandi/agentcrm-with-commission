@@ -1,4 +1,5 @@
 import {scheduledPayoutDate} from './payout-balance.js';
+import {invoiceBalance} from './model.js';
 function monthlyPartnerRows(state, person, allowed) {
   const periods = new Map();
   function entry(date, id) {
@@ -33,7 +34,11 @@ export const reportCatalog = [
     roles: ["admin","super"],
     columns: ["Invoice date","Client","Reference","Billed ($)","Collected against invoice ($)","Outstanding ($)"],
     capabilities: ["rows","search","month","sort","csv"],
-    rows: ({state, person, client, allowed, owners}) => state.fees.flatMap(f=>{const billed=f.fixed+f.perf;const paid=state.receipts.filter(r=>r.fee===f.id&&r.amount>0).reduce((n,r)=>n+r.amount,0);return billed>paid?[[f.date,client(f.cid),f.reference,billed,paid,billed-paid]]:[]})
+    rows: ({state, client}) => state.fees.flatMap(f=>{
+      const billed=f.fixed+f.perf;
+      const outstanding=invoiceBalance(state,f).reduce((sum,amount)=>sum+amount,0);
+      return outstanding>0?[[f.date,client(f.cid),f.reference,billed,billed-outstanding,outstanding]]:[];
+    })
   },
   {
     id: "collections",
