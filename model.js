@@ -47,6 +47,14 @@ function assertOpen(s, client, entryDate) {
    'Client period is closed. Use an entry date in an open month.');
 }
 
+function cashReference(s,client,fields,kind) {
+ const reference=required(fields.ref);
+ const sameType=kind==='receipt'?entry=>entry.amount>0:entry=>entry.original!=null;
+ check(!s.receipts.some(entry=>entry.cid===client&&sameType(entry)&&entry.ref.trim().toLowerCase()===reference.toLowerCase()),
+   (kind==='receipt'?'Payment':'Refund')+' reference is already recorded for this client');
+ return reference;
+}
+
 export function reportableReceipts(s) {
  const draftIds=new Set(s.receipts.filter(receipt=>receipt.approval==='draft').map(receipt=>receipt.id));
  return s.receipts.filter(receipt=>!draftIds.has(receipt.id)&&!draftIds.has(receipt.original)&&!draftIds.has(receipt.adjusts));
@@ -211,6 +219,19 @@ export function run(s,user,action,f){
    s.payouts=draft.payouts;
    return;
  }
+ if(action==='reversePayout'){
+   const original=get(s.payouts,f.payout);
+   const posted=date(f.date);
+   check(original.amount>0,'Choose an original payout');
+   check(!s.payouts.some(entry=>entry.reverses===original.id),'This payout already has a reversal');
+   check(posted>=original.date&&posted<=today(),'Choose a reversal date between the payout date and today');
+   check(!(s.closes||[]).some(close=>close.month>=posted.slice(0,7)),
+     'Use a reversal date after the latest closed client period');
+   const reason=required(f.reason);
+   s.payouts.push({id:uid(),person:original.person,kind:original.kind,date:posted,amount:-original.amount,
+     method:'Ledger reversal',ref:'Reversal of '+original.ref,reverses:original.id,reason,by:user.id});
+   return;
+ }
  if(action==='payout'){const p=get(s.people,f.person),d=date(f.date),amount=cents(f.amount),kind=f.kind==='owner'?'owner':'partner';
  check(['partner','owner'].includes(f.kind??'partner'),'Choose a valid earnings type');
  check(p.roles.includes(kind),'Recipient is not eligible for this earnings type');
@@ -231,7 +252,7 @@ export function run(s,user,action,f){
  const d=date(f.date),t=c.history.filter(h=>h.from<=d).at(-1);assertOpen(s,c.id,d);check(t,'Add effective agreement terms for this date');
  if(action==='fee'){const sales=cents(f.sales||0);const fixed=f.fixed===''||f.fixed==null?t.retainer:cents(f.fixed),perf=f.calc==='sales'?performance(sales,t.tiers,t.mode):cents(f.performance||0);check(fixed+perf>0,'Enter a fee');s.fees.push({id:uid(),cid:c.id,date:d,fixed,perf,sales,reference:required(f.ref)});return}
  const fee=get(s.fees,f.fee);check(fee.cid===c.id&&d>=fee.date,'Check client and fee date');
- if(action==='receipt'){const amount=cents(f.amount),remaining=invoiceBalance(s,fee,d);
+ if(action==='receipt'){const ref=cashReference(s,c.id,f,'receipt'),amount=cents(f.amount),remaining=invoiceBalance(s,fee,d);
  check(amount>0&&amount<=remaining[0]+remaining[1],'Payment exceeds outstanding fee');
  const parts=f.override!==''&&f.override!=null?[cents(f.override),amount-cents(f.override)]:allocate(amount,remaining);
  check(parts.every((n,i)=>n>=0&&n<=remaining[i]),'Invalid receipt allocation');
@@ -239,7 +260,7 @@ export function run(s,user,action,f){
  parts.forEach((n,i)=>{if(t.eligible!=='both'&&t.eligible!==(i?'performance':'fixed'))return;
  const basis=t.pool===null?n:portion(n,t.pool),weights=ps.map(p=>i?p.performance:p.rate);const amounts=allocate(basis,[...weights,10000-weights.reduce((a,b)=>a+b,0)]);
  shares.forEach((p,j)=>{p.amount+=amounts[j];p.detail.push({type:i?'Performance':'Fixed',base:basis,rate:weights[j],amount:amounts[j]})})});
- s.receipts.push({id:uid(),cid:c.id,fee:fee.id,date:d,ref:required(f.ref),method:required(f.method),parts,amount,shares,
+ s.receipts.push({id:uid(),cid:c.id,fee:fee.id,date:d,ref,method:required(f.method),parts,amount,shares,
    ...(f.review==='draft'&&shares.some(p=>p.amount>0)?{approval:'draft'}:{})});return}
  if(action==='adjustment'){
   const receipt=get(s.receipts,f.receipt);
@@ -252,6 +273,7 @@ export function run(s,user,action,f){
   return;
  }
  if(action==='refund'){const orig=get(s.receipts,f.receipt);check(orig.fee===fee.id&&orig.amount>0&&d>=orig.date,'Invalid original receipt');const prior=s.receipts.filter(x=>x.original===orig.id);
+ const ref=cashReference(s,c.id,f,'refund');
  const amount=cents(f.amount),before=-prior.reduce((a,x)=>a+x.amount,0);check(amount>0&&before+amount<=orig.amount,'Refund exceeds payment');
  check(['yes','no'].includes(f.deduct),'Choose a refund treatment');const prorate=(value,part)=>Number((BigInt(value)*BigInt(part)*2n+BigInt(orig.amount))/(2n*BigInt(orig.amount)));const shares=f.deduct==='yes'?orig.shares.map(p=>({id:p.id,amount:-(prorate(p.amount,before+amount)-prorate(p.amount,before)),detail:[]})):[];
  const treatment=f.invoice||'settled';
@@ -259,7 +281,7 @@ export function run(s,user,action,f){
  const reopenedTotal=prior.reduce((sum,row)=>sum+(row.reopened?-row.amount:0),0);
  const restoredFixed=prorate(orig.parts[0],reopenedTotal+amount)-prorate(orig.parts[0],reopenedTotal);
  const reopened=treatment==='reopen'?[restoredFixed,amount-restoredFixed]:undefined;
- s.receipts.push({id:uid(),cid:c.id,fee:fee.id,original:orig.id,date:d,ref:required(f.ref),amount:-amount,parts:[],shares,...(reopened?{reopened}:{})});return}
+ s.receipts.push({id:uid(),cid:c.id,fee:fee.id,original:orig.id,date:d,ref,amount:-amount,parts:[],shares,...(reopened?{reopened}:{})});return}
  throw new Error('Unknown action');
 }
 export function seed(people){

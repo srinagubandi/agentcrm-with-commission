@@ -1,5 +1,11 @@
 # AgentCRM with Commission
 
+## Rehearse recovery
+
+Use Node.js 24 to run `node recovery-copy.js <source SQLite file> <new restore directory>`. The command snapshots the source transactionally, checks the copy's integrity, and clears its sign-in sessions. The destination must be a new directory. Keep recovery copies private because they contain ledger records and account verifiers.
+
+Start a separate test process with `DATA_DIR` pointing at the restore directory and a different `PORT`. Verify all six role sign-ins, compare client balances and partner/owner payout exports with the source, and check a closed period. The live volume remains attached to the existing service during the rehearsal.
+
 ## Start locally
 
 Use Node.js 24. From this folder run npm test, then npm start. Open http://localhost:3000/login. The six synthetic accounts use the private demo login sheet distributed with the original release. New accounts can be added by an agency admin under People.

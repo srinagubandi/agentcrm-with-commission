@@ -8,15 +8,16 @@ import {randomBytes,scryptSync} from 'node:crypto';
 import {once} from 'node:events';
 import net from 'node:net';
 import {skepticChecks} from './skeptic-checks.js';
+import {recoveryCopy} from './recovery-copy.js';
 test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
- const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
+ const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
  for(const p of people){keys[p.id]=randomBytes(20).toString('hex');p.hash=scryptSync(keys[p.id],p.salt,64).toString('hex')}
  await writeFile(join(dir,'demo-users.json'),JSON.stringify(people));
  const listener=net.createServer();listener.listen(0,'127.0.0.1');await once(listener,'listening');const port=listener.address().port;await new Promise(r=>listener.close(r));
  const url='http://127.0.0.1:'+port;let proc;
- async function start(){proc=spawn(process.execPath,['server.js'],{cwd:dir,env:{...process.env,PORT:String(port),NODE_ENV:'test',DATA_DIR:dir},stdio:['ignore','ignore','inherit']});for(let n=0;n<100;n++){try{if((await fetch(url+'/health')).ok)return}catch{}await new Promise(r=>setTimeout(r,50))}throw Error('Startup failed')}
+ async function start(data=dir){proc=spawn(process.execPath,['server.js'],{cwd:dir,env:{...process.env,PORT:String(port),NODE_ENV:'test',DATA_DIR:data},stdio:['ignore','ignore','inherit']});for(let n=0;n<100;n++){try{if((await fetch(url+'/health')).ok)return}catch{}await new Promise(r=>setTimeout(r,50))}throw Error('Startup failed')}
  async function stop(){if(proc&&proc.exitCode===null){const done=once(proc,'exit');proc.kill();await done}}
  try{await start();const cookies={};for(const p of people){const r=await fetch(url+'/login',{method:'POST',body:new URLSearchParams({email:p.email,password:keys[p.id]}),redirect:'manual'});assert.equal(r.status,303);cookies[p.id]=r.headers.get('set-cookie').split(';')[0]}
  const visit=(who,path)=>fetch(url+path,{headers:{cookie:cookies[who]},redirect:'manual'});
@@ -66,6 +67,22 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  assert.equal((await save('partner',{...await fields('partner','/commissions'),action:'approveReceipt',receipt})).status,403);
  assert.equal((await save('admin',{...await fields('admin','/commissions'),action:'approveReceipt',receipt})).status,303);
  assert.match(await(await visit('partner','/reports.csv?report=earnings')).text(),/WEB-DRAFT/);
+ const duplicate={...receiptFields,ref:' web-draft ',amount:'1.00',preview:'yes'};
+ const repeat=await save('admin',{...duplicate,...await fields('admin','/earnings')});
+ assert.equal(repeat.status,400);
+ assert.match(await repeat.text(),/Payment reference is already recorded/);
+ const second={...receiptFields,ref:'COLLECTION-RACE',amount:'1.00'};
+ const [firstReview,secondReview]=await Promise.all([fields('admin','/earnings'),fields('principal','/earnings')]);
+ assert.equal(firstReview.version,secondReview.version);
+ const attempts=await Promise.all([
+   save('admin',{...second,...firstReview}),
+   save('principal',{...second,...secondReview})
+ ]);
+ assert.deepEqual(attempts.map(result=>result.status).sort(),[303,409]);
+ const tracePath='/earnings?invoice='+fee;
+ assert.match(await(await visit('super',tracePath)).text(),/Payment history/);
+ assert.equal((await visit('partner',tracePath)).status,403);
+ assert.equal((await visit('owner',tracePath)).status,403);
  const batch={...await fields('admin','/commissions'),action:'batchPayout',date:'2026-11-20',method:'ACH',rows:'partner,partner,1,WEB-BATCH\nowner,owner,2,WEB-OWNER',return:'/commissions',preview:'yes'};
  const batchPreview=await save('admin',batch);
  assert.equal(batchPreview.status,200);
@@ -103,5 +120,34 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  assert.equal((await visit('partner','/clients?client=unavailable-example')).status,404);
  assert.equal((await visit('admin','/clients?client=alder')).status,200);
  await skepticChecks(t,{visit,fields,save});
+ const comms=await(await visit('admin','/commissions')).text();
+ const payout=comms.match(/<option value="([^"]+)">[^<]*WEB-BATCH[^<]*<\/option>/)[1];
+ const reversal={action:'reversePayout',payout,date:'2026-11-21',reason:'Internal synthetic reconciliation',return:'/commissions'};
+ const reversalPreview=await save('admin',{...await fields('admin','/commissions'),...reversal,preview:'yes'});
+ assert.match(await reversalPreview.text(),/Original payout/);
+ assert.equal((await save('super',{...await fields('super','/reports'),...reversal})).status,403);
+ assert.equal((await save('admin',{...await fields('admin','/commissions'),...reversal})).status,303);
+ const partnerStatement=await(await visit('partner','/commissions')).text();
+ assert.match(partnerStatement,/Reversal of WEB-BATCH/);
+ assert.doesNotMatch(partnerStatement,/Internal synthetic reconciliation/);
+ const reportsBefore=await Promise.all([['admin','balances'],['partner','partner-payments'],['owner','owner-payments']].map(async([actor,report])=>
+   await(await visit(actor,'/reports.json?report='+report)).text()));
+ const restored=join(dir,'rehearsed-restore');
+ await recoveryCopy(join(dir,'agentcrm.sqlite'),restored);
+ await assert.rejects(recoveryCopy(join(dir,'agentcrm.sqlite'),restored),/EEXIST/);
+ await stop();
+ await start(restored);
+ assert.equal((await visit('admin','/')).headers.get('location'),'/login');
+ for(const p of people){
+   const r=await fetch(url+'/login',{method:'POST',body:new URLSearchParams({email:p.email,password:keys[p.id]}),redirect:'manual'});
+   assert.equal(r.status,303);
+   cookies[p.id]=r.headers.get('set-cookie').split(';')[0];
+   assert.equal((await visit(p.id,'/')).status,200);
+ }
+ const reportsAfter=await Promise.all([['admin','balances'],['partner','partner-payments'],['owner','owner-payments']].map(async([actor,report])=>
+   await(await visit(actor,'/reports.json?report='+report)).text()));
+ assert.deepEqual(reportsAfter,reportsBefore);
+ assert.equal((await visit('partner',tracePath)).status,403);
+ assert.match(await(await visit('admin',closePath)).text(),/Settlement/);
  }finally{await stop();await rm(dir,{recursive:true,force:true})}
 });

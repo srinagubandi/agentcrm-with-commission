@@ -1,6 +1,6 @@
 import { esc } from './views.js';
 const usd = n => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);
-const financialActions = ['fee','receipt','refund','payout','expense','terms','adjustment','closeMonth','batchPayout','approveReceipt'];
+const financialActions = ['fee','receipt','refund','payout','reversePayout','expense','terms','adjustment','closeMonth','batchPayout','approveReceipt'];
 export function hasPreview(action) {return financialActions.includes(action)}
 export function previewPage(state, data) {
   const names=new Map(state.people.map(p=>[p.id,p.name]));
@@ -16,6 +16,11 @@ export function previewPage(state, data) {
     if(r.original)lines.push(['Invoice treatment',r.reopened?'Reopen refunded amount':'Keep invoice settled']);
     if(r.parts.length) lines.push(['Retainer allocation',usd(r.parts[0])],['Performance allocation',usd(r.parts[1])]);
     for(const p of r.shares)lines.push([names.get(p.id),usd(p.amount)]);
+  } else if (data.action==='reversePayout') {
+    const p=state.payouts.at(-1);
+    const original=state.payouts.find(row=>row.id===p.reverses);
+    lines=[['Original payout',original.ref],['Recipient',names.get(p.person)],['Reversal date',p.date],
+      ['Ledger adjustment',usd(p.amount)],['Reason',p.reason],['Effect','Records a ledger correction only. Verify cash recovery separately.']];
   } else if (data.action==='payout') {
     const p=state.payouts.at(-1);
     lines=[['Recipient',names.get(p.person)],['Payment method',p.method],['Reference',p.ref],

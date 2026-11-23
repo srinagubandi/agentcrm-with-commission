@@ -90,6 +90,7 @@ http.createServer(async(req,res)=>{
  if((['/people','/settings','/earnings'].includes(path)&&!global)||(['/owners'].includes(path)&&!global&&!u.roles.includes('owner'))||(['/sales','/clients','/commissions'].includes(path)&&!global&&!u.roles.includes('partner')))return reply(res,403,'Permission denied');
  const client=url.searchParams.get('client');
  if(path==='/clients'&&client!==null&&!visibleClients(state,u).some(record=>record.id===client))return reply(res,404,'Client unavailable');
+ if(path==='/earnings'&&url.searchParams.has('invoice')&&!state.fees.some(fee=>fee.id===url.searchParams.get('invoice')))return reply(res,404,'Invoice unavailable');
  return reply(res,200,page(state,u,path,{csrf:session.csrf,version:record.version,saved:url.searchParams.has('saved'),client,query:url.searchParams,audit:admin&&path==='/settings'?db.prepare('SELECT person,event,at FROM audit ORDER BY id DESC LIMIT 100').all():[]}));
  }catch(e){reply(res,400,'<!doctype html><html lang="en"><title>Entry needs attention</title><link rel="stylesheet" href="/style.css"><main><h1>Entry needs attention</h1><p>'+esc(e.message)+'</p><p>Use your browser’s Back button to revise this entry.</p><a href="/">Overview</a></main></html>')}
 }).listen(Number(process.env.PORT||3000),'0.0.0.0');
