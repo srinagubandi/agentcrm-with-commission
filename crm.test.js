@@ -3,9 +3,69 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {availablePayout,invoiceBalance,seed,run,owners,performance,allocate} from './model.js';
 import {closeSummary,closeExport} from './close-summary.js';
-import {paymentTrace} from './payment-trace.js';
+import {paymentTrace,payoutAllocationExport} from './payment-trace.js';
+import {readReport} from './report-engine.js';
 const people=()=>JSON.parse(readFileSync(new URL('./demo-users.json',import.meta.url))).map(({id,name,roles})=>({id,name,roles}));
 const fixture=()=>seed(people());
+
+test('skeptic pilot: two clients reconcile partial collections, spanning payouts, later correction, reversal and close',()=>{
+ const active=people();
+ const s={people:active,clients:[],deals:[],expenses:[],receipts:[],payouts:[],fees:[],day:15};
+ const admin=active.find(p=>p.id==='admin');
+ const partner=active.find(p=>p.id==='partner');
+ const owner=active.find(p=>p.id==='owner');
+ const finance=(action,fields)=>run(s,admin,action,fields);
+ const invoiceRows=[['Pilot Alder','owner,50','600.00'],['Pilot Harbor','super,75','1000.00']].map(([name,owners,amount],index)=>{
+   finance('client',{name});
+   const client=s.clients.at(-1).id;
+   finance('terms',{client,date:'2026-10-01',partners:'partner,10\npartner2,5',owners});
+   finance('fee',{client,date:'2026-10-03',fixed:'1000.00',ref:'PILOT-INVOICE-'+index});
+   const fee=s.fees.at(-1);
+   finance('receipt',{client,fee:fee.id,date:'2026-10-05',amount,method:'ACH',ref:'PILOT-CASH-'+index,review:'draft'});
+   return {client,fee,receipt:s.receipts.at(-1)};
+ });
+ const [alder,harbor]=invoiceRows;
+ assert.deepEqual(invoiceBalance(s,alder.fee),[40000,0]);
+ assert.equal(availablePayout(s,partner.id,'partner','2026-11-20'),0);
+ for(const {receipt} of invoiceRows)finance('approveReceipt',{receipt:receipt.id});
+ assert.equal(availablePayout(s,partner.id,'partner','2026-11-20'),16000);
+ finance('batchPayout',{date:'2026-11-20',method:'ACH',rows:'partner,partner,120.00,PILOT-MORGAN\npartner2,partner,35.00,PILOT-JULES'});
+ const [original,other]=structuredClone(s.payouts);
+ const applied=payout=>payout.applications.map(row=>[row.fee,row.amount]);
+ assert.deepEqual(applied(original),[[alder.fee.id,6000],[harbor.fee.id,6000]]);
+ assert.deepEqual(applied(other),[[alder.fee.id,3000],[harbor.fee.id,500]]);
+ for(const {client} of invoiceRows)finance('closeMonth',{client,month:'2026-10'});
+ const closed=structuredClone(s.closes);
+ assert.deepEqual(closed.map(row=>[row.settled.available,row.settled.shares[0].amount,row.settled.reserve]),[[51000,25500,25500],[85000,63750,21250]]);
+ finance('adjustment',{client:alder.client,fee:alder.fee.id,receipt:alder.receipt.id,date:'2026-11-21',
+   person:partner.id,amount:'10.00',direction:'debit',reason:'Pilot adjustment',ref:'PILOT-DEBIT'});
+ finance('reversePayout',{payout:original.id,date:'2026-11-21',reason:'Pilot recovery'});
+ assert.deepEqual(s.payouts[0],original);
+ assert.deepEqual(s.payouts[1],other);
+ assert.deepEqual(applied(s.payouts.at(-1)),[[alder.fee.id,-6000],[harbor.fee.id,-6000]]);
+ assert.deepEqual(s.closes,closed);
+ assert.equal(availablePayout(s,partner.id,'partner','2026-11-21'),15000);
+ assert.deepEqual(paymentTrace(s,alder.fee).payouts.map(p=>[p.attributed,p.allocationBasis]),[[6000,'Recorded'],[3000,'Recorded'],[-6000,'Recorded']]);
+ assert.equal(readReport(s,partner,'partner-payments').rows.reduce((sum,row)=>sum+row.at(-1),0),0);
+ assert.deepEqual(readReport(s,owner,'owner-earnings').rows.map(row=>row.at(-1)),[25500,500]);
+ const rows=payoutAllocationExport(s).rows;
+ assert.equal(rows.length,6);
+ assert.equal(rows.reduce((sum,row)=>sum+row.at(-1),0),3500);
+});
+
+test('skeptic: backdated payouts reserve fixed future applications and legacy payouts stay estimates',()=>{
+ const s=fixture(),admin=s.people[0];
+ delete s.payouts[0].applications;
+ const fields={person:'partner',kind:'partner',amount:'300.00',method:'ACH'};
+ run(s,admin,'payout',{...fields,date:'2026-11-20',ref:'BOOKED-FUTURE'});
+ const booked=structuredClone(s.payouts.at(-1));
+ assert.deepEqual(booked.applications.map(row=>row.amount),[30000]);
+ run(s,admin,'payout',{...fields,amount:'250.00',date:'2026-11-18',ref:'BACKDATED'});
+ assert.deepEqual(s.payouts[1],booked);
+ assert.deepEqual(s.payouts.at(-1).applications.map(row=>row.amount),[10000,15000]);
+ const trace=paymentTrace(s,s.fees[0]);
+ assert.deepEqual(trace.payouts.map(row=>row.allocationBasis),['Historical estimate','Recorded','Recorded']);
+});
 
 test('skeptic: reversing an eligible payout preserves the original and restores only its amount',()=>{
  const s=fixture(),admin=s.people[0],original=structuredClone(s.payouts[0]);

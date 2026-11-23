@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.4 — recorded payout allocations and review queue
+
+| Workflow | Change | Skeptic evidence |
+| --- | --- | --- |
+| Partner payout allocation | Each new partner payout stores the approved collection or correction references and the exact amount applied to each. Allocation uses the oldest available approved commission first. | A two-invoice payout reconciled to the cent. A backdated entry respected allocations already recorded for a later payout. |
+| Reversal and history | A reversal mirrors the original recorded allocation with opposite signs. Existing payouts without saved applications retain the historical estimate label. | A later commission correction and a reversal preserved the original payout and both closed settlement records. Historical records still load and reconcile. |
+| Review and audit | The agency review queue shows held, approved, paid, and ready amounts by partner. Batch preview shows each recipient's balance before the batch, selected amount, and remaining amount. A scoped CSV lists recorded allocations and reversals. | An invalid second row left the batch unsaved. The CSV tied reversals to their original payouts. Both partners and the client-owner account were denied the agency export. |
+
+### Month-end pilot and release verification
+
+- The synthetic two-client pilot used a 600-dollar partial collection and a 1,000-dollar collection. A 120-dollar payout applied 60 dollars to each invoice. Another partner received 35 dollars. The pilot closed both client periods, posted a later 10-dollar correction, reversed the spanning payout, and reconciled both owner distributions and the payout export.
+- The full suite passed 10,875 tests, including 450 HTTP cases. The browser rerun passed 450 role checks, 12 finance checks and six desktop/mobile checks. The numbered evidence is in `skeptic-loops-0.5.4.jsonl`.
+- The database schema is unchanged. The CSV includes recorded applications. Owner distributions continue to reconcile by client and month.
+
 ## 0.5.3 — payment trace, duplicate protection, and payout reversals
 
 | Workflow | Change | Skeptic evidence |

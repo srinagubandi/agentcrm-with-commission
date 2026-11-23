@@ -10,7 +10,7 @@ import net from 'node:net';
 import {skepticChecks} from './skeptic-checks.js';
 import {recoveryCopy} from './recovery-copy.js';
 test('six authenticated roles, workflow writes, privacy, replay protection and restart',async(t)=>{
- const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
+ const dir=await mkdtemp(join(process.cwd(),'crm-test-'));const files=['server.js','model.js','payout-balance.js','payout-allocations.js','payment-trace.js','close-summary.js','views.js','report-engine.js','analysis-tools.js','analysis-config.js','saved-views.js','report-catalog.js','preview.js','administration.js','style.css','package.json'];
  for(const f of files)await copyFile(new URL(f,import.meta.url),join(dir,f));
  const people=JSON.parse(await readFile(new URL('./demo-users.json',import.meta.url)));const keys={};
  for(const p of people){keys[p.id]=randomBytes(20).toString('hex');p.hash=scryptSync(keys[p.id],p.salt,64).toString('hex')}
@@ -86,7 +86,10 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  const batch={...await fields('admin','/commissions'),action:'batchPayout',date:'2026-11-20',method:'ACH',rows:'partner,partner,1,WEB-BATCH\nowner,owner,2,WEB-OWNER',return:'/commissions',preview:'yes'};
  const batchPreview=await save('admin',batch);
  assert.equal(batchPreview.status,200);
- assert.match(await batchPreview.text(),/\$3\.00/);
+ const previewText=await batchPreview.text();
+ assert.match(previewText,/\$3\.00/);
+ assert.match(previewText,/Recipient reconciliation · Morgan Reed \(partner\)/);
+ assert.match(previewText,/Recipient reconciliation · Sam Cole \(owner\)/);
  const invalidBatch=await save('admin',{...batch,rows:batch.rows+'\npartner,partner,999999,FAIL-BATCH'});
  assert.equal(invalidBatch.status,400);
  const correctionForm=await invalidBatch.text();
@@ -130,6 +133,16 @@ test('six authenticated roles, workflow writes, privacy, replay protection and r
  const partnerStatement=await(await visit('partner','/commissions')).text();
  assert.match(partnerStatement,/Reversal of WEB-BATCH/);
  assert.doesNotMatch(partnerStatement,/Internal synthetic reconciliation/);
+ assert.doesNotMatch(partnerStatement,/Payout review queue|Download recorded payout allocations/);
+ assert.match(await(await visit('admin','/commissions')).text(),/Payout review queue/);
+ const exportPath='/commissions/allocations.csv';
+ for(const who of ['partner','partner2','owner'])assert.equal((await visit(who,exportPath)).status,403);
+ const audit=await visit('super',exportPath);
+ assert.equal(audit.status,200);
+ const auditText=await audit.text();
+ assert.match(auditText,/"Reversal of WEB-BATCH","Reversal","WEB-BATCH"/);
+ assert.match(auditText,/"-1\.00"/);
+ assert.doesNotMatch(auditText,/Internal synthetic reconciliation/);
  const reportsBefore=await Promise.all([['admin','balances'],['partner','partner-payments'],['owner','owner-payments']].map(async([actor,report])=>
    await(await visit(actor,'/reports.json?report='+report)).text()));
  const restored=join(dir,'rehearsed-restore');
