@@ -133,3 +133,12 @@ The release adds two production fixes and 9,999 distinct synthetic regression ca
 
 
 Stitch review: 100 browser checks across ten screen contexts. Monthly earnings now includes a client and period selector, collected fee composition and a recipient breakdown. See STITCH-100-PLAN.md, STITCH-100-RESULTS.jsonl and STITCH-HANDOFF.md. The checks verify selected layout, content and workflow properties. Full visual parity is outstanding.
+
+## 0.5.6 — Fiscal Trust reconciliation and account controls
+
+* Compared the official color lists in both Stitch exports and imported their shared values. Applied the supplied Inter typeface and Material Symbols to the workspace.
+* Used the second export for monthly earnings on desktop and mobile. Added period-level invoicing, refunds, commissions, retained cash, a scoped history and reconciliation proof. The receipt form uses the selected client.
+* Added a profile page for each role with photo upload, replacement and removal. The browser crops to a 192px square. SQLite stores a private normalized image per account separately from the financial record.
+* Added session controls to standalone authenticated HTML pages including previews, print views and browser error responses. The sign-out action expires the server session.
+* Browser verification covered selecting a synthetic image, saving it, retrieving the 192px avatar on earnings, checking canvas and retained-card colors and signing out. Integration checks cover cross-account photo isolation, invalid uploads, CSRF, removal and profile access for all six demo accounts.
+* The design exports include illustrative ledger stamps, workflow actions and account-specific sample data. Pixel-level equivalence across all screens remains unverified.

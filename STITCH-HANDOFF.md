@@ -35,3 +35,7 @@ Deliver desktop, tablet and 320/390px phone frames. Give each data table either 
 ## Return package
 
 Return editable Stitch screens, one HTML and PNG per approved frame, the Fiscal Trust tokens, local asset filenames and a screen-to-route index. Mark the canonical frame when two original screens depict the same route. Include the exact screenshot width, height, browser zoom, font settings and synthetic data for repeatable overlay comparisons. Label proposed interactions with their intended destination and required role.
+
+## Round two implementation
+
+The newer export supplies the canonical 1440px and 390px earnings references. Both exports contain the same Fiscal Trust palette. Version 0.5.6 adds the fiscal period summary, reconciliation proof and receipt entry in the earnings column, along with private profile photos and session controls. Future design deliverables should include the avatar upload, removal, validation and expired-session states. A complete pixel-overlay acceptance review of all original screens remains open.
