@@ -1,0 +1,918 @@
+{"suite":"browser","id":1,"role":"admin","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":2,"role":"admin","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":3,"role":"admin","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":4,"role":"admin","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":5,"role":"admin","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":6,"role":"admin","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":7,"role":"admin","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":8,"role":"admin","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":9,"role":"admin","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":10,"role":"admin","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":11,"role":"admin","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":12,"role":"admin","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":13,"role":"admin","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":14,"role":"admin","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":15,"role":"admin","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":16,"role":"admin","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":17,"role":"admin","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":18,"role":"admin","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":19,"role":"admin","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":20,"role":"admin","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":21,"role":"admin","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":22,"role":"admin","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":23,"role":"admin","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":24,"role":"admin","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":25,"role":"admin","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":26,"role":"admin","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":27,"role":"admin","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":28,"role":"admin","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":29,"role":"admin","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":30,"role":"admin","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":31,"role":"admin","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":32,"role":"admin","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":33,"role":"admin","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":34,"role":"admin","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":35,"role":"admin","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":36,"role":"admin","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":37,"role":"admin","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":38,"role":"admin","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":39,"role":"admin","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":40,"role":"admin","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":41,"role":"admin","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":42,"role":"admin","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":43,"role":"admin","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":44,"role":"admin","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":45,"role":"admin","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":46,"role":"admin","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":47,"role":"admin","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":48,"role":"admin","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":49,"role":"admin","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":50,"role":"admin","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":51,"role":"admin","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":52,"role":"admin","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":53,"role":"admin","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":54,"role":"admin","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":55,"role":"admin","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":56,"role":"admin","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":57,"role":"admin","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":58,"role":"admin","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":59,"role":"admin","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":60,"role":"admin","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":61,"role":"admin","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":62,"role":"admin","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":63,"role":"admin","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":64,"role":"admin","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":65,"role":"admin","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":66,"role":"admin","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":67,"role":"admin","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":68,"role":"admin","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":69,"role":"admin","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":70,"role":"admin","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":71,"role":"admin","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":72,"role":"admin","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":73,"role":"admin","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":74,"role":"admin","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":75,"role":"admin","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":76,"role":"partner","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":77,"role":"partner","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":78,"role":"partner","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":79,"role":"partner","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":80,"role":"partner","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":81,"role":"partner","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":82,"role":"partner","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":83,"role":"partner","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":84,"role":"partner","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":85,"role":"partner","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":86,"role":"partner","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":87,"role":"partner","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":88,"role":"partner","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":89,"role":"partner","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":90,"role":"partner","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":91,"role":"partner","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":92,"role":"partner","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":93,"role":"partner","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":94,"role":"partner","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":95,"role":"partner","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":96,"role":"partner","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":97,"role":"partner","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":98,"role":"partner","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":99,"role":"partner","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":100,"role":"partner","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":101,"role":"partner","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":102,"role":"partner","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":103,"role":"partner","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":104,"role":"partner","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":105,"role":"partner","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":106,"role":"partner","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":107,"role":"partner","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":108,"role":"partner","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":109,"role":"partner","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":110,"role":"partner","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":111,"role":"partner","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":112,"role":"partner","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":113,"role":"partner","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":114,"role":"partner","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":115,"role":"partner","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":116,"role":"partner","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":117,"role":"partner","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":118,"role":"partner","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":119,"role":"partner","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":120,"role":"partner","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":121,"role":"partner","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":122,"role":"partner","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":123,"role":"partner","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":124,"role":"partner","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":125,"role":"partner","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":126,"role":"partner","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":127,"role":"partner","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":128,"role":"partner","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":129,"role":"partner","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":130,"role":"partner","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":131,"role":"partner","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":132,"role":"partner","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":133,"role":"partner","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":134,"role":"partner","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":135,"role":"partner","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":136,"role":"partner","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":137,"role":"partner","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":138,"role":"partner","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":139,"role":"partner","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":140,"role":"partner","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":141,"role":"partner","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":142,"role":"partner","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":143,"role":"partner","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":144,"role":"partner","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":145,"role":"partner","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":146,"role":"partner","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":147,"role":"partner","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":148,"role":"partner","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":149,"role":"partner","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":150,"role":"partner","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":151,"role":"partner2","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":152,"role":"partner2","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":153,"role":"partner2","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":154,"role":"partner2","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":155,"role":"partner2","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":156,"role":"partner2","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":157,"role":"partner2","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":158,"role":"partner2","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":159,"role":"partner2","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":160,"role":"partner2","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":161,"role":"partner2","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":162,"role":"partner2","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":163,"role":"partner2","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":164,"role":"partner2","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":165,"role":"partner2","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":166,"role":"partner2","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":167,"role":"partner2","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":168,"role":"partner2","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":169,"role":"partner2","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":170,"role":"partner2","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":171,"role":"partner2","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":172,"role":"partner2","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":173,"role":"partner2","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":174,"role":"partner2","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":175,"role":"partner2","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":176,"role":"partner2","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":177,"role":"partner2","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":178,"role":"partner2","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":179,"role":"partner2","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":180,"role":"partner2","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":181,"role":"partner2","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":182,"role":"partner2","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":183,"role":"partner2","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":184,"role":"partner2","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":185,"role":"partner2","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":186,"role":"partner2","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":187,"role":"partner2","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":188,"role":"partner2","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":189,"role":"partner2","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":190,"role":"partner2","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":191,"role":"partner2","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":192,"role":"partner2","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":193,"role":"partner2","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":194,"role":"partner2","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":195,"role":"partner2","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":196,"role":"partner2","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":197,"role":"partner2","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":198,"role":"partner2","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":199,"role":"partner2","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":200,"role":"partner2","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":201,"role":"partner2","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":202,"role":"partner2","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":203,"role":"partner2","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":204,"role":"partner2","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":205,"role":"partner2","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":206,"role":"partner2","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":207,"role":"partner2","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":208,"role":"partner2","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":209,"role":"partner2","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":210,"role":"partner2","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":211,"role":"partner2","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":212,"role":"partner2","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":213,"role":"partner2","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":214,"role":"partner2","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":215,"role":"partner2","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":216,"role":"partner2","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":217,"role":"partner2","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":218,"role":"partner2","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":219,"role":"partner2","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":220,"role":"partner2","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":221,"role":"partner2","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":222,"role":"partner2","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":223,"role":"partner2","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":224,"role":"partner2","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":225,"role":"partner2","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":226,"role":"owner","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":227,"role":"owner","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":228,"role":"owner","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":229,"role":"owner","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":230,"role":"owner","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":231,"role":"owner","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":232,"role":"owner","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":233,"role":"owner","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":234,"role":"owner","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":235,"role":"owner","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":236,"role":"owner","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":237,"role":"owner","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":238,"role":"owner","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":239,"role":"owner","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":240,"role":"owner","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":241,"role":"owner","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":242,"role":"owner","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":243,"role":"owner","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":244,"role":"owner","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":245,"role":"owner","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":246,"role":"owner","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":247,"role":"owner","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":248,"role":"owner","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":249,"role":"owner","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":250,"role":"owner","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":251,"role":"owner","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":252,"role":"owner","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":253,"role":"owner","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":254,"role":"owner","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":255,"role":"owner","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":256,"role":"owner","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":257,"role":"owner","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":258,"role":"owner","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":259,"role":"owner","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":260,"role":"owner","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":261,"role":"owner","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":262,"role":"owner","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":263,"role":"owner","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":264,"role":"owner","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":265,"role":"owner","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":266,"role":"owner","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":267,"role":"owner","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":268,"role":"owner","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":269,"role":"owner","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":270,"role":"owner","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":271,"role":"owner","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":272,"role":"owner","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":273,"role":"owner","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":274,"role":"owner","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":275,"role":"owner","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":276,"role":"owner","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":277,"role":"owner","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":278,"role":"owner","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":279,"role":"owner","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":280,"role":"owner","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":281,"role":"owner","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":282,"role":"owner","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":283,"role":"owner","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":284,"role":"owner","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":285,"role":"owner","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":286,"role":"owner","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":287,"role":"owner","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":288,"role":"owner","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":289,"role":"owner","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":290,"role":"owner","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":291,"role":"owner","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":292,"role":"owner","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":293,"role":"owner","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":294,"role":"owner","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":295,"role":"owner","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":296,"role":"owner","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":297,"role":"owner","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":298,"role":"owner","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":299,"role":"owner","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":300,"role":"owner","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":301,"role":"super","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":302,"role":"super","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":303,"role":"super","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":304,"role":"super","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":305,"role":"super","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":306,"role":"super","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":307,"role":"super","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":308,"role":"super","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":309,"role":"super","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":310,"role":"super","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":311,"role":"super","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":312,"role":"super","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":313,"role":"super","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":314,"role":"super","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":315,"role":"super","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":316,"role":"super","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":317,"role":"super","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":318,"role":"super","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":319,"role":"super","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":320,"role":"super","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":321,"role":"super","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":322,"role":"super","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":323,"role":"super","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":324,"role":"super","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":325,"role":"super","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":326,"role":"super","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":327,"role":"super","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":328,"role":"super","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":329,"role":"super","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":330,"role":"super","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":331,"role":"super","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":332,"role":"super","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":333,"role":"super","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":334,"role":"super","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":335,"role":"super","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":336,"role":"super","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":337,"role":"super","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":338,"role":"super","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":339,"role":"super","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":340,"role":"super","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":341,"role":"super","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":342,"role":"super","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":343,"role":"super","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":344,"role":"super","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":345,"role":"super","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":346,"role":"super","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":347,"role":"super","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":348,"role":"super","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":349,"role":"super","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":350,"role":"super","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":351,"role":"super","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":352,"role":"super","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":353,"role":"super","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":354,"role":"super","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":355,"role":"super","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":356,"role":"super","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":357,"role":"super","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":358,"role":"super","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":359,"role":"super","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":360,"role":"super","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":361,"role":"super","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":362,"role":"super","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":363,"role":"super","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":364,"role":"super","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":365,"role":"super","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":366,"role":"super","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":367,"role":"super","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":368,"role":"super","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":369,"role":"super","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":370,"role":"super","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":371,"role":"super","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":372,"role":"super","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":373,"role":"super","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":374,"role":"super","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":375,"role":"super","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":376,"role":"principal","scenario":"Signed-in identity","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":377,"role":"principal","scenario":"Open Overview","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":378,"role":"principal","scenario":"Open Sales pipeline","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":379,"role":"principal","scenario":"Open Clients","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":380,"role":"principal","scenario":"Open Monthly earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":381,"role":"principal","scenario":"Open Commissions","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":382,"role":"principal","scenario":"Open Owner shares","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":383,"role":"principal","scenario":"Open People","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":384,"role":"principal","scenario":"Open Settings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":385,"role":"principal","scenario":"Open Reports","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":386,"role":"principal","scenario":"Allowed report menu","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":387,"role":"principal","scenario":"Report panel invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":388,"role":"principal","scenario":"Print link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":389,"role":"principal","scenario":"JSON link invoices","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":390,"role":"principal","scenario":"Report panel balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":391,"role":"principal","scenario":"Print link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":392,"role":"principal","scenario":"JSON link balances","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":393,"role":"principal","scenario":"Report panel collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":394,"role":"principal","scenario":"Print link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":395,"role":"principal","scenario":"JSON link collections","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":396,"role":"principal","scenario":"Report panel allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":397,"role":"principal","scenario":"Print link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":398,"role":"principal","scenario":"JSON link allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":399,"role":"principal","scenario":"Report panel refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":400,"role":"principal","scenario":"Print link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":401,"role":"principal","scenario":"JSON link refunds","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":402,"role":"principal","scenario":"Report panel earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":403,"role":"principal","scenario":"Print link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":404,"role":"principal","scenario":"JSON link earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":405,"role":"principal","scenario":"Report panel calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":406,"role":"principal","scenario":"Print link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":407,"role":"principal","scenario":"JSON link calculations","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":408,"role":"principal","scenario":"Report panel partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":409,"role":"principal","scenario":"Print link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":410,"role":"principal","scenario":"JSON link partner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":411,"role":"principal","scenario":"Report panel partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":412,"role":"principal","scenario":"Print link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":413,"role":"principal","scenario":"JSON link partner-month","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":414,"role":"principal","scenario":"Report panel scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":415,"role":"principal","scenario":"Print link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":416,"role":"principal","scenario":"JSON link scheduled","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":417,"role":"principal","scenario":"Report panel owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":418,"role":"principal","scenario":"Print link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":419,"role":"principal","scenario":"JSON link owner-earnings","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":420,"role":"principal","scenario":"Report panel owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":421,"role":"principal","scenario":"Print link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":422,"role":"principal","scenario":"JSON link owner-payments","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":423,"role":"principal","scenario":"Report panel reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":424,"role":"principal","scenario":"Print link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":425,"role":"principal","scenario":"JSON link reserves","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":426,"role":"principal","scenario":"Report panel losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":427,"role":"principal","scenario":"Print link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":428,"role":"principal","scenario":"JSON link losses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":429,"role":"principal","scenario":"Report panel expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":430,"role":"principal","scenario":"Print link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":431,"role":"principal","scenario":"JSON link expenses","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":432,"role":"principal","scenario":"Report panel followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":433,"role":"principal","scenario":"Print link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":434,"role":"principal","scenario":"JSON link followups","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":435,"role":"principal","scenario":"Report panel stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":436,"role":"principal","scenario":"Print link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":437,"role":"principal","scenario":"JSON link stages","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":438,"role":"principal","scenario":"Report panel agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":439,"role":"principal","scenario":"Print link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":440,"role":"principal","scenario":"JSON link agreements","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":441,"role":"principal","scenario":"Report panel tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":442,"role":"principal","scenario":"Print link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":443,"role":"principal","scenario":"JSON link tiers","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":444,"role":"principal","scenario":"Report panel owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":445,"role":"principal","scenario":"Print link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":446,"role":"principal","scenario":"JSON link owner-terms","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":447,"role":"principal","scenario":"Save report view using form","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":448,"role":"principal","scenario":"Saved view persists after browser reload","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":449,"role":"principal","scenario":"Sign out returns to sign-in","result":"pass","release":"0.5.4"}
+{"suite":"browser","id":450,"role":"principal","scenario":"Signed-out report navigation returns to sign-in","result":"pass","release":"0.5.4"}
+{"id":1,"role":"admin","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":2,"role":"admin","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":3,"role":"admin","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":4,"role":"admin","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":5,"role":"admin","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":6,"role":"admin","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":7,"role":"admin","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":8,"role":"admin","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":9,"role":"admin","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":10,"role":"admin","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":11,"role":"admin","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":12,"role":"admin","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":13,"role":"admin","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":14,"role":"admin","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":15,"role":"admin","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":16,"role":"admin","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":17,"role":"admin","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":18,"role":"admin","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":19,"role":"admin","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":20,"role":"admin","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":21,"role":"admin","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":22,"role":"admin","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":23,"role":"admin","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":24,"role":"admin","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":25,"role":"admin","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":26,"role":"admin","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":27,"role":"admin","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":28,"role":"admin","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":29,"role":"admin","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":30,"role":"admin","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":31,"role":"admin","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":32,"role":"admin","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":33,"role":"admin","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":34,"role":"admin","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":35,"role":"admin","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":36,"role":"admin","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":37,"role":"admin","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":38,"role":"admin","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":39,"role":"admin","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":40,"role":"admin","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":41,"role":"admin","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":42,"role":"admin","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":43,"role":"admin","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":44,"role":"admin","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":45,"role":"admin","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":46,"role":"admin","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":47,"role":"admin","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":48,"role":"admin","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":49,"role":"admin","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":50,"role":"admin","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":51,"role":"admin","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":52,"role":"admin","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":53,"role":"admin","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":54,"role":"admin","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":55,"role":"admin","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":56,"role":"admin","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":57,"role":"admin","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":58,"role":"admin","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":59,"role":"admin","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":60,"role":"admin","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":61,"role":"admin","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":62,"role":"admin","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":63,"role":"admin","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":64,"role":"admin","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":65,"role":"admin","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":66,"role":"admin","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":67,"role":"admin","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":68,"role":"admin","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":69,"role":"admin","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":70,"role":"admin","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":71,"role":"admin","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":72,"role":"admin","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":73,"role":"admin","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":74,"role":"admin","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":75,"role":"admin","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"id":76,"role":"partner","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":77,"role":"partner","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":78,"role":"partner","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":79,"role":"partner","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":80,"role":"partner","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":81,"role":"partner","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":82,"role":"partner","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":83,"role":"partner","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":84,"role":"partner","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":85,"role":"partner","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":86,"role":"partner","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":87,"role":"partner","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":88,"role":"partner","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":89,"role":"partner","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":90,"role":"partner","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":91,"role":"partner","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":92,"role":"partner","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":93,"role":"partner","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":94,"role":"partner","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":95,"role":"partner","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":96,"role":"partner","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":97,"role":"partner","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":98,"role":"partner","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":99,"role":"partner","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":100,"role":"partner","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":101,"role":"partner","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":102,"role":"partner","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":103,"role":"partner","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":104,"role":"partner","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":105,"role":"partner","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":106,"role":"partner","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":107,"role":"partner","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":108,"role":"partner","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":109,"role":"partner","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":110,"role":"partner","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":111,"role":"partner","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":112,"role":"partner","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":113,"role":"partner","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":114,"role":"partner","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":115,"role":"partner","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":116,"role":"partner","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":117,"role":"partner","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":118,"role":"partner","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":119,"role":"partner","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":120,"role":"partner","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":121,"role":"partner","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":122,"role":"partner","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":123,"role":"partner","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":124,"role":"partner","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":125,"role":"partner","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":126,"role":"partner","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":127,"role":"partner","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":128,"role":"partner","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":129,"role":"partner","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":130,"role":"partner","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":131,"role":"partner","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":132,"role":"partner","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":133,"role":"partner","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":134,"role":"partner","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":135,"role":"partner","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":136,"role":"partner","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":137,"role":"partner","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":138,"role":"partner","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":139,"role":"partner","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":140,"role":"partner","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":141,"role":"partner","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":142,"role":"partner","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":143,"role":"partner","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":144,"role":"partner","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":145,"role":"partner","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":146,"role":"partner","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":147,"role":"partner","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":148,"role":"partner","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":149,"role":"partner","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":150,"role":"partner","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"id":151,"role":"partner2","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":152,"role":"partner2","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":153,"role":"partner2","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":154,"role":"partner2","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":155,"role":"partner2","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":156,"role":"partner2","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":157,"role":"partner2","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":158,"role":"partner2","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":159,"role":"partner2","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":160,"role":"partner2","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":161,"role":"partner2","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":162,"role":"partner2","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":163,"role":"partner2","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":164,"role":"partner2","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":165,"role":"partner2","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":166,"role":"partner2","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":167,"role":"partner2","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":168,"role":"partner2","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":169,"role":"partner2","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":170,"role":"partner2","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":171,"role":"partner2","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":172,"role":"partner2","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":173,"role":"partner2","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":174,"role":"partner2","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":175,"role":"partner2","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":176,"role":"partner2","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":177,"role":"partner2","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":178,"role":"partner2","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":179,"role":"partner2","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":180,"role":"partner2","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":181,"role":"partner2","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":182,"role":"partner2","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":183,"role":"partner2","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":184,"role":"partner2","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":185,"role":"partner2","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":186,"role":"partner2","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":187,"role":"partner2","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":188,"role":"partner2","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":189,"role":"partner2","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":190,"role":"partner2","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":191,"role":"partner2","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":192,"role":"partner2","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":193,"role":"partner2","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":194,"role":"partner2","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":195,"role":"partner2","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":196,"role":"partner2","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":197,"role":"partner2","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":198,"role":"partner2","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":199,"role":"partner2","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":200,"role":"partner2","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":201,"role":"partner2","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":202,"role":"partner2","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":203,"role":"partner2","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":204,"role":"partner2","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":205,"role":"partner2","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":206,"role":"partner2","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":207,"role":"partner2","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":208,"role":"partner2","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":209,"role":"partner2","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":210,"role":"partner2","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":211,"role":"partner2","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":212,"role":"partner2","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":213,"role":"partner2","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":214,"role":"partner2","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":215,"role":"partner2","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":216,"role":"partner2","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":217,"role":"partner2","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":218,"role":"partner2","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":219,"role":"partner2","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":220,"role":"partner2","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":221,"role":"partner2","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":222,"role":"partner2","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":223,"role":"partner2","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":224,"role":"partner2","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":225,"role":"partner2","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"id":226,"role":"owner","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":227,"role":"owner","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":228,"role":"owner","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":229,"role":"owner","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":230,"role":"owner","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":231,"role":"owner","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":232,"role":"owner","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":233,"role":"owner","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":234,"role":"owner","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":235,"role":"owner","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":236,"role":"owner","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":237,"role":"owner","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":238,"role":"owner","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":239,"role":"owner","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":240,"role":"owner","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":241,"role":"owner","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":242,"role":"owner","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":243,"role":"owner","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":244,"role":"owner","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":245,"role":"owner","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":246,"role":"owner","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":247,"role":"owner","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":248,"role":"owner","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":249,"role":"owner","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":250,"role":"owner","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":251,"role":"owner","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":252,"role":"owner","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":253,"role":"owner","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":254,"role":"owner","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":255,"role":"owner","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":256,"role":"owner","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":257,"role":"owner","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":258,"role":"owner","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":259,"role":"owner","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":260,"role":"owner","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":261,"role":"owner","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":262,"role":"owner","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":263,"role":"owner","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":264,"role":"owner","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":265,"role":"owner","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":266,"role":"owner","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":267,"role":"owner","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":268,"role":"owner","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":269,"role":"owner","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":270,"role":"owner","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":271,"role":"owner","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":272,"role":"owner","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":273,"role":"owner","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":274,"role":"owner","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":275,"role":"owner","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":276,"role":"owner","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":277,"role":"owner","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":278,"role":"owner","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":279,"role":"owner","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":280,"role":"owner","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":281,"role":"owner","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":282,"role":"owner","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":283,"role":"owner","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":284,"role":"owner","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":285,"role":"owner","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":286,"role":"owner","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":287,"role":"owner","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":288,"role":"owner","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":289,"role":"owner","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":290,"role":"owner","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":291,"role":"owner","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":292,"role":"owner","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":293,"role":"owner","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":294,"role":"owner","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":295,"role":"owner","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":296,"role":"owner","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":297,"role":"owner","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":298,"role":"owner","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":299,"role":"owner","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":300,"role":"owner","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"id":301,"role":"super","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":302,"role":"super","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":303,"role":"super","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":304,"role":"super","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":305,"role":"super","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":306,"role":"super","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":307,"role":"super","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":308,"role":"super","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":309,"role":"super","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":310,"role":"super","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":311,"role":"super","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":312,"role":"super","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":313,"role":"super","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":314,"role":"super","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":315,"role":"super","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":316,"role":"super","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":317,"role":"super","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":318,"role":"super","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":319,"role":"super","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":320,"role":"super","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":321,"role":"super","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":322,"role":"super","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":323,"role":"super","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":324,"role":"super","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":325,"role":"super","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":326,"role":"super","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":327,"role":"super","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":328,"role":"super","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":329,"role":"super","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":330,"role":"super","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":331,"role":"super","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":332,"role":"super","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":333,"role":"super","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":334,"role":"super","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":335,"role":"super","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":336,"role":"super","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":337,"role":"super","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":338,"role":"super","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":339,"role":"super","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":340,"role":"super","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":341,"role":"super","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":342,"role":"super","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":343,"role":"super","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":344,"role":"super","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":345,"role":"super","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":346,"role":"super","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":347,"role":"super","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":348,"role":"super","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":349,"role":"super","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":350,"role":"super","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":351,"role":"super","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":352,"role":"super","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":353,"role":"super","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":354,"role":"super","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":355,"role":"super","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":356,"role":"super","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":357,"role":"super","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":358,"role":"super","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":359,"role":"super","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":360,"role":"super","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":361,"role":"super","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":362,"role":"super","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":363,"role":"super","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":364,"role":"super","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":365,"role":"super","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":366,"role":"super","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":367,"role":"super","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":368,"role":"super","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":369,"role":"super","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":370,"role":"super","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":371,"role":"super","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":372,"role":"super","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":373,"role":"super","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":374,"role":"super","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":375,"role":"super","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"id":376,"role":"principal","scenario":"open Overview","result":"pass","suite":"http","release":"0.5.4"}
+{"id":377,"role":"principal","scenario":"open Sales pipeline","result":"pass","suite":"http","release":"0.5.4"}
+{"id":378,"role":"principal","scenario":"open Clients","result":"pass","suite":"http","release":"0.5.4"}
+{"id":379,"role":"principal","scenario":"open Monthly earnings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":380,"role":"principal","scenario":"open Commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":381,"role":"principal","scenario":"open Owner shares","result":"pass","suite":"http","release":"0.5.4"}
+{"id":382,"role":"principal","scenario":"open People","result":"pass","suite":"http","release":"0.5.4"}
+{"id":383,"role":"principal","scenario":"open Settings","result":"pass","suite":"http","release":"0.5.4"}
+{"id":384,"role":"principal","scenario":"open Reports","result":"pass","suite":"http","release":"0.5.4"}
+{"id":385,"role":"principal","scenario":"/reports.csv Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":386,"role":"principal","scenario":"/reports.json Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":387,"role":"principal","scenario":"/reports/print Client fee register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":388,"role":"principal","scenario":"/reports.csv Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":389,"role":"principal","scenario":"/reports.json Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":390,"role":"principal","scenario":"/reports/print Outstanding client fees","result":"pass","suite":"http","release":"0.5.4"}
+{"id":391,"role":"principal","scenario":"/reports.csv Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":392,"role":"principal","scenario":"/reports.json Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":393,"role":"principal","scenario":"/reports/print Client payment register","result":"pass","suite":"http","release":"0.5.4"}
+{"id":394,"role":"principal","scenario":"/reports.csv Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":395,"role":"principal","scenario":"/reports.json Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":396,"role":"principal","scenario":"/reports/print Payment allocations by fee type","result":"pass","suite":"http","release":"0.5.4"}
+{"id":397,"role":"principal","scenario":"/reports.csv Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":398,"role":"principal","scenario":"/reports.json Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":399,"role":"principal","scenario":"/reports/print Client refunds and partner adjustments","result":"pass","suite":"http","release":"0.5.4"}
+{"id":400,"role":"principal","scenario":"/reports.csv Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":401,"role":"principal","scenario":"/reports.json Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":402,"role":"principal","scenario":"/reports/print Partner earnings by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":403,"role":"principal","scenario":"/reports.csv Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":404,"role":"principal","scenario":"/reports.json Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":405,"role":"principal","scenario":"/reports/print Partner commission calculations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":406,"role":"principal","scenario":"/reports.csv Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":407,"role":"principal","scenario":"/reports.json Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":408,"role":"principal","scenario":"/reports/print Recorded partner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":409,"role":"principal","scenario":"/reports.csv Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":410,"role":"principal","scenario":"/reports.json Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":411,"role":"principal","scenario":"/reports/print Partner monthly activity","result":"pass","suite":"http","release":"0.5.4"}
+{"id":412,"role":"principal","scenario":"/reports.csv Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":413,"role":"principal","scenario":"/reports.json Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":414,"role":"principal","scenario":"/reports/print Scheduled referral commissions","result":"pass","suite":"http","release":"0.5.4"}
+{"id":415,"role":"principal","scenario":"/reports.csv Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":416,"role":"principal","scenario":"/reports.json Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":417,"role":"principal","scenario":"/reports/print Owner distributions by client","result":"pass","suite":"http","release":"0.5.4"}
+{"id":418,"role":"principal","scenario":"/reports.csv Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":419,"role":"principal","scenario":"/reports.json Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":420,"role":"principal","scenario":"/reports/print Recorded owner payouts","result":"pass","suite":"http","release":"0.5.4"}
+{"id":421,"role":"principal","scenario":"/reports.csv Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":422,"role":"principal","scenario":"/reports.json Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":423,"role":"principal","scenario":"/reports/print Agency reserve reconciliation","result":"pass","suite":"http","release":"0.5.4"}
+{"id":424,"role":"principal","scenario":"/reports.csv Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":425,"role":"principal","scenario":"/reports.json Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":426,"role":"principal","scenario":"/reports/print Client loss carryforward","result":"pass","suite":"http","release":"0.5.4"}
+{"id":427,"role":"principal","scenario":"/reports.csv Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":428,"role":"principal","scenario":"/reports.json Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":429,"role":"principal","scenario":"/reports/print Vendor expense allocations","result":"pass","suite":"http","release":"0.5.4"}
+{"id":430,"role":"principal","scenario":"/reports.csv Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":431,"role":"principal","scenario":"/reports.json Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":432,"role":"principal","scenario":"/reports/print Open sales follow-ups","result":"pass","suite":"http","release":"0.5.4"}
+{"id":433,"role":"principal","scenario":"/reports.csv Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":434,"role":"principal","scenario":"/reports.json Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":435,"role":"principal","scenario":"/reports/print Sales stage changes","result":"pass","suite":"http","release":"0.5.4"}
+{"id":436,"role":"principal","scenario":"/reports.csv Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":437,"role":"principal","scenario":"/reports.json Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":438,"role":"principal","scenario":"/reports/print Client fee agreement history","result":"pass","suite":"http","release":"0.5.4"}
+{"id":439,"role":"principal","scenario":"/reports.csv Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":440,"role":"principal","scenario":"/reports.json Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":441,"role":"principal","scenario":"/reports/print Performance fee tier schedule","result":"pass","suite":"http","release":"0.5.4"}
+{"id":442,"role":"principal","scenario":"/reports.csv Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":443,"role":"principal","scenario":"/reports.json Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":444,"role":"principal","scenario":"/reports/print Owner participation agreements","result":"pass","suite":"http","release":"0.5.4"}
+{"id":445,"role":"principal","scenario":"save a role-appropriate report view","result":"pass","suite":"http","release":"0.5.4"}
+{"id":446,"role":"principal","scenario":"preview client period close","result":"pass","suite":"http","release":"0.5.4"}
+{"id":447,"role":"principal","scenario":"request a masked payout preference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":448,"role":"principal","scenario":"submit a referral","result":"pass","suite":"http","release":"0.5.4"}
+{"id":449,"role":"principal","scenario":"record a second payout with the same reference","result":"pass","suite":"http","release":"0.5.4"}
+{"id":450,"role":"principal","scenario":"request a preference with an unmasked identifier","result":"pass","suite":"http","release":"0.5.4"}
+{"suite":"browser-layout","id":1,"role":"admin","scenario":"Invoice payment history at 1440 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-layout","id":2,"role":"admin","scenario":"Commissions at 1440 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-layout","id":3,"role":"admin","scenario":"Closed client period at 1440 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-layout","id":4,"role":"admin","scenario":"Invoice payment history at 390 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-layout","id":5,"role":"admin","scenario":"Commissions at 390 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-layout","id":6,"role":"admin","scenario":"Closed client period at 390 px","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":1,"role":"admin","scenario":"Client-scoped invoice options","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":2,"role":"admin","scenario":"Duplicate collection blocked in preview","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":3,"role":"admin","scenario":"Agency can review partner holds and payout availability","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":4,"role":"admin","scenario":"Batch row error and preserved inputs","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":5,"role":"admin","scenario":"Batch review reconciles both recipients separately","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":6,"role":"admin","scenario":"Alder shows $400 recorded for the spanning payout","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":7,"role":"admin","scenario":"Harbor shows $100 recorded for the same payout","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":8,"role":"admin","scenario":"Saved month-close summary and scoped download link","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":9,"role":"admin","scenario":"Original spanning payout is identified in reversal preview","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":10,"role":"admin","scenario":"Reversal mirrors both recorded allocations","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":11,"role":"partner","scenario":"Partner cannot view the agency invoice trace","result":"pass","release":"0.5.4"}
+{"suite":"browser-finance","id":12,"role":"partner","scenario":"Partner sees own reversal without internal reason or agency queue","result":"pass","release":"0.5.4"}

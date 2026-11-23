@@ -2,6 +2,7 @@ import {available,exportData} from './analysis-tools.js';
 import {reportPanel,readReport,reportCsv} from './report-engine.js';
 import {previewPage,hasPreview,batchRetryPage} from './preview.js';
 import {closeSummary,closeExport} from './close-summary.js';
+import {payoutAllocationExport} from './payment-trace.js';
 import {prepareAccounts,addPerson} from './administration.js';
 import {saveView,removeView} from './saved-views.js';
 import http from 'node:http';
@@ -69,6 +70,11 @@ http.createServer(async(req,res)=>{
  const destination=routes.includes(f.return)?f.return:'/';
  const filter=destination==='/earnings'&&state.clients.some(client=>client.id===f.client)?'&client='+encodeURIComponent(f.client):'';
  return bounce(res,destination+'?saved=1'+filter)}
+ if(req.method==='GET'&&path==='/commissions/allocations.csv'){
+   if(!global)return reply(res,403,'Permission denied');
+   res.setHeader('Content-Disposition','attachment; filename="agentcrm-payout-allocations.csv"');
+   return reply(res,200,reportCsv(payoutAllocationExport(state)),'text/csv; charset=utf-8');
+ }
  if(req.method==='GET'&&path==='/owners/close.csv'){
    if(!global)return reply(res,403,'Permission denied');
    const summary=closeSummary(state,url.searchParams.get('client'),url.searchParams.get('month'));

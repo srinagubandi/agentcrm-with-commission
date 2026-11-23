@@ -28,7 +28,17 @@ export function previewPage(state, data) {
   } else if (data.action==='batchPayout') {
     const count=data.rows.split(/\r?\n/).filter(line=>line.trim()).length;
     const batch=state.payouts.slice(-count);
+    const recipients=new Map();
+    for(const p of batch){
+      const key=p.kind+'|'+p.person;
+      const row=recipients.get(key)||{name:names.get(p.person),kind:p.kind,before:p.availableBefore,total:0};
+      row.total+=p.amount;
+      row.after=p.availableBefore-p.amount;
+      recipients.set(key,row);
+    }
     lines=[['Payout count',count],['Total',usd(batch.reduce((total,p)=>total+p.amount,0))],
+      ...[...recipients.values()].map(row=>['Recipient reconciliation · '+row.name+' ('+row.kind+')',
+        usd(row.before)+' before · '+usd(row.total)+' selected · '+usd(row.after)+' remaining']),
       ...batch.map((p,index)=>['Row '+(index+1)+' · '+names.get(p.person),
         p.kind+' · '+p.ref+' · '+usd(p.amount)+' · available '+usd(p.availableBefore)+' before / '+usd(p.availableBefore-p.amount)+' after'])];
   } else if (data.action==='closeMonth') {

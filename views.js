@@ -92,9 +92,9 @@ export function page(s,u,path,ctx){
          row.shares.map(share=>esc(names[share.id]||share.id)+' '+money(share.amount)).join('<br>'),
          row.approvedBy?'Approved by '+esc(names[row.approvedBy]||row.approvedBy)+' on '+esc(row.approvedAt):
            trace.approved.has(row)?(row.amount>0?'Recorded':'Posted'):'Draft']))+
-     '<h3>Estimated partner payout allocation</h3><p>Uses the oldest available approved commission first. A payout may cover several invoices. Owner payouts are reconciled by month in <a href="/owners">Owner shares</a>.</p>'+
-     table(['Date','Partner','Payout reference','Estimated amount applied'],
-       trace.payouts.map(p=>[p.date,esc(names[p.person]||p.person),esc(p.ref),money(p.attributed)])));
+     '<h3>Partner payout allocation</h3><p>New payouts record which approved commissions they cover. Earlier payouts without saved allocations show a historical estimate. Owner payouts are reconciled by month in <a href="/owners">Owner shares</a>.</p>'+
+     table(['Date','Partner','Payout reference','Amount applied','Allocation basis'],
+       trace.payouts.map(p=>[p.date,esc(names[p.person]||p.person),esc(p.ref),money(p.attributed),p.allocationBasis])));
  }
  if(admin){body+=form('fee','Record fee',pickClient()+dateInput()+input('ref','Invoice or fee reference')+input('fixed','Fixed fee ($), blank uses agreement retainer','number','',false)+options('calc','Performance fee method',[['direct','Enter fee'],['sales','Calculate from sales']])+input('sales','Qualifying sales ($)','number',0)+input('performance','Known performance fee ($)','number',0));
  body+=panel('Payment entry client',selectClient);
@@ -121,6 +121,15 @@ export function page(s,u,path,ctx){
  if(partner)body+=preferenceForm();
  if(admin)body+=form('payout','Record external payout',personSelect('person',null,'Recipient')+options('kind','Earnings type',[['partner','Referral commission'],['owner','Owner share']])+dateInput()+input('amount','Amount ($)','number')+input('method','Method')+input('ref','Reference'));
  if(admin)body+=reverseForm('partner');
+ if(global)body+=panel('Payout review queue',
+   '<p>Amounts as of '+current+'. Ready to pay reflects approval status and existing payout commitments.</p>'+
+   table(['Partner','Held for approval','Approved','Net recorded payouts','Ready to pay'],recipients.map(person=>{
+     const items=entries.filter(row=>row.id===person.id&&row.date<=current);
+     return [esc(person.name),money(sum(items.filter(row=>row.status==='Draft'),'amount')),
+       money(sum(items.filter(row=>row.status==='Approved'),'amount')),
+       money(sum(paid.filter(row=>row.person===person.id&&row.date<=current),'amount')),
+       money(availablePayout(s,person.id,'partner',current))];
+   }))+'<p><a href="/commissions/allocations.csv">Download recorded payout allocations</a></p>');
  }
  if(path==='/owners'){
  const m=owners(s).filter(x=>global||x.shares.some(p=>p.id===u.id));body=panel('Monthly owner distributions',table(global?['Client','Month','Collections','Referral commissions','Expenses','Opening loss','Available','Owner shares','Reserve','Closing loss']:['Client','Month','My share'],m.map(x=>global?[esc(clientName(x.cid)),x.month,money(x.income),money(x.commission),money(x.expenses),money(x.opening),money(x.available),x.shares.map(p=>esc(names[p.id])+' '+money(p.amount)).join('<br>'),money(x.reserve),money(x.loss)]:[esc(clientName(x.cid)),x.month,money(x.shares.find(p=>p.id===u.id).amount)])));

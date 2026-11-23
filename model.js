@@ -1,4 +1,5 @@
 import {payoutCapacity,followingMonth} from './payout-balance.js';
+import {partnerPayoutApplications} from './payout-allocations.js';
 import {createHash,randomUUID} from 'node:crypto';
 export const stages=['New Referral','Contacted','Discovery','Proposal','Negotiation','Won','Lost'];
 export const today=()=>new Date().toISOString().slice(0,10);
@@ -85,7 +86,10 @@ export function availablePayout(s,person,kind,asOf) {
    .filter(share=>share.id===person&&(!approved||approved.has(entry)||share.amount<0))
    .map(share=>({date:entry.date,amount:share.amount})));
  const payments=s.payouts.filter(payment=>payment.person===person&&payment.kind===kind);
- return payoutCapacity(earnings,payments,asOf);
+ const capacity=payoutCapacity(earnings,payments,asOf);
+ if(kind!=='partner'||capacity===0)return capacity;
+ const proposed={id:Symbol(),person,kind,date:asOf,amount:capacity};
+ return partnerPayoutApplications(s,approved,proposed).reduce((total,line)=>total+line.amount,0);
 }
 
 export function visibleClients(s,user) {
@@ -229,7 +233,8 @@ export function run(s,user,action,f){
      'Use a reversal date after the latest closed client period');
    const reason=required(f.reason);
    s.payouts.push({id:uid(),person:original.person,kind:original.kind,date:posted,amount:-original.amount,
-     method:'Ledger reversal',ref:'Reversal of '+original.ref,reverses:original.id,reason,by:user.id});
+     method:'Ledger reversal',ref:'Reversal of '+original.ref,reverses:original.id,reason,by:user.id,
+     ...(original.applications?{applications:original.applications.map(line=>({...line,amount:-line.amount}))}:{})});
    return;
  }
  if(action==='payout'){const p=get(s.people,f.person),d=date(f.date),amount=cents(f.amount),kind=f.kind==='owner'?'owner':'partner';
@@ -240,7 +245,13 @@ export function run(s,user,action,f){
  check(amount>0&&amount<=due,'Payout exceeds available balance');
  const ref=required(f.ref);
  check(!payments.some(payment=>payment.ref===ref),'This recipient and earnings type already have a payout with that reference');
- s.payouts.push({id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref,availableBefore:due});return}
+ const payout={id:uid(),person:p.id,kind,date:d,amount,method:required(f.method),ref,availableBefore:due};
+ if(kind==='partner'){
+   payout.applications=partnerPayoutApplications(s,new Set(reportableReceipts(s)),payout);
+   check(payout.applications.reduce((total,line)=>total+line.amount,0)===amount,
+     'This date has insufficient unassigned approved commission after reserving recorded payouts');
+ }
+ s.payouts.push(payout);return}
  if(action==='client'){const name=required(f.name);check(!s.clients.some(c=>c.name.toLowerCase()===name.toLowerCase()),'Client already exists');s.clients.push({id:uid(),name,contact:String(f.contact||'').trim().slice(0,500),history:[],notes:[]});return}
  const c=get(s.clients,f.client);
  if(action==='note'){const note=required(f.note);c.notes??=[];c.notes.push({by:user.id,date:today(),text:note});return}
